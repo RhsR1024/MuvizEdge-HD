@@ -44,6 +44,7 @@ public final class AudioDiagnosticsActivity extends Activity {
         label("音频与悬浮状态", 25);
         label("出现问题后返回此页导出日志，无需连接 USB。运行记录跨启动保留，最多约 2 MB，超出后自动淘汰旧记录。\n包含启动、休眠唤醒、播放状态、采集恢复和导航栏边距变化；不记录歌曲、通知正文或音频内容。", 15);
         button("刷新状态", new View.OnClickListener(){public void onClick(View v){refresh();}});
+        button("管理使用情况访问权限（识别车机桌面）",new View.OnClickListener(){public void onClick(View v){DesktopSupport.openAccess(AudioDiagnosticsActivity.this);}});
         button("复制状态", new View.OnClickListener(){public void onClick(View v){
             ClipboardManager clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
             if(clipboard != null){clipboard.setPrimaryClip(ClipData.newPlainText("Muviz Edge 音频状态",status.getText())); Toast.makeText(AudioDiagnosticsActivity.this,"状态已复制",Toast.LENGTH_SHORT).show();}
@@ -60,12 +61,13 @@ public final class AudioDiagnosticsActivity extends Activity {
     @Override protected void onResume() { super.onResume(); AdaptiveUi.onResume(this); refresh(); }
     private void refresh() {
         AudioSupport.invalidate();
-        StringBuilder s = new StringBuilder("Muviz Edge 149 启动、音频与边距诊断\n");
+        StringBuilder s = new StringBuilder("Muviz Edge 150 启动、音频与边距诊断\n");
         s.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date()));
         s.append("\n设备：").append(Build.MANUFACTURER).append(' ').append(Build.MODEL).append("\nAndroid ").append(Build.VERSION.RELEASE).append(" / API ").append(Build.VERSION.SDK_INT);
         AdaptiveUi.Device d = AdaptiveUi.device(this);
         s.append("\n屏幕：").append(d.width).append('×').append(d.height).append("；原生 dpi=").append(d.dpi).append("；大屏模式=").append(d.large);
         s.append("\n车机音频兼容：").append(AudioSupport.compat(this));
+        s.append("\n车机桌面兼容：").append(DesktopSupport.enabled(this));
         s.append("\n录音权限：").append(checkSelfPermission(Manifest.permission.RECORD_AUDIO)==PackageManager.PERMISSION_GRANTED);
         s.append("\n系统录音访问：").append(CaptureDiagnostics.permissionState(this));
         s.append("\n悬浮窗权限：").append(Settings.canDrawOverlays(this));

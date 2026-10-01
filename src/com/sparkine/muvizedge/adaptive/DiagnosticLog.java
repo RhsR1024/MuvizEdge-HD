@@ -63,7 +63,7 @@ public final class DiagnosticLog {
         return d.snapshot(report+"\n\n"+metadata()+"\n写入错误="+failure+"；队列丢弃="+dropped.get(),RollingLog.LIMIT);
     }
     public static String metadata(){
-        return "版本=149；进程启动="+time(startedWall)+"；启动时系统运行="+startedElapsed+" ms"
+        return "版本=150；进程启动="+time(startedWall)+"；启动时系统运行="+startedElapsed+" ms"
             +"\n系统启动时间（依据当前时钟推算）="+time(System.currentTimeMillis()-SystemClock.elapsedRealtime())
             +"；系统启动计数="+bootCount+"；elapsed="+SystemClock.elapsedRealtime()+"；uptime="+SystemClock.uptimeMillis()
             +"\n日志上限=2 MiB；未运行期间无法记录事件，系统启动时间不等于车辆点火时间。";

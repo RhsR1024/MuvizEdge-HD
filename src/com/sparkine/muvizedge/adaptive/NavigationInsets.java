@@ -62,11 +62,13 @@ public final class NavigationInsets {
                 +"\n本次导航栏高度="+lastMeasured+" px；采用高度="+lastHeight+" px"
                 +"\n屏幕底边="+lastScreenHeight+"；悬浮窗口底边="+lastViewBottom
                 +"\n底部策略："+(!lastEnabled?"手动":lastHeight<0?"暂未取得高度，使用手动备用值":lastHeight==0?"自动贴底":"自动避让导航栏")
-                +"\n最近绘制的底部边距：手动备用="+savedBottom+" px；实际="+effectiveBottom+" px（-1 表示未记录）";
+                +"\n最近应用到悬浮渲染器的边距：手动备用="+savedBottom+" px；实际="+effectiveBottom+" px（暂停时为历史值）"
+                +"\n"+DesktopSupport.report();
     }
     private static final class Reading {
         int signal=NavigationPolicy.UNKNOWN, height=-1;
-        boolean keyboard;
+        boolean keyboard,side;
+        int stableHeight=-1;
         String raw="insets=null";
         String source="系统暂未提供高度，沿用最近测量或手动备用值";
     }
@@ -77,6 +79,8 @@ public final class NavigationInsets {
             boolean visible=insets.isVisible(WindowInsets.Type.navigationBars());
             Insets current=insets.getInsets(WindowInsets.Type.navigationBars());
             Insets stable=insets.getInsetsIgnoringVisibility(WindowInsets.Type.navigationBars());
+            r.stableHeight=stable.bottom;
+            r.side=current.left>0 || current.right>0 || stable.left>0 || stable.right>0;
             r.raw="navVisible="+visible+" current="+current+" stable="+stable+" imeVisible="+r.keyboard;
             if(!visible) {
                 if(r.keyboard) {r.source="键盘显示中，保留最近的导航栏高度";return r;}
@@ -108,7 +112,7 @@ public final class NavigationInsets {
         final int[] location=new int[2];
         long enabledAt=-1;
         boolean auto;
-        int screenHeight,screenWidth,rotation=-1,previousEffective=-2;
+        int screenHeight,screenWidth,rotation=-1,previousEffective=-2,learnedHeight=-1;
         String geometry="";
         final Runnable refresh=new Runnable(){public void run(){
             View v=view.get();gb.f owner=controller.get();
@@ -151,7 +155,7 @@ public final class NavigationInsets {
                 Display display=v.getDisplay();
                 if(display!=null){
                     display.getRealMetrics(metrics);
-                    if(rotation!=display.getRotation() || screenWidth!=metrics.widthPixels || screenHeight!=metrics.heightPixels)policy.reset();
+                    if(rotation!=display.getRotation() || screenWidth!=metrics.widthPixels || screenHeight!=metrics.heightPixels){policy.reset();learnedHeight=-1;}
                     rotation=display.getRotation();screenWidth=metrics.widthPixels;screenHeight=metrics.heightPixels;
                 }
                 if(Build.VERSION.SDK_INT>=30 && insets!=null)reading=Api30.read(insets);
@@ -179,6 +183,16 @@ public final class NavigationInsets {
                     }
                 }
             } catch(RuntimeException e){DiagnosticLog.state("INSET_ERROR",e.toString());reading=new Reading();}
+            if(!reading.keyboard && reading.signal==NavigationPolicy.VISIBLE && AutoInsetPolicy.plausibleHeight(reading.height,screenHeight))learnedHeight=reading.height;
+            if(auto)try{
+                DesktopSupport.Snapshot desktop=DesktopSupport.sample(v.getContext());
+                int bottom=DesktopInsetPolicy.height(true,desktop.freshHome(now),reading.keyboard,reading.side,
+                    reading.signal,reading.height,reading.stableHeight,learnedHeight,systemHeight(screenWidth,screenHeight),screenHeight);
+                if(bottom>=0){
+                    reading.signal=NavigationPolicy.VISIBLE;reading.height=bottom;
+                    reading.source="桌面兼容自动避让；前台="+desktop.pkg;
+                }
+            }catch(RuntimeException e){DiagnosticLog.state("DESKTOP_INSET_FAILED",e.toString());}
             int selected=policy.update(auto,reading.signal,reading.height,now);
             int effective=effectiveInset();
             lastAt=now;lastSource=reading.source;lastEnabled=auto;lastSignal=reading.signal;lastMeasured=reading.height;lastHeight=selected;

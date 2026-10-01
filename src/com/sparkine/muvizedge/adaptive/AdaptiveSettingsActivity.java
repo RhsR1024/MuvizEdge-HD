@@ -17,6 +17,7 @@ import android.widget.TextView;
 public final class AdaptiveSettingsActivity extends Activity {
     private final int background = Color.rgb(20, 24, 29), foreground = Color.rgb(242, 245, 248);
     private LinearLayout content;
+    private Button desktopButton,usageButton;
     @Override protected void attachBaseContext(Context base) { super.attachBaseContext(AdaptiveUi.wrap(base)); }
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
@@ -63,13 +64,22 @@ public final class AdaptiveSettingsActivity extends Activity {
         }});
         label(t("开启后自动测量导航栏高度，底部无需手动调节：导航栏显示时自动避让，隐藏时贴底。不会叠加你以前设置的底部高度。大屏默认开启，顶部和两侧仍使用原设置。", "Automatically measure the navigation bar and clear it when visible; move to the bottom when hidden. No manual bottom adjustment is needed and old bottom margins are not added. Enabled by default on large displays; top and side margins stay unchanged."), 14);
         label(t("关闭自动测量后，可在屏幕边缘的高级设置中手动调节底部。如果特殊车机无法提供准确高度，可使用手动模式，并复制状态信息反馈。", "Turn automatic measurement off to use the saved bottom margin in Advanced screen-edge settings. If a custom system reports an incorrect height, use manual mode and share the status report."), 14);
+        desktopButton=button(desktopLabel());
+        desktopButton.setOnClickListener(new View.OnClickListener(){public void onClick(View v){
+            p.edit().putBoolean("desktop_inset_compat",!DesktopSupport.enabled(AdaptiveSettingsActivity.this)).apply();
+            desktopButton.setText(desktopLabel());NavigationInsets.wake();
+        }});
+        label(t("部分车机返回桌面或桌面应用列表后，控制栏已经显示，系统却仍报告全屏。开启桌面兼容并授予使用情况访问权限后，应用会识别桌面并自动避让控制栏，进入全屏音乐软件后恢复贴底。底部高度仍自动获取，无需手动填写。", "Some cars report fullscreen while the launcher control bar is visible. With launcher compatibility and usage access enabled, the app clears the launcher bar and returns to the bottom in fullscreen players. Height is measured automatically."),14);
+        usageButton=button(usageLabel());
+        usageButton.setOnClickListener(new View.OnClickListener(){public void onClick(View v){DesktopSupport.openAccess(AdaptiveSettingsActivity.this);}});
+        label(t("使用情况访问仅用于识别前台是否为桌面；不读取屏幕内容。未授权时仍使用系统导航栏判断，可能无法避让车机桌面的控制栏。", "Usage access identifies the foreground launcher without reading screen content. Without access, only system navigation signals are used and custom launcher bars may not be detected."),14);
         AdaptiveUi.Device d = AdaptiveUi.device(this);
         TextView status = label(t("当前使用：", "Currently using: ")+(d.large?t("大屏横屏布局", "Large landscape layout"):t("手机布局", "Phone layout")), 17);
         status.setPadding(0, dp(24), 0, dp(8));
         label(t("自动模式会参考系统设备类型和屏幕特征。如果识别不符合预期，可以手动切换显示模式。", "Automatic mode uses device type and display characteristics. Choose a mode manually if the result is unsuitable."), 14);
         label(t("选择后立即保存。返回其他页面时，页面会自动刷新。", "Selections are saved immediately. Other pages refresh when you return."), 14);
     }
-    @Override protected void onResume(){ super.onResume(); AdaptiveUi.onResume(this); }
+    @Override protected void onResume(){ super.onResume(); AdaptiveUi.onResume(this);if(desktopButton!=null)desktopButton.setText(desktopLabel());if(usageButton!=null)usageButton.setText(usageLabel()); }
     private int dp(int value){return Math.round(value*getResources().getDisplayMetrics().density);}
     private String t(String zh,String en){return AdaptiveUi.text(this,zh,en);}
     private TextView label(String value,int size){
@@ -114,4 +124,6 @@ public final class AdaptiveSettingsActivity extends Activity {
     private void refresh(){AdaptiveUi.changed(this);recreate();}
     private String audioLabel(){return t("车机音频兼容：", "Car audio compatibility: ")+(AudioSupport.compat(this)?t("开启", "On"):t("关闭", "Off"));}
     private String bottomLabel(){return t("底部自动测量：", "Measure bottom inset: ")+(NavigationInsets.enabled(this)?t("开启", "On"):t("关闭", "Off"));}
+    private String desktopLabel(){return t("车机桌面兼容：", "Launcher compatibility: ")+(DesktopSupport.enabled(this)?t("开启", "On"):t("关闭", "Off"));}
+    private String usageLabel(){return DesktopSupport.granted(this)?t("使用情况访问：已授权 · 管理权限", "Usage access: granted · manage"):t("开启使用情况访问 · 用于识别车机桌面", "Enable usage access for launcher recognition");}
 }

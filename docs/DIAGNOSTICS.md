@@ -63,3 +63,7 @@ AppOps 常见模式：0 allowed、1 ignored、2 errored、3 default、4 foregrou
 6. 若没有开机前段日志，确认轮转是否已淘汰、进程是否未运行、车机是否仅休眠；不能假设每次车辆启动都发生 Android 重启。
 
 日志不记录歌曲内容、通知正文或音频采样，但会记录播放器包名、设置、设备信息和时间。对外分享前检查内容；不要把用户原始日志直接提交进仓库。
+
+## 150 补充
+
+系统 navVisible=false 不一定说明车机桌面控制栏隐藏。150 增加前台桌面证据与边距来源；查看 `DESKTOP_ACCESS`、`DESKTOP_PACKAGES`、`DESKTOP_FOREGROUND` 和 `NAVIGATION_WINDOW`，详见 `DESKTOP_COMPAT.md`。进入本应用后悬浮层会暂挂，最近应用的边距可保留历史值，不应仅凭快照值不一致认定刷新失败。

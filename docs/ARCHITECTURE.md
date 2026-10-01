@@ -91,3 +91,7 @@ flowchart TD
 | 同上 | `HIDE_ON_*`、`IS_ONLY_MEDIA_APPS`、`IS_APPS_SELECTED`、`*_PKGS` | 原程序隐藏与应用选择门控 |
 
 保留原门控，不应为了“总能看到律动”而忽略用户选择的隐藏条件。采集恢复判断针对缺失回调；连续的零 FFT 可能是静音，不能因此无限重建采集。
+
+## 150 桌面控制栏补充判断
+
+`DesktopSupport` 在独立线程查询已授权的 UsageEvents，`ForegroundPolicy` 跟踪实际前台 Activity，`DesktopInsetPolicy` 仅在确认 HOME 桌面时补充隐藏 / 未知的导航栏高度。新设置 `adaptive_display_language.desktop_inset_compat` 在大屏默认开启；权限、回退和诊断详见 `DESKTOP_COMPAT.md`。

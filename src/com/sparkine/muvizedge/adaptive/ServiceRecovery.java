@@ -25,7 +25,7 @@ public final class ServiceRecovery {
         DiagnosticLog.event("DEVICE","rom="+Build.DISPLAY+" display="+AdaptiveUi.device(app).width+"x"+AdaptiveUi.device(app).height+" dpi="+AdaptiveUi.device(app).dpi);
         preferenceListener=new SharedPreferences.OnSharedPreferenceChangeListener(){public void onSharedPreferenceChanged(SharedPreferences p,String key){
             if(key==null)return;
-            if(key.equals("EDGE_SHOW_ON_OVERLAY")||key.equals("SHOW_AOD")||key.startsWith("HIDE_ON_")||key.equals("IS_ONLY_MEDIA_APPS")||key.equals("IS_APPS_SELECTED")||key.endsWith("_PKGS")||key.equals("auto_bottom_inset")||key.equals("car_audio_compat")){
+            if(key.equals("EDGE_SHOW_ON_OVERLAY")||key.equals("SHOW_AOD")||key.startsWith("HIDE_ON_")||key.equals("IS_ONLY_MEDIA_APPS")||key.equals("IS_APPS_SELECTED")||key.endsWith("_PKGS")||key.equals("auto_bottom_inset")||key.equals("desktop_inset_compat")||key.equals("car_audio_compat")){
                 DiagnosticLog.event("SETTING",key+"="+p.getAll().get(key));AudioSupport.invalidate();PlaybackRecovery.kick(false);
             }
         }};
