@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@id/parent" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.sparkine.muvizedge.view.PieClock android:id="@id/clock_bg" android:layout_width="fill_parent" android:layout_height="fill_parent" android:alpha="0.8" />
+    <RelativeLayout android:id="@id/notification_container" android:background="@drawable/top_black_gradient" android:paddingTop="70.0dip" android:paddingBottom="70.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentTop="true" android:layerType="software" android:paddingStart="30.0dip" android:paddingEnd="30.0dip">
+        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/date_active_lt" android:padding="10.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true">
+            <TextView android:textSize="18.0sp" android:textColor="@color/white" android:id="@id/date_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/lato_regular" />
+            <View android:id="@id/active_icons_sep" android:background="@color/white" android:visibility="gone" android:layout_width="0.5dip" android:layout_height="fill_parent" android:layout_marginStart="12.0dip" android:layout_marginEnd="12.0dip" />
+            <LinearLayout android:gravity="start" android:orientation="horizontal" android:id="@id/active_icons_lt" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="18.0dip" android:layout_marginStart="-10.0dip" />
+        </LinearLayout>
+        <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/notification_lt" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true">
+            <androidx.cardview.widget.CardView android:id="@id/notification_icon_bg" android:layout_width="wrap_content" android:layout_height="wrap_content" app:cardBackgroundColor="@color/white" app:cardCornerRadius="20.0dip">
+                <ImageView android:id="@id/notification_icon" android:layout_width="18.0dip" android:layout_height="18.0dip" android:layout_margin="5.0dip" app:tint="@color/black" />
+            </androidx.cardview.widget.CardView>
+            <LinearLayout android:gravity="start" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="12.0dip">
+                <TextView android:textSize="16.0sp" android:textColor="@color/white" android:ellipsize="end" android:id="@id/notification_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxLines="1" android:fontFamily="@font/lato_regular" android:textAlignment="center" />
+                <TextView android:textSize="15.0sp" android:textColor="@color/liteGray" android:ellipsize="end" android:id="@id/notification_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:maxLines="2" android:fontFamily="@font/lato_regular" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+    <LinearLayout android:gravity="center|bottom" android:orientation="vertical" android:background="@drawable/bottom_black_gradient" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:layerType="software">
+        <LinearLayout android:gravity="center|bottom" android:orientation="vertical" android:id="@id/media_widget_lt" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="40.0dip">
+            <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <LinearLayout android:orientation="vertical" android:id="@id/player_details_layout" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0">
+                    <TextView android:textSize="16.0sp" android:textColor="@color/white" android:ellipsize="end" android:id="@id/title_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/music_title_placeholder" android:maxLines="1" android:fontFamily="@font/lato_regular" />
+                    <TextView android:textSize="15.0sp" android:textColor="@color/gray" android:ellipsize="end" android:id="@id/artist_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:text="@string/music_artist_placeholder" android:maxLines="1" android:fontFamily="@font/lato_regular" />
+                </LinearLayout>
+                <LinearLayout android:id="@id/play_pause_btn" android:background="?android:selectableItemBackgroundBorderless" android:padding="10.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="10.0dip">
+                    <ImageView android:id="@id/play_pause_iv" android:layout_width="22.0dip" android:layout_height="22.0dip" android:src="@drawable/play_outline_btn" />
+                </LinearLayout>
+                <LinearLayout android:id="@id/next_btn" android:background="?android:selectableItemBackgroundBorderless" android:padding="10.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="10.0dip">
+                    <ImageView android:id="@id/next_btn_iv" android:layout_width="16.0dip" android:layout_height="16.0dip" android:src="@drawable/next_outline_btn" />
+                </LinearLayout>
+            </LinearLayout>
+            <com.sparkine.muvizedge.view.TimeProgressBar android:id="@id/music_progress" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="20.0dip" android:maxHeight="1.0dip" android:minHeight="1.0dip" android:progressTint="@color/white" android:progressBackgroundTint="@color/white" style="?android:progressBarStyleHorizontal" />
+        </LinearLayout>
+        <TextView android:textSize="14.0sp" android:textColor="@color/liteGray" android:id="@id/bottom_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="30.0dip" android:fontFamily="@font/lato_regular" android:textAlignment="center" />
+    </LinearLayout>
+    <com.sparkine.muvizedge.view.AnalogueClock1 android:id="@id/clock" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+</RelativeLayout>

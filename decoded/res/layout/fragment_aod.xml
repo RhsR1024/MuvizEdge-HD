@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout android:id="@id/parent_layout" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <View android:id="@id/parent_bg" android:background="@color/drkModeGray" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/screen_grid" android:padding="10.0dip" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:overScrollMode="never" app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    <com.google.android.material.appbar.AppBarLayout android:id="@id/app_bar" android:background="@null" android:layout_width="fill_parent" android:layout_height="wrap_content" android:elevation="0.0dip" app:elevation="0.0dip">
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" app:layout_scrollFlags="scroll|enterAlways">
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/app_bar_lt" android:background="@android:color/transparent" android:padding="20.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" app:layout_scrollFlags="scroll|enterAlways">
+                <LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0" android:animateLayoutChanges="true" android:alpha="0.8">
+                    <TextView android:textSize="20.0sp" android:textStyle="bold" android:textColor="@color/white" android:id="@id/title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/aod_title" />
+                    <TextView android:textSize="12.0sp" android:textColor="@color/liteGray" android:ellipsize="marquee" android:id="@id/sub_text" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" android:text="@string/aod_msg" android:singleLine="true" />
+                </LinearLayout>
+                <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="fill_parent">
+                    <ImageView android:id="@id/aod_btn" android:background="?android:selectableItemBackgroundBorderless" android:padding="8.0dip" android:layout_width="45.0dip" android:layout_height="45.0dip" android:src="@drawable/play_hollow_btn" style="@style/settingsAction" />
+                    <androidx.appcompat.widget.SwitchCompat android:id="@id/aod_switch" android:visibility="gone" style="@style/settingsAction" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

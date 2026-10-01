@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <com.google.android.material.card.MaterialCardView android:id="@id/b_top_piece" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_marginBottom="4.0dip" android:layout_weight="0.5" app:cardBackgroundColor="@color/bluishGray" app:cardPreventCornerOverlap="false" app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialCardView.Cut.TopRounded">
+            <com.sparkine.muvizedge.view.HalfTextView android:layout_gravity="center|bottom" android:id="@id/b_top_piece_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" app:clipOffset="2.0dip" />
+        </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView android:id="@id/b_bottom_piece" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.5" app:cardBackgroundColor="@color/bluishGray" app:cardPreventCornerOverlap="false" app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialCardView.Cut.BottomRounded">
+            <com.sparkine.muvizedge.view.HalfTextView android:layout_gravity="center|top" android:id="@id/b_bottom_piece_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" app:clipOffset="2.0dip" app:clipTop="true" />
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <com.google.android.material.card.MaterialCardView android:id="@id/top_piece" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_marginBottom="4.0dip" android:layout_weight="0.5" app:cardBackgroundColor="@color/bluishGray" app:cardPreventCornerOverlap="false" app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialCardView.Cut.TopRounded">
+            <com.sparkine.muvizedge.view.HalfTextView android:layout_gravity="center|bottom" android:id="@id/top_piece_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" app:clipOffset="2.0dip" />
+        </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView android:id="@id/bottom_piece" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.5" app:cardBackgroundColor="@color/bluishGray" app:cardPreventCornerOverlap="false" app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialCardView.Cut.BottomRounded">
+            <com.sparkine.muvizedge.view.HalfTextView android:layout_gravity="center|top" android:id="@id/bottom_piece_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="@font/lato_thin" app:clipOffset="2.0dip" app:clipTop="true" />
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="center" android:orientation="vertical" android:id="@id/parent" android:background="@color/black" android:layout_width="fill_parent" android:layout_height="fill_parent">
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <View android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="0.25" />
+        <LinearLayout android:gravity="start|center" android:orientation="vertical" android:id="@id/details_lt" android:visibility="gone" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="0.25">
+            <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/icons_lt" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <LinearLayout android:gravity="center" android:id="@id/battery_lt" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                    <ImageView android:id="@id/battery_icon" android:layout_width="16.0dip" android:layout_height="16.0dip" android:src="@drawable/battery_std_icon" android:layout_marginEnd="3.0dip" />
+                    <com.sparkine.muvizedge.view.NoPadTextView android:textSize="18.0sp" android:textColor="@color/white" android:id="@id/battery_status" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="100%" android:fontFamily="@font/p_sans_bold" />
+                </LinearLayout>
+                <com.sparkine.muvizedge.view.NoPadTextView android:textSize="14.0sp" android:textColor="@color/white" android:id="@id/separator_dot" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="•" android:fontFamily="@font/p_sans_regular" android:layout_marginStart="15.0dip" android:layout_marginEnd="15.0dip" />
+                <LinearLayout android:gravity="start" android:orientation="horizontal" android:id="@id/notify_icons_container" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="18.0dip" android:layout_marginStart="-16.0dip" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:gravity="end|center" android:orientation="horizontal" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="0.25">
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <TextView android:textSize="20.0sp" android:textColor="@color/white" android:id="@id/day_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/adaptive_text_8" android:fontFamily="@font/p_sans_bold" />
+                <TextView android:textSize="20.0sp" android:textColor="@color/white" android:id="@id/date_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="25" android:fontFamily="@font/p_sans_bold" android:layout_marginStart="7.0dip" />
+            </LinearLayout>
+        </LinearLayout>
+        <View android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="0.25" />
+    </LinearLayout>
+    <com.sparkine.muvizedge.view.IosFillClock android:id="@id/clock" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+</RelativeLayout>

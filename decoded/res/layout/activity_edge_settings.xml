@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@id/parent_layout" android:background="@color/drkGray" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="60.0dip">
+        <LinearLayout android:orientation="vertical" android:paddingBottom="30.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:animateLayoutChanges="true" android:paddingStart="15.0dip" android:paddingEnd="15.0dip">
+            <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" style="@style/settingsParent">
+                <TextView android:layout_gravity="start" android:text="@string/show_edge_label" style="@style/settingsText" />
+                <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip">
+                    <HorizontalScrollView android:scrollbars="none" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerHorizontal="true">
+                        <com.google.android.material.chip.ChipGroup android:id="@id/show_on_chip_group" android:layout_width="wrap_content" android:layout_height="wrap_content" app:singleLine="true" app:singleSelection="false">
+                            <com.google.android.material.chip.Chip android:id="@id/music_overlay_chip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/overlay_label" app:chipBackgroundColor="@color/chip_selector" app:chipStrokeColor="@color/warning" style="@style/Widget.MaterialComponents.Chip.Choice" />
+                            <com.google.android.material.chip.Chip android:id="@id/aod_music_chip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/aod_music_label" app:chipBackgroundColor="@color/chip_selector" app:chipStrokeColor="@color/warning" style="@style/Widget.MaterialComponents.Chip.Choice" />
+                            <com.google.android.material.chip.Chip android:id="@id/aod_notify_chip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/aod_notify_label" app:chipBackgroundColor="@color/chip_selector" app:chipStrokeColor="@color/warning" style="@style/Widget.MaterialComponents.Chip.Choice" />
+                        </com.google.android.material.chip.ChipGroup>
+                    </HorizontalScrollView>
+                </RelativeLayout>
+                <TextView android:textColor="@color/warning" android:id="@id/show_lighting_subtext" android:visibility="gone" android:layout_marginTop="5.0dip" android:layout_marginStart="3.0dip" style="@style/settingsSubText" />
+            </LinearLayout>
+            <View style="@style/settingsSeparator" />
+            <LinearLayout android:orientation="vertical" android:id="@id/music_overlay_lt" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <LinearLayout style="@style/settingsParent">
+                    <LinearLayout style="@style/settingsTextGroup">
+                        <TextView android:text="@string/overlay_label" style="@style/settingsText" />
+                    </LinearLayout>
+                    <ImageView style="@style/settingsForwardIcon" />
+                </LinearLayout>
+                <View style="@style/settingsSeparator" />
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:id="@id/aod_lights_lt" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <LinearLayout style="@style/settingsParent">
+                    <LinearLayout style="@style/settingsTextGroup">
+                        <TextView android:text="@string/aod_lights_label" style="@style/settingsText" />
+                    </LinearLayout>
+                    <ImageView style="@style/settingsForwardIcon" />
+                </LinearLayout>
+                <View style="@style/settingsSeparator" />
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:id="@id/only_media_apps_lt" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <LinearLayout style="@style/settingsParent">
+                    <LinearLayout android:animateLayoutChanges="true" style="@style/settingsTextGroup">
+                        <TextView android:text="@string/only_media_apps_label" style="@style/settingsText" />
+                        <TextView android:id="@id/only_media_apps_subtext" android:visibility="gone" style="@style/settingsSubText" />
+                    </LinearLayout>
+                    <View style="@style/settingsSeparatorHorizontal" />
+                    <androidx.appcompat.widget.SwitchCompat android:id="@id/only_media_apps_switch" style="@style/settingsAction" />
+                </LinearLayout>
+                <View style="@style/settingsSeparator" />
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:id="@id/random_mode_lt" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <LinearLayout style="@style/settingsParent">
+                    <LinearLayout style="@style/settingsTextGroup">
+                        <TextView android:text="@string/random_mode_label" style="@style/settingsText" />
+                        <TextView android:id="@id/random_mode_subtext" android:text="@string/random_mode_sub_label" style="@style/settingsSubText" />
+                    </LinearLayout>
+                    <androidx.appcompat.widget.SwitchCompat android:id="@id/random_mode_switch" style="@style/settingsAction" />
+                </LinearLayout>
+                <View style="@style/settingsSeparator" />
+            </LinearLayout>
+            <LinearLayout android:id="@id/define_screen_lt" style="@style/settingsParent">
+                <LinearLayout style="@style/settingsTextGroup">
+                    <TextView android:text="@string/define_screen_label" style="@style/settingsText" />
+                    <TextView android:text="@string/screen_roundness_sub_label" style="@style/settingsSubText" />
+                </LinearLayout>
+                <ImageView style="@style/settingsForwardIcon" />
+            </LinearLayout>
+            <View style="@style/settingsSeparator" />
+        </LinearLayout>
+    </ScrollView>
+    <RelativeLayout android:id="@id/action_bar" android:padding="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <LinearLayout android:layout_centerVertical="true" style="@style/backIconWrapper">
+            <ImageView style="@style/backIcon" />
+        </LinearLayout>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/edge_title" android:layout_centerInParent="true" style="@style/activityTitle" />
+    </RelativeLayout>
+    <View android:background="@color/liteBluishGray" android:layout_width="fill_parent" android:layout_height="1.0px" android:layout_below="@id/action_bar" />
+</RelativeLayout>

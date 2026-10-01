@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@id/parent_layout" android:background="@color/drkGray" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="60.0dip">
+        <LinearLayout android:orientation="vertical" android:paddingTop="5.0dip" android:paddingBottom="30.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingStart="15.0dip" android:paddingEnd="15.0dip">
+            <LinearLayout android:id="@id/select_apps_lt" style="@style/settingsParent">
+                <LinearLayout style="@style/settingsTextGroup">
+                    <TextView android:text="@string/visible_apps_label" style="@style/settingsText" />
+                    <TextView android:id="@id/select_apps_subtext" style="@style/settingsSubText" />
+                </LinearLayout>
+                <ImageView style="@style/settingsForwardIcon" />
+            </LinearLayout>
+            <View style="@style/settingsSeparator" />
+            <LinearLayout android:id="@id/hide_on_fs_lt" style="@style/settingsParent">
+                <LinearLayout style="@style/settingsTextGroup">
+                    <TextView android:text="@string/hide_on_fs_label" style="@style/settingsText" />
+                </LinearLayout>
+                <androidx.appcompat.widget.SwitchCompat android:id="@id/hide_on_fs_switch" style="@style/settingsAction" />
+            </LinearLayout>
+            <View style="@style/settingsSeparator" />
+            <LinearLayout android:id="@id/hide_on_ls_lt" style="@style/settingsParent">
+                <LinearLayout style="@style/settingsTextGroup">
+                    <TextView android:text="@string/hide_on_ls_label" style="@style/settingsText" />
+                </LinearLayout>
+                <androidx.appcompat.widget.SwitchCompat android:id="@id/hide_on_ls_switch" style="@style/settingsAction" />
+            </LinearLayout>
+            <View style="@style/settingsSeparator" />
+            <LinearLayout android:id="@id/dim_bg_lt" style="@style/settingsParent">
+                <LinearLayout style="@style/settingsTextGroup">
+                    <TextView android:text="@string/dim_bg_label" style="@style/settingsText" />
+                    <TextView android:id="@id/dim_bg_subtext" android:visibility="gone" style="@style/settingsSubText" />
+                </LinearLayout>
+                <View style="@style/settingsSeparatorHorizontal" />
+                <androidx.appcompat.widget.SwitchCompat android:id="@id/dim_bg_switch" style="@style/settingsAction" />
+            </LinearLayout>
+            <View style="@style/settingsSeparator" />
+            <LinearLayout android:id="@id/screen_on_lt" style="@style/settingsParent">
+                <LinearLayout style="@style/settingsTextGroup">
+                    <TextView android:text="@string/screen_on_label" style="@style/settingsText" />
+                </LinearLayout>
+                <androidx.appcompat.widget.SwitchCompat android:id="@id/screen_on_switch" style="@style/settingsAction" />
+            </LinearLayout>
+            <View style="@style/settingsSeparator" />
+        </LinearLayout>
+    </ScrollView>
+    <RelativeLayout android:id="@id/action_bar" android:padding="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <LinearLayout android:layout_centerVertical="true" style="@style/backIconWrapper">
+            <ImageView style="@style/backIcon" />
+        </LinearLayout>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/overlay_label" android:layout_centerInParent="true" style="@style/activityTitle" />
+    </RelativeLayout>
+    <View android:background="@color/liteBluishGray" android:layout_width="fill_parent" android:layout_height="1.0px" android:layout_below="@id/action_bar" />
+</RelativeLayout>

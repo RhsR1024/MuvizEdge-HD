@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <View android:id="@id/parent_bg" android:background="@color/drkModeGray" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <RelativeLayout android:id="@id/parent_layout" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <androidx.viewpager.widget.ViewPager android:id="@id/design_pager" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:background="@android:color/transparent" android:padding="20.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:alpha="0.8">
+                <LinearLayout android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0">
+                    <LinearLayout android:gravity="center" android:id="@id/group_name_lt" android:background="?android:selectableItemBackground" android:padding="10.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                        <TextView android:textSize="20.0sp" android:textStyle="bold" android:textColor="@color/white" android:id="@id/group_name" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                        <View android:layout_gravity="top" android:id="@id/new_identifier" android:background="@drawable/round_bg_new" android:visibility="gone" android:layout_width="5.0dip" android:layout_height="5.0dip" android:layout_marginTop="5.0dip" android:layout_marginStart="-1.0dip" />
+                        <ImageView android:layout_width="10.0dip" android:layout_height="10.0dip" android:layout_marginTop="3.0dip" android:src="@drawable/expand_icon" android:layout_marginStart="10.0dip" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout android:background="@drawable/floating_bg" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="10.0dip">
+                    <LinearLayout android:gravity="center" android:id="@id/color_btn" android:background="?android:selectableItemBackgroundBorderless" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                        <com.sparkine.muvizedge.view.PaletteView android:id="@id/palette" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="12.0dip" android:layout_marginBottom="12.0dip" android:layout_marginStart="15.0dip" android:layout_marginEnd="15.0dip" app:maxColors="3" app:radius="10.0dip" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:id="@id/msg_container_lt" android:paddingTop="10.0dip" android:paddingBottom="10.0dip" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingStart="30.0dip" android:paddingEnd="30.0dip">
+                <include layout="@layout/simple_msg_layout" />
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:id="@id/show_on_settings" android:background="@android:color/transparent" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingStart="20.0dip" android:paddingEnd="20.0dip">
+                <View style="@style/settingsSeparator" />
+                <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
+                    <ImageView android:id="@id/show_on_close_btn" android:background="?android:selectableItemBackgroundBorderless" android:padding="10.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:src="@drawable/close_icon" android:layout_alignParentEnd="true" app:tint="@color/liteGray" />
+                    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" style="@style/settingsParent">
+                        <TextView android:layout_gravity="start" android:text="@string/show_edge_label" style="@style/settingsText" />
+                        <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip">
+                            <HorizontalScrollView android:scrollbars="none" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerHorizontal="true">
+                                <com.google.android.material.chip.ChipGroup android:id="@id/show_on_chip_group" android:layout_width="wrap_content" android:layout_height="wrap_content" app:singleLine="true" app:singleSelection="false">
+                                    <com.google.android.material.chip.Chip android:id="@id/music_overlay_chip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/overlay_label" app:chipBackgroundColor="@color/chip_selector" app:chipStrokeColor="@color/warning" style="@style/Widget.MaterialComponents.Chip.Choice" />
+                                    <com.google.android.material.chip.Chip android:id="@id/aod_music_chip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/aod_music_label" app:chipBackgroundColor="@color/chip_selector" app:chipStrokeColor="@color/warning" style="@style/Widget.MaterialComponents.Chip.Choice" />
+                                    <com.google.android.material.chip.Chip android:id="@id/aod_notify_chip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/aod_notify_label" app:chipBackgroundColor="@color/chip_selector" app:chipStrokeColor="@color/warning" style="@style/Widget.MaterialComponents.Chip.Choice" />
+                                </com.google.android.material.chip.ChipGroup>
+                            </HorizontalScrollView>
+                        </RelativeLayout>
+                        <TextView android:textColor="@color/warning" android:id="@id/show_lighting_subtext" android:visibility="gone" android:layout_marginTop="5.0dip" android:layout_marginStart="3.0dip" style="@style/settingsSubText" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <View style="@style/settingsSeparator" />
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:id="@id/define_edge_settings" android:background="@android:color/transparent" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingStart="20.0dip" android:paddingEnd="20.0dip">
+                <View style="@style/settingsSeparator" />
+                <LinearLayout android:id="@id/define_screen_lt" style="@style/settingsParent">
+                    <LinearLayout style="@style/settingsTextGroup">
+                        <TextView android:text="@string/define_screen_label" style="@style/settingsText" />
+                        <TextView android:text="@string/screen_roundness_sub_label" style="@style/settingsSubText" />
+                    </LinearLayout>
+                    <ImageView android:id="@id/define_edge_close_btn" android:background="?android:selectableItemBackground" android:padding="10.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/close_icon" app:tint="@color/liteGray" />
+                </LinearLayout>
+                <View style="@style/settingsSeparator" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:gravity="center" android:orientation="vertical" android:padding="15.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentBottom="true">
+            <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator android:id="@id/dots_indicator" android:layout_width="wrap_content" android:layout_height="wrap_content" app:spi_dotColor="@color/medBluishGray" app:spi_dotSelectedColor="@color/liteBluishGray" />
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

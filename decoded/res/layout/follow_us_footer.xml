@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="30.0dip" android:layout_marginBottom="30.0dip">
+    <View android:background="@color/liteBluishGray" android:layout_width="fill_parent" android:layout_height="1.0dip" />
+    <LinearLayout android:padding="20.0dip" android:foreground="?android:selectableItemBackground" android:onClick="followUs" style="@style/settingsParent">
+        <LinearLayout style="@style/settingsTextGroup">
+            <TextView android:textSize="15.5sp" android:textStyle="bold" android:textColor="@color/accent_blue" android:text="@string/adaptive_text_12" style="@style/settingsText" />
+            <TextView android:textSize="13.0sp" android:textColor="@color/whitish_gray" android:text="@string/adaptive_text_13" style="@style/settingsSubText" />
+        </LinearLayout>
+        <ImageView app:tint="@color/whitish_gray" style="@style/settingsForwardIcon" />
+    </LinearLayout>
+    <View android:background="@color/liteBluishGray" android:layout_width="fill_parent" android:layout_height="1.0dip" />
+</LinearLayout>

@@ -1,0 +1,39 @@
+{
+  "baseline": "baseline/Recovery148.apk",
+  "tests": {
+    "AutoInsetPolicyTest": 47,
+    "NavigationPolicyTest": 49,
+    "RecoveryPolicyTest": 63,
+    "AudioPolicyTest": 52,
+    "DisplayPolicyTest": 17,
+    "StartupPolicyTest": 37,
+    "RollingLogTest": 112
+  },
+  "total_tests_passed": 377,
+  "device_tested": false,
+  "changed_original_methods": {
+    "ib/e.smali": [
+      "public final e(Z)V"
+    ]
+  },
+  "unchanged_resources_and_native_files": 5599,
+  "manifest_changes_only_version": true,
+  "all_resource_ids_preserved": true,
+  "popup_removal_preserved": true,
+  "primary_classes": 7847,
+  "helper_classes": 55,
+  "helper_references_resolved": 1322,
+  "helper_android_api_30_methods_resolved": true,
+  "original_class_abi_references_resolved": 80,
+  "foreground_promotion_precedes_overlay_creation": true,
+  "null_intent_and_all_commands_use_recovery_hook": true,
+  "background_recovery_uses_original_tunnel_initialization": true,
+  "native_initialization_success_and_failure_instrumented": true,
+  "signed_apk": "output/MuvizEdge-Adaptive-Phone-Car-ZH-Capture149-development.apk",
+  "sha256": "27809548d2736f53dc2cab71c11d0bb75a8571d68b0d3fcc7525978d43a7cde7",
+  "signature_verified": true,
+  "zipalign_verified": true,
+  "certificate_sha256": "e81ce8cabb74d7e7b3b8881f60110f665175486a45f00c11fedc8b7b0227d565",
+  "release_signing_certificate": false,
+  "archived_release_payload_differences": []
+}

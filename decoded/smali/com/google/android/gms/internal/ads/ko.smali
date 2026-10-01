@@ -1,0 +1,10 @@
+.class public abstract Lcom/google/android/gms/internal/ads/ko;
+.super Lcom/google/android/gms/internal/ads/rh;
+.source "r8-map-id-48840d0daa578282636f48d35a490993b642e673bb6490a132309a37d09141d1"
+
+# interfaces
+.implements Lcom/google/android/gms/internal/ads/lo;
+
+
+# static fields
+.field public static final synthetic w:I

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:background="@color/drkGray" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <View android:id="@id/parent_bg" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <LinearLayout android:orientation="vertical" android:id="@id/parent_layout" android:layout_width="fill_parent" android:layout_height="fill_parent" android:paddingStart="40.0dip" android:paddingEnd="40.0dip">
+        <LinearLayout android:gravity="center" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0">
+            <ImageView android:layout_width="100.0dip" android:layout_height="100.0dip" android:src="@drawable/display_icon" />
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:id="@id/permissions_lt" android:visibility="visible" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <TextView android:layout_gravity="end" android:layout_marginBottom="15.0dip" android:text="@string/permissions_label" android:maxLines="1" android:textAllCaps="true" style="@style/settingsSubText" />
+                <LinearLayout android:orientation="vertical" android:id="@id/draw_over_lt" android:layout_width="fill_parent" android:layout_height="wrap_content" android:onClick="getDrawOverAccess">
+                    <View style="@style/permissionSeparator" />
+                    <LinearLayout style="@style/settingsParent">
+                        <LinearLayout style="@style/settingsTextGroup">
+                            <TextView android:text="@string/draw_over_label" style="@style/permissionText" />
+                            <TextView android:text="@string/draw_over_sub_label" style="@style/settingsSubText" />
+                        </LinearLayout>
+                        <ImageView android:id="@id/draw_over_action_icon" style="@style/permissionForwardIcon" />
+                    </LinearLayout>
+                </LinearLayout>
+                <View android:layout_marginBottom="25.0dip" style="@style/permissionSeparator" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

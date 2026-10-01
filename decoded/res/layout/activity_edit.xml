@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.sparkine.muvizedge.view.edgeviz.VizView android:id="@id/viz_view" android:background="@color/blackA50" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <LinearLayout android:gravity="bottom" android:orientation="vertical" android:id="@id/parent_layout" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <androidx.cardview.widget.CardView android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="15.0dip" app:cardBackgroundColor="@color/bluishGray" app:cardCornerRadius="15.0dip">
+            <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/edit_dialog" android:clickable="true" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <com.google.android.material.tabs.TabLayout android:id="@id/group_tabs" android:layout_width="fill_parent" android:layout_height="40.0dip" style="@style/WidgetsTabLayout" />
+                <View style="@style/settingsSeparator" />
+                <LinearLayout android:orientation="vertical" android:id="@id/editor_container" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="25.0dip" android:layout_marginBottom="25.0dip" android:layout_marginStart="15.0dip" android:layout_marginEnd="15.0dip" />
+                <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="10.0dip" android:layout_marginStart="15.0dip" android:layout_marginEnd="15.0dip">
+                    <LinearLayout android:gravity="start" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0" android:layout_marginEnd="10.0dip">
+                        <com.google.android.material.button.MaterialButton android:ellipsize="end" android:id="@id/reset_btn" android:layout_width="40.0dip" android:layout_height="50.0dip" android:maxLines="1" android:insetLeft="0.0dip" android:insetRight="0.0dip" android:onClick="reset" android:backgroundTint="@color/liteBluishGray" app:cornerRadius="25.0dip" app:icon="@drawable/reset_icon" style="@style/Widget.MaterialComponents.Button" />
+                    </LinearLayout>
+                    <com.google.android.material.button.MaterialButton android:layout_gravity="end" android:id="@id/apply_btn" android:layout_width="wrap_content" android:layout_height="50.0dip" android:text="@string/save_label" android:onClick="saveDesign" android:backgroundTint="@color/liteBluishGray" app:cornerRadius="25.0dip" app:icon="@drawable/tick_icon_btn" style="@style/Widget.MaterialComponents.Button" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</RelativeLayout>

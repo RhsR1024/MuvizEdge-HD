@@ -1,0 +1,12 @@
+/.runtime/
+/.local/
+/build/
+/output/
+/decoded/build/
+/decoded/dist/
+__pycache__/
+*.pyc
+*.p12
+*.jks
+*.keystore
+keystore-password.txt

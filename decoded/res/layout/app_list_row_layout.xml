@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="25.0dip" android:layout_marginEnd="25.0dip">
+        <RelativeLayout android:background="?android:selectableItemBackground" android:paddingTop="10.0dip" android:paddingBottom="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <ImageView android:id="@id/app_icon" android:layout_width="35.0dip" android:layout_height="35.0dip" android:layout_margin="7.5dip" android:scaleType="centerInside" android:layout_centerVertical="true" android:layout_alignParentStart="true" />
+            <TextView android:textSize="14.0sp" android:textColor="@color/white" android:id="@id/app_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="10.0dip" android:text="@string/nil" android:layout_centerVertical="true" android:layout_toEndOf="@id/app_icon" />
+            <CheckBox android:id="@id/app_checkbox" android:clickable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_alignParentEnd="true" />
+        </RelativeLayout>
+        <View style="@style/settingsSeparator" />
+    </LinearLayout>
+</RelativeLayout>

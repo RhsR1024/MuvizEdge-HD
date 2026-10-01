@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView android:layout_width="fill_parent" android:layout_height="fill_parent" app:cardBackgroundColor="@color/medBluishGray" app:cardCornerRadius="10.0dip" app:cardElevation="20.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:orientation="vertical" android:padding="20.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <TextView android:textSize="18.0sp" android:textStyle="bold" android:textColor="@color/white" android:ellipsize="end" android:id="@id/pack_name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:maxLines="1" android:textAlignment="center" />
+        <LinearLayout android:gravity="center" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0">
+            <TextView android:textSize="15.0sp" android:id="@id/pack_desc" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="10.0dip" />
+        </LinearLayout>
+        <com.google.android.material.button.MaterialButton android:textColor="@color/liteBluishGray" android:layout_gravity="end" android:id="@id/buy_btn" android:layout_width="wrap_content" android:layout_height="wrap_content" android:backgroundTint="@color/white" app:cornerRadius="25.0dip" style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

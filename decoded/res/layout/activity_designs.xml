@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="15.0dip" app:cardCornerRadius="15.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:orientation="vertical" android:background="@color/bluishGray" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <com.google.android.material.tabs.TabLayout android:id="@id/group_tabs" android:layout_width="fill_parent" android:layout_height="45.0dip" style="@style/DesignTabLayout" />
+        <View style="@style/settingsSeparator" />
+        <LinearLayout android:orientation="vertical" android:id="@id/tab_content" android:padding="20.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <androidx.recyclerview.widget.RecyclerView android:id="@id/design_grid" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_marginTop="10.0dip" android:layout_marginBottom="10.0dip" android:layout_weight="1.0" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

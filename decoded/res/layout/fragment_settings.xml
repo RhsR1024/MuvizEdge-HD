@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='utf-8'?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="fill_parent" android:layout_height="fill_parent">
+    <View android:id="@id/parent_bg" android:background="@color/drkGray" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <LinearLayout android:orientation="vertical" android:id="@id/parent_layout" android:layout_width="fill_parent" android:layout_height="wrap_content" android:animateLayoutChanges="true" android:paddingHorizontal="12.0dip" android:paddingVertical="30.0dip">
+            <LinearLayout style="@style/settingsParent" android:minHeight="72dp" android:paddingTop="12dp" android:paddingBottom="12dp" android:onClick="openAdaptiveSettings" android:clickable="true" android:focusable="true">
+                <ImageView style="@style/settingsMenuIcon" android:src="@drawable/adaptive_settings_icon" />
+                <LinearLayout style="@style/settingsTextGroup">
+                    <TextView style="@style/settingsText" android:text="@string/adaptive_entry_title" />
+                    <TextView style="@style/settingsSubText" android:text="@string/adaptive_entry_subtitle" />
+                </LinearLayout>
+                <ImageView style="@style/settingsForwardIcon" />
+            </LinearLayout>
+            <View style="@style/settingsSeparator" />
+            <LinearLayout android:id="@id/overlay_lt" style="@style/settingsParent">
+                <ImageView android:src="@drawable/edge_nav_icon" style="@style/settingsMenuIcon" />
+                <LinearLayout style="@style/settingsTextGroup">
+                    <TextView android:text="@string/edge_title" style="@style/settingsText" />
+                    <TextView android:id="@id/overlay_subtext" android:text="@string/edge_desc_sub_label" style="@style/settingsSubText" />
+                </LinearLayout>
+                <ImageView style="@style/settingsForwardIcon" />
+            </LinearLayout>
+            <View style="@style/settingsSeparator" />
+            <LinearLayout android:id="@id/aod_lt" android:animateLayoutChanges="true" style="@style/settingsParent">
+                <ImageView android:src="@drawable/aod_icon" style="@style/settingsMenuIcon" />
+                <LinearLayout style="@style/settingsTextGroup">
+                    <TextView android:text="@string/aod_title" style="@style/settingsText" />
+                    <TextView android:id="@id/aod_subtext" android:text="@string/aod_desc_sub_label" style="@style/settingsSubText" />
+                </LinearLayout>
+                <ImageView style="@style/settingsForwardIcon" />
+            </LinearLayout>
+            <View style="@style/settingsSeparator" />
+            <LinearLayout android:id="@id/hide_on_power_save_lt" style="@style/settingsParent">
+                <ImageView android:src="@drawable/battery_saver_icon" style="@style/settingsMenuIcon" />
+                <LinearLayout style="@style/settingsTextGroup">
+                    <TextView android:text="@string/disable_on_power_save_label" style="@style/settingsText" />
+                </LinearLayout>
+                <Switch android:id="@id/hide_on_power_save_switch" style="@style/settingsAction" />
+            </LinearLayout>
+            <View style="@style/settingsSeparator" />
+            <LinearLayout android:orientation="vertical" android:id="@id/auto_start_lt" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <LinearLayout style="@style/settingsParent">
+                    <ImageView android:src="@drawable/auto_start_icon" style="@style/settingsMenuIcon" />
+                    <LinearLayout style="@style/settingsTextGroup">
+                        <TextView android:text="@string/auto_start_label" style="@style/settingsText" />
+                    </LinearLayout>
+                    <ImageView style="@style/settingsForwardIcon" />
+                </LinearLayout>
+                <View style="@style/settingsSeparator" />
+            </LinearLayout>
+            <LinearLayout android:id="@id/check_update_lt" style="@style/settingsParent">
+                <ImageView android:src="@drawable/store_icon_monochrome" style="@style/settingsMenuIcon" />
+                <LinearLayout style="@style/settingsTextGroup">
+                    <TextView android:text="@string/check_update_label" style="@style/settingsText" />
+                </LinearLayout>
+                <ImageView style="@style/settingsForwardIcon" />
+            </LinearLayout>
+            <View style="@style/settingsSeparator" />
+            <LinearLayout android:id="@id/contact_lt" style="@style/settingsParent">
+                <ImageView android:src="@drawable/chat_icon" style="@style/settingsMenuIcon" />
+                <LinearLayout style="@style/settingsTextGroup">
+                    <TextView android:text="@string/contact_label" style="@style/settingsText" />
+                </LinearLayout>
+                <ImageView style="@style/settingsForwardIcon" />
+            </LinearLayout>
+            <View style="@style/settingsSeparator" />
+            <LinearLayout android:orientation="vertical" android:id="@id/mwf_lt" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:onClick="openWearAppOnStore">
+                <LinearLayout android:animateLayoutChanges="true" style="@style/settingsParent">
+                    <ImageView android:layout_width="25.0dip" android:layout_height="25.0dip" android:src="@drawable/wear_icon" android:layout_marginEnd="15.0dip" style="@style/settingsMenuIcon" />
+                    <LinearLayout style="@style/settingsTextGroup">
+                        <TextView android:text="@string/adaptive_text_14" style="@style/settingsText" />
+                        <TextView android:id="@id/mwf_sub_tv" android:text="@string/adaptive_text_15" style="@style/settingsSubText" />
+                    </LinearLayout>
+                    <ImageView style="@style/settingsForwardIcon" />
+                </LinearLayout>
+                <View style="@style/settingsSeparator" />
+            </LinearLayout>
+            <LinearLayout android:id="@id/widgets_banner_lt" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="30.0dip">
+                <include layout="@layout/widgets_banner_lt" />
+            </LinearLayout>
+            <LinearLayout android:gravity="center" android:layout_gravity="center_horizontal" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="30.0dip" android:alpha="0.8">
+                <com.airbnb.lottie.LottieAnimationView android:layout_width="80.0dip" android:layout_height="80.0dip" android:layout_marginBottom="-15.0dip" app:lottie_autoPlay="true" app:lottie_loop="true" app:lottie_rawRes="@raw/lottie_heart_beat" />
+                <TextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="@color/white" android:id="@id/app_name_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="3.0dip" android:text="@string/app_name" />
+                <TextView android:textSize="12.0sp" android:textColor="@color/liteGray" android:id="@id/app_ver_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

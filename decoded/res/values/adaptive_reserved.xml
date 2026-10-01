@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="drawable" name="adaptive_reserved_7f080006">@android:color/transparent</item>
+    <item type="drawable" name="adaptive_reserved_7f080007">@android:color/transparent</item>
+    <item type="drawable" name="adaptive_reserved_7f080008">@android:color/transparent</item>
+    <item type="drawable" name="adaptive_reserved_7f080009">@android:color/transparent</item>
+    <item type="drawable" name="adaptive_reserved_7f08000a">@android:color/transparent</item>
+    <item type="drawable" name="adaptive_reserved_7f08000b">@android:color/transparent</item>
+    <item type="drawable" name="adaptive_reserved_7f08000c">@android:color/transparent</item>
+</resources>

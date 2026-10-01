@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:layout_gravity="center_horizontal" android:orientation="vertical" android:id="@id/fetch_color_lt" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip">
+        <LinearLayout style="@style/settingsParent">
+            <LinearLayout android:alpha="0.9" style="@style/settingsTextGroup">
+                <TextView android:textSize="15.0sp" android:text="@string/fetch_wall_color_label" style="@style/settingsText" />
+                <TextView android:textColor="@color/warning" android:id="@id/select_apps_subtext" android:text="@string/storage_access_label" style="@style/settingsSubText" />
+            </LinearLayout>
+            <ImageView style="@style/settingsForwardIcon" />
+        </LinearLayout>
+        <View style="@style/settingsSeparator" />
+    </LinearLayout>
+    <com.google.android.material.button.MaterialButton android:id="@id/add_btn" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="50.0dip" android:text="@string/add_color_label" android:onClick="openAddColor" android:backgroundTint="@color/bluishGray" app:cornerRadius="25.0dip" app:icon="@drawable/round_add_icon" app:iconSize="18.0dip" style="@style/Widget.MaterialComponents.Button" />
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/color_grid" android:paddingTop="25.0dip" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+</LinearLayout>

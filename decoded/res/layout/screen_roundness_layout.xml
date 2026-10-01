@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.appcompat.widget.AppCompatSeekBar android:theme="@style/BigThumbSeekBar" android:id="@id/roundness_seek" android:layout_width="fill_parent" android:layout_height="wrap_content" android:progressBackgroundTint="@color/liteGray" android:thumbTint="@color/positive_green" />
+</LinearLayout>

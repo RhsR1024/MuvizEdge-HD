@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:id="@id/bottom_sheet" android:layout_width="fill_parent" android:layout_height="wrap_content" app:behavior_draggable="false" app:behavior_peekHeight="108.0dip" app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.cardview.widget.CardView android:layout_width="fill_parent" android:layout_height="wrap_content" app:cardBackgroundColor="@color/bluishGray" app:cardElevation="20.0dip">
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <LinearLayout android:gravity="end" android:orientation="vertical" android:paddingTop="10.0dip" android:paddingBottom="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingStart="15.0dip" android:paddingEnd="15.0dip">
+                <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                    <com.google.android.material.button.MaterialButton android:ellipsize="end" android:id="@id/close_btn" android:padding="14.0dip" android:layout_width="40.0dip" android:layout_height="40.0dip" android:insetLeft="0.0dip" android:insetRight="0.0dip" android:insetTop="0.0dip" android:insetBottom="0.0dip" android:layout_marginEnd="10.0dip" android:backgroundTint="@color/liteBluishGray" app:cornerRadius="25.0dip" app:icon="@drawable/close_icon" style="@style/Widget.MaterialComponents.Button" />
+                    <RelativeLayout android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0">
+                        <HorizontalScrollView android:scrollbars="none" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true">
+                            <LinearLayout android:gravity="end|center" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                                <com.google.android.material.button.MaterialButton android:ellipsize="end" android:id="@id/edit_btn" android:layout_width="wrap_content" android:layout_height="50.0dip" android:text="@string/edit_label" android:maxLines="1" android:onClick="edit" android:layout_marginEnd="10.0dip" android:backgroundTint="@color/liteBluishGray" app:cornerRadius="25.0dip" app:icon="@drawable/edit_icon" style="@style/Widget.MaterialComponents.Button" />
+                                <com.google.android.material.button.MaterialButton android:id="@id/apply_btn" android:layout_width="wrap_content" android:layout_height="50.0dip" android:text="@string/apply_label" android:onClick="apply" android:backgroundTint="@color/liteBluishGray" app:cornerRadius="25.0dip" app:icon="@drawable/tick_icon_btn" style="@style/Widget.MaterialComponents.Button" />
+                                <com.google.android.material.button.MaterialButton android:textColor="@color/white" android:ellipsize="end" android:id="@id/preview_btn" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="50.0dip" android:text="@string/preview_label" android:maxLines="1" android:onClick="preview" android:layout_marginStart="10.0dip" app:cornerRadius="25.0dip" app:strokeWidth="2.0dip" style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                            </LinearLayout>
+                        </HorizontalScrollView>
+                    </RelativeLayout>
+                </LinearLayout>
+                <TextView android:textSize="12.0sp" android:textStyle="italic" android:textColor="@color/white" android:ellipsize="middle" android:id="@id/preview_desc" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/preview_desc" android:singleLine="true" android:alpha="0.7" android:layout_marginEnd="6.0dip" />
+            </LinearLayout>
+            <View style="@style/settingsSeparator" />
+            <com.google.android.material.tabs.TabLayout android:id="@id/widgets_tab" android:background="@color/blackA10" android:layout_width="fill_parent" android:layout_height="40.0dip" style="@style/WidgetsTabLayout" />
+            <View style="@style/settingsSeparator" />
+            <androidx.viewpager.widget.ViewPager android:id="@id/widget_pager" android:background="@color/blackA10" android:layout_width="fill_parent" android:layout_height="250.0dip" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

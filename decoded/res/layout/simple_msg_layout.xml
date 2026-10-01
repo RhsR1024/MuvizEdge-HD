@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <View style="@style/settingsSeparator" />
+    <TextView android:textSize="13.0sp" android:textColor="@color/liteGray" android:id="@id/msg_view" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20.0dip" android:layout_marginBottom="20.0dip" android:text="@string/unmute_msg" android:layout_marginStart="5.0dip" android:layout_marginEnd="5.0dip" />
+    <View style="@style/settingsSeparator" />
+</LinearLayout>

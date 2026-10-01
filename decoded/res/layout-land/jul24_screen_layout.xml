@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='utf-8'?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="center" android:orientation="horizontal" android:id="@id/parent" android:layout_width="fill_parent" android:layout_height="fill_parent" android:animateLayoutChanges="true">
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="0.5" android:paddingStart="20.0dip" android:paddingEnd="20.0dip">
+        <com.sparkine.muvizedge.view.NoPadTextView android:textSize="13.0sp" android:textColor="@color/white" android:id="@id/date_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="25.0dip" android:text="@string/adaptive_text_11" android:textAllCaps="true" android:fontFamily="@font/p_sans_regular" android:letterSpacing="0.48" />
+        <com.sparkine.muvizedge.view.NothingWideClock android:id="@id/clock" android:layout_width="fill_parent" android:layout_height="150.0dip" />
+    </LinearLayout>
+    <RelativeLayout android:gravity="bottom" android:id="@id/landscape_r_lt" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_marginBottom="35.0dip" android:layout_weight="0.5">
+        <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/media_widget_lt" android:visibility="visible" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <ImageView android:id="@id/prev_btn" android:background="?android:selectableItemBackgroundBorderless" android:padding="14.0dip" android:layout_width="40.0dip" android:layout_height="40.0dip" android:src="@drawable/next_icon_thin" android:rotation="-180.0" android:layout_marginStart="20.0dip" android:layout_marginEnd="10.0dip" />
+                <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/music_details_lt" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0">
+                    <TextView android:textSize="13.0sp" android:textColor="@color/white" android:ellipsize="marquee" android:id="@id/title_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8.0dip" android:text="@string/music_title_placeholder" android:singleLine="true" android:marqueeRepeatLimit="2" android:textAllCaps="true" android:fontFamily="@font/p_sans_regular" android:textAlignment="center" android:letterSpacing="0.38" />
+                    <TextView android:textSize="11.5sp" android:textColor="@color/white" android:ellipsize="marquee" android:id="@id/artist_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/music_artist_placeholder" android:singleLine="true" android:marqueeRepeatLimit="1" android:alpha="0.7" android:textAllCaps="true" android:fontFamily="@font/p_sans_regular" android:textAlignment="center" android:letterSpacing="0.38" />
+                </LinearLayout>
+                <ImageView android:id="@id/next_btn" android:background="?android:selectableItemBackgroundBorderless" android:padding="14.0dip" android:layout_width="40.0dip" android:layout_height="40.0dip" android:src="@drawable/next_icon_thin" android:layout_marginStart="10.0dip" android:layout_marginEnd="20.0dip" />
+            </LinearLayout>
+            <com.sparkine.muvizedge.view.TimeProgressBar android:id="@id/music_progress" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="30.0dip" android:maxHeight="1.5dip" android:progress="20" android:minHeight="1.5dip" android:layout_marginStart="30.0dip" android:layout_marginEnd="30.0dip" android:progressTint="@color/white" android:progressBackgroundTint="@color/white" style="?android:progressBarStyleHorizontal" />
+        </LinearLayout>
+        <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/details_lt" android:paddingTop="10.0dip" android:paddingBottom="10.0dip" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" android:paddingStart="30.0dip" android:paddingEnd="30.0dip">
+            <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/icons_lt" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <LinearLayout android:gravity="center" android:id="@id/battery_lt" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                    <ImageView android:id="@id/battery_icon" android:layout_width="15.0dip" android:layout_height="15.0dip" android:src="@drawable/battery_std_icon" android:layout_marginEnd="5.0dip" />
+                    <com.sparkine.muvizedge.view.NoPadTextView android:textSize="14.0sp" android:textColor="@color/white" android:id="@id/battery_status" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="100%" android:fontFamily="@font/p_sans_regular" android:letterSpacing="0.1" />
+                </LinearLayout>
+                <com.sparkine.muvizedge.view.NoPadTextView android:textSize="13.0sp" android:textColor="@color/white" android:id="@id/separator_dot" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="•" android:fontFamily="@font/p_sans_regular" android:layout_marginStart="15.0dip" android:layout_marginEnd="15.0dip" />
+                <LinearLayout android:gravity="start" android:orientation="horizontal" android:id="@id/notify_icons_container" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="17.0dip" android:layout_marginStart="-15.0dip" />
+            </LinearLayout>
+            <LinearLayout android:gravity="center" android:id="@id/notify_lt" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <ImageView android:id="@id/notify_icon" android:layout_width="15.0dip" android:layout_height="15.0dip" android:src="@drawable/store_icon_monochrome" android:layout_marginEnd="15.0dip" />
+                <TextView android:textSize="12.0sp" android:textColor="@color/white" android:ellipsize="marquee" android:id="@id/notify_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/adaptive_text_7" android:singleLine="true" android:marqueeRepeatLimit="1" android:textAllCaps="true" android:fontFamily="@font/p_sans_regular" android:letterSpacing="0.2" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

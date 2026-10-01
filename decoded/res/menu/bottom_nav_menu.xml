@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:icon="@drawable/edge_nav_icon" android:id="@id/edgeFragment" android:title="@string/edge_label" />
+    <item android:icon="@drawable/aod_icon" android:id="@id/aodFragment" android:title="@string/aod_label" />
+    <item android:icon="@drawable/settings_icon" android:id="@id/settingsFragment" android:title="@string/settings_label" />
+    <item android:icon="@drawable/pro_nav_icon" android:id="@id/proFragment" android:title="@string/pro_label" />
+</menu>

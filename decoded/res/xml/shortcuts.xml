@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut android:icon="@mipmap/settings_shortcut" android:enabled="true" android:shortcutId="settings_shortcut" android:shortcutShortLabel="@string/settings_label" android:shortcutLongLabel="@string/settings_label">
+        <intent android:targetPackage="com.sparkine.muvizedge" android:action="android.intent.action.VIEW" android:targetClass="com.sparkine.muvizedge.activity.HomeActivity">
+            <extra android:name="itemType" android:value="3" />
+        </intent>
+    </shortcut>
+    <shortcut android:icon="@mipmap/aod_shortcut" android:enabled="true" android:shortcutId="aod_shortcut" android:shortcutShortLabel="@string/aod_label" android:shortcutLongLabel="@string/aod_title">
+        <intent android:targetPackage="com.sparkine.muvizedge" android:action="android.intent.action.VIEW" android:targetClass="com.sparkine.muvizedge.activity.HomeActivity">
+            <extra android:name="itemType" android:value="2" />
+        </intent>
+    </shortcut>
+</shortcuts>

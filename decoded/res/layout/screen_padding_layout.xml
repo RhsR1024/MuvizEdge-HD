@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:scrollbars="none" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip">
+        <androidx.appcompat.widget.AppCompatSeekBar android:theme="@style/BigThumbSeekBar" android:id="@id/pad_seek" android:layout_width="fill_parent" android:layout_height="wrap_content" android:progressBackgroundTint="@color/liteGray" android:thumbTint="@color/positive_green" />
+        <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:id="@id/advanced_editor_container" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <TextView android:textSize="14.0sp" android:textColor="@color/white" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="10.0dip" android:text="@string/top_label" />
+            <androidx.appcompat.widget.AppCompatSeekBar android:theme="@style/BigThumbSeekBar" android:id="@id/top_seek" android:layout_width="fill_parent" android:layout_height="wrap_content" android:progressBackgroundTint="@color/liteGray" android:thumbTint="@color/positive_green" />
+            <TextView android:textSize="14.0sp" android:textColor="@color/white" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="25.0dip" android:layout_marginBottom="10.0dip" android:text="@string/bottom_label" />
+            <androidx.appcompat.widget.AppCompatSeekBar android:theme="@style/BigThumbSeekBar" android:id="@id/bottom_seek" android:layout_width="fill_parent" android:layout_height="wrap_content" android:progressBackgroundTint="@color/liteGray" android:thumbTint="@color/positive_green" />
+            <TextView android:textSize="14.0sp" android:textColor="@color/white" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="25.0dip" android:layout_marginBottom="10.0dip" android:text="@string/start_label" />
+            <androidx.appcompat.widget.AppCompatSeekBar android:theme="@style/BigThumbSeekBar" android:id="@id/start_seek" android:layout_width="fill_parent" android:layout_height="wrap_content" android:progressBackgroundTint="@color/liteGray" android:thumbTint="@color/positive_green" />
+            <TextView android:textSize="14.0sp" android:textColor="@color/white" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="25.0dip" android:layout_marginBottom="10.0dip" android:text="@string/end_label" />
+            <androidx.appcompat.widget.AppCompatSeekBar android:theme="@style/BigThumbSeekBar" android:id="@id/end_seek" android:layout_width="fill_parent" android:layout_height="wrap_content" android:progressBackgroundTint="@color/liteGray" android:thumbTint="@color/positive_green" />
+        </LinearLayout>
+        <LinearLayout android:gravity="center_vertical" android:id="@id/advanced_btn_lt" android:background="?android:selectableItemBackground" android:padding="10.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20.0dip">
+            <TextView android:textSize="15.0sp" android:textColor="@color/white" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/advanced_label" />
+            <ImageView android:id="@id/expand_icon" android:layout_width="10.0dip" android:layout_height="10.0dip" android:src="@drawable/expand_icon" android:layout_marginStart="10.0dip" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

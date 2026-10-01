@@ -1,0 +1,11 @@
+# Preserve decoded APK payload bytes, including unknown/META-INF text files.
+* -text
+/scripts/*.py text eol=lf
+/tests/*.java text eol=lf
+/src/**/*.java text eol=lf
+/stubs/**/*.java text eol=lf
+/docs/*.md text eol=lf
+/*.md text eol=lf
+/*.ps1 text eol=crlf
+/.gitignore text eol=lf
+/.gitattributes text eol=lf

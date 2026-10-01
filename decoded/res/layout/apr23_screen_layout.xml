@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="center|bottom" android:orientation="vertical" android:id="@id/parent" android:layout_width="fill_parent" android:layout_height="fill_parent" android:animateLayoutChanges="true">
+    <LinearLayout android:gravity="bottom" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:minHeight="130.0dip" android:paddingStart="40.0dip" android:paddingEnd="40.0dip">
+        <TextView android:textSize="20.0sp" android:textColor="@color/white" android:id="@id/date_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/adaptive_text_3" android:fontFamily="@font/p_sans_regular" />
+        <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/details_lt" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="18.0dip">
+            <LinearLayout android:orientation="horizontal" android:id="@id/icons_lt" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <LinearLayout android:gravity="start" android:orientation="horizontal" android:id="@id/notify_icons_container" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="18.0dip" android:layout_marginStart="-10.0dip" />
+            </LinearLayout>
+            <LinearLayout android:gravity="center" android:id="@id/notify_lt" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <ImageView android:id="@id/notify_icon" android:layout_width="18.0dip" android:layout_height="18.0dip" android:layout_marginEnd="7.0dip" />
+                <TextView android:textSize="16.0sp" android:textColor="@color/white" android:ellipsize="marquee" android:id="@id/notify_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:marqueeRepeatLimit="1" android:fontFamily="@font/p_sans_regular" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <View android:layout_width="wrap_content" android:layout_height="0.0dip" android:layout_weight="0.08" />
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.8">
+        <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <com.sparkine.muvizedge.view.PilotBold2Tick android:id="@id/tick" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_centerInParent="true" />
+            <com.sparkine.muvizedge.view.PixelAnalogClock android:id="@id/clock" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_centerInParent="true" />
+        </RelativeLayout>
+    </LinearLayout>
+    <View android:layout_width="wrap_content" android:layout_height="0.0dip" android:layout_weight="0.12" />
+    <LinearLayout android:orientation="vertical" android:id="@id/media_widget_lt" android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingStart="40.0dip" android:paddingEnd="40.0dip">
+        <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <LinearLayout android:orientation="vertical" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0">
+                <TextView android:textSize="16.0sp" android:textColor="@color/white" android:ellipsize="marquee" android:id="@id/title_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/music_title_placeholder" android:singleLine="true" android:marqueeRepeatLimit="2" android:fontFamily="@font/p_sans_regular" android:letterSpacing="0.02" />
+                <TextView android:textSize="14.0sp" android:textColor="#ff9e9e9e" android:ellipsize="marquee" android:id="@id/artist_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" android:text="@string/music_artist_placeholder" android:singleLine="true" android:marqueeRepeatLimit="1" android:fontFamily="@font/p_sans_regular" android:letterSpacing="0.02" />
+            </LinearLayout>
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <ImageView android:id="@id/play_pause_btn" android:background="?android:selectableItemBackgroundBorderless" android:padding="10.0dip" android:layout_width="40.0dip" android:layout_height="40.0dip" android:src="@drawable/play_outline_btn" android:layout_marginStart="10.0dip" android:layout_marginEnd="10.0dip" />
+                <ImageView android:id="@id/next_btn" android:background="?android:selectableItemBackgroundBorderless" android:padding="10.0dip" android:layout_width="35.0dip" android:layout_height="35.0dip" android:src="@drawable/next_outline_btn" />
+            </LinearLayout>
+        </LinearLayout>
+        <com.sparkine.muvizedge.view.TimeProgressBar android:id="@id/music_progress" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="15.0dip" android:maxHeight="1.5dip" android:progress="20" android:minHeight="1.5dip" android:progressTint="@color/white" android:progressBackgroundTint="@color/white" style="?android:progressBarStyleHorizontal" />
+    </LinearLayout>
+    <TextView android:textSize="14.0sp" android:textColor="@color/white" android:id="@id/battery_status" android:padding="40.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="72%" android:fontFamily="@font/p_sans_regular" android:letterSpacing="0.02" />
+</LinearLayout>

@@ -1,0 +1,15 @@
+.class public final Lf2/f;
+.super Ljava/lang/Object;
+.source "r8-map-id-48840d0daa578282636f48d35a490993b642e673bb6490a132309a37d09141d1"
+
+
+# instance fields
+.field public a:Lf2/t0;
+
+.field public b:I
+
+.field public c:I
+
+.field public d:I
+
+.field public e:I

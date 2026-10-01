@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='utf-8'?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@id/parent_layout" android:background="@color/drkGray" android:layout_width="fill_parent" android:layout_height="fill_parent">
+    <ScrollView android:id="@id/scroll_view" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="60.0dip">
+        <LinearLayout android:orientation="vertical" android:paddingTop="5.0dip" android:paddingBottom="30.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:animateLayoutChanges="true" android:paddingStart="15.0dip" android:paddingEnd="15.0dip">
+            <LinearLayout android:orientation="vertical" android:id="@id/permissions_lt" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <LinearLayout style="@style/settingsParent">
+                    <LinearLayout style="@style/settingsTextGroup">
+                        <TextView android:text="@string/permissions_label" style="@style/settingsText" />
+                        <TextView android:textColor="@color/warning" android:text="@string/lockscreen_permission_label" style="@style/settingsSubText" />
+                        <TextView android:textColor="@color/warning" android:text="@string/bg_popup_permission_label" style="@style/settingsSubText" />
+                    </LinearLayout>
+                    <ImageView style="@style/settingsForwardIcon" />
+                </LinearLayout>
+                <View style="@style/settingsSeparator" />
+            </LinearLayout>
+            <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" style="@style/settingsParent">
+                <TextView android:layout_gravity="start" android:text="@string/show_aod_label" style="@style/settingsText" />
+                <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip">
+                    <HorizontalScrollView android:scrollbars="none" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerHorizontal="true">
+                        <com.google.android.material.chip.ChipGroup android:id="@id/show_on_chip_group" android:layout_width="wrap_content" android:layout_height="wrap_content" app:selectionRequired="true" app:singleLine="true" app:singleSelection="false">
+                            <com.google.android.material.chip.Chip android:id="@id/aod_always_chip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/aod_always_label" app:chipBackgroundColor="@color/chip_selector" style="@style/Widget.MaterialComponents.Chip.Choice" />
+                            <com.google.android.material.chip.Chip android:id="@id/aod_charging_chip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/aod_charging_label" app:chipBackgroundColor="@color/chip_selector" style="@style/Widget.MaterialComponents.Chip.Choice" />
+                            <com.google.android.material.chip.Chip android:id="@id/aod_music_chip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/aod_on_music_label" app:chipBackgroundColor="@color/chip_selector" style="@style/Widget.MaterialComponents.Chip.Choice" />
+                        </com.google.android.material.chip.ChipGroup>
+                    </HorizontalScrollView>
+                </RelativeLayout>
+            </LinearLayout>
+            <View style="@style/settingsSeparator" />
+            <LinearLayout android:orientation="vertical" style="@style/settingsParent">
+                <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
+                    <TextView android:text="@string/aod_brightness_label" style="@style/settingsText" />
+                    <TextView android:textSize="14.0sp" android:textColor="@color/gray" android:gravity="end" android:id="@id/aod_brightness_val" android:layout_width="0.0dip" android:layout_weight="1.0" style="@style/settingsText" />
+                </LinearLayout>
+                <SeekBar android:theme="@style/BigThumbSeekBar" android:id="@id/aod_brightness_seek" android:paddingTop="10.0dip" android:paddingBottom="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="20.0dip" />
+            </LinearLayout>
+            <View style="@style/settingsSeparator" />
+            <LinearLayout android:id="@id/timeout_secs_lt" style="@style/settingsParent">
+                <LinearLayout style="@style/settingsTextGroup">
+                    <TextView android:text="@string/aod_timeout_label" style="@style/settingsText" />
+                </LinearLayout>
+                <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/time_select_lt" android:background="@drawable/rounded_box" android:paddingTop="8.0dip" android:paddingBottom="8.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingStart="14.0dip" android:paddingEnd="12.0dip" android:backgroundTint="@color/liteBluishGray">
+                    <TextView android:textSize="14.0sp" android:textColor="@color/whitish_gray" android:ellipsize="end" android:id="@id/time_select_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/adaptive_text_0" android:maxLines="1" />
+                    <androidx.appcompat.widget.AppCompatImageView android:layout_width="10.0dip" android:layout_height="10.0dip" android:layout_marginTop="1.0dip" android:src="@drawable/next_icon_thin" android:tint="@color/whitish_gray" android:rotation="90.0" android:layout_marginStart="12.0dip" />
+                </LinearLayout>
+            </LinearLayout>
+            <View style="@style/settingsSeparator" />
+            <LinearLayout android:id="@id/low_power_lt" style="@style/settingsParent">
+                <LinearLayout style="@style/settingsTextGroup">
+                    <TextView android:text="@string/low_power_label" style="@style/settingsText" />
+                </LinearLayout>
+                <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/low_power_select_lt" android:background="@drawable/rounded_box" android:paddingTop="8.0dip" android:paddingBottom="8.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingStart="14.0dip" android:paddingEnd="12.0dip" android:backgroundTint="@color/liteBluishGray">
+                    <TextView android:textSize="14.0sp" android:textColor="@color/whitish_gray" android:ellipsize="end" android:id="@id/low_power_select_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/adaptive_text_0" android:maxLines="1" />
+                    <androidx.appcompat.widget.AppCompatImageView android:layout_width="10.0dip" android:layout_height="10.0dip" android:layout_marginTop="1.0dip" android:src="@drawable/next_icon_thin" android:tint="@color/whitish_gray" android:rotation="90.0" android:layout_marginStart="12.0dip" />
+                </LinearLayout>
+            </LinearLayout>
+            <View style="@style/settingsSeparator" />
+            <LinearLayout android:id="@id/orientation_lt" style="@style/settingsParent">
+                <LinearLayout style="@style/settingsTextGroup">
+                    <TextView android:text="@string/orientation_label" style="@style/settingsText" />
+                </LinearLayout>
+                <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/orientation_select_lt" android:background="@drawable/rounded_box" android:paddingTop="8.0dip" android:paddingBottom="8.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingStart="14.0dip" android:paddingEnd="12.0dip" android:backgroundTint="@color/liteBluishGray">
+                    <TextView android:textSize="14.0sp" android:textColor="@color/whitish_gray" android:ellipsize="end" android:id="@id/orientation_select_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/adaptive_text_1" android:maxLines="1" />
+                    <androidx.appcompat.widget.AppCompatImageView android:layout_width="10.0dip" android:layout_height="10.0dip" android:layout_marginTop="1.0dip" android:src="@drawable/next_icon_thin" android:tint="@color/whitish_gray" android:rotation="90.0" android:layout_marginStart="12.0dip" />
+                </LinearLayout>
+            </LinearLayout>
+            <View style="@style/settingsSeparator" />
+            <LinearLayout android:id="@id/close_on_lt" style="@style/settingsParent">
+                <LinearLayout style="@style/settingsTextGroup">
+                    <TextView android:text="@string/close_on_label" style="@style/settingsText" />
+                </LinearLayout>
+                <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/close_on_select_lt" android:background="@drawable/rounded_box" android:paddingTop="8.0dip" android:paddingBottom="8.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingStart="14.0dip" android:paddingEnd="12.0dip" android:backgroundTint="@color/liteBluishGray">
+                    <TextView android:textSize="14.0sp" android:textColor="@color/whitish_gray" android:ellipsize="end" android:id="@id/close_on_select_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/adaptive_text_2" android:maxLines="1" />
+                    <androidx.appcompat.widget.AppCompatImageView android:layout_width="10.0dip" android:layout_height="10.0dip" android:layout_marginTop="1.0dip" android:src="@drawable/next_icon_thin" android:tint="@color/whitish_gray" android:rotation="90.0" android:layout_marginStart="12.0dip" />
+                </LinearLayout>
+            </LinearLayout>
+            <View style="@style/settingsSeparator" />
+            <LinearLayout android:orientation="vertical" android:id="@id/fingerprint_close_lt" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <View style="@style/settingsSeparator" />
+                <LinearLayout style="@style/settingsParent">
+                    <LinearLayout style="@style/settingsTextGroup">
+                        <TextView android:text="@string/fingerprint_close_label" style="@style/settingsText" />
+                        <TextView android:textColor="@color/warning" android:text="@string/fingerprint_close_desc" style="@style/settingsSubText" />
+                    </LinearLayout>
+                    <androidx.appcompat.widget.SwitchCompat android:id="@id/fingerprint_close_switch" style="@style/settingsAction" />
+                </LinearLayout>
+            </LinearLayout>
+            <View style="@style/settingsSeparator" />
+            <LinearLayout android:orientation="vertical" android:id="@id/screen_off_close_lt" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <View style="@style/settingsSeparator" />
+                <LinearLayout style="@style/settingsParent">
+                    <LinearLayout style="@style/settingsTextGroup">
+                        <TextView android:text="@string/screen_off_close_label" style="@style/settingsText" />
+                    </LinearLayout>
+                    <androidx.appcompat.widget.SwitchCompat android:id="@id/screen_off_close_switch" style="@style/settingsAction" />
+                </LinearLayout>
+            </LinearLayout>
+            <View style="@style/settingsSeparator" />
+            <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:animateLayoutChanges="true">
+                <LinearLayout android:id="@id/off_schedule_switch_lt" android:layout_width="fill_parent" android:layout_height="wrap_content" style="@style/settingsParent">
+                    <TextView android:layout_width="0.0dip" android:text="@string/off_schedule_label" android:layout_weight="1.0" style="@style/settingsText" />
+                    <androidx.appcompat.widget.SwitchCompat android:id="@id/off_schedule_switch" style="@style/settingsAction" />
+                </LinearLayout>
+                <LinearLayout android:gravity="center" android:id="@id/off_schedule_lt" android:paddingTop="5.0dip" android:paddingBottom="25.0dip" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                    <TextView android:textSize="14.0sp" android:textColor="@color/black" android:id="@id/off_schedule_start_tv" android:background="@drawable/rounded_box" android:padding="10.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:foreground="?selectableItemBackground" android:textAllCaps="true" android:layout_marginEnd="10.0dip" />
+                    <TextView android:textSize="12.0sp" android:textColor="@color/white" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="to" android:layout_marginEnd="10.0dip" />
+                    <TextView android:textSize="14.0sp" android:textColor="@color/black" android:id="@id/off_schedule_end_tv" android:background="@drawable/rounded_box" android:padding="10.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:foreground="?selectableItemBackground" android:textAllCaps="true" />
+                </LinearLayout>
+            </LinearLayout>
+            <View style="@style/settingsSeparator" />
+            <LinearLayout android:id="@id/burn_in_lt" style="@style/settingsParent">
+                <LinearLayout style="@style/settingsTextGroup">
+                    <TextView android:text="@string/burn_in_label" style="@style/settingsText" />
+                    <TextView android:text="@string/burn_in_desc" style="@style/settingsSubText" />
+                </LinearLayout>
+                <androidx.appcompat.widget.SwitchCompat android:id="@id/burn_in_switch" style="@style/settingsAction" />
+            </LinearLayout>
+            <View style="@style/settingsSeparator" />
+            <LinearLayout android:id="@id/pocket_mode_lt" style="@style/settingsParent">
+                <LinearLayout style="@style/settingsTextGroup">
+                    <TextView android:text="@string/pocket_mode_label" style="@style/settingsText" />
+                    <TextView android:text="@string/pocket_mode_desc" style="@style/settingsSubText" />
+                </LinearLayout>
+                <androidx.appcompat.widget.SwitchCompat android:id="@id/pocket_mode_switch" style="@style/settingsAction" />
+            </LinearLayout>
+            <View style="@style/settingsSeparator" />
+            <LinearLayout android:orientation="vertical" android:id="@id/disable_on_calls_lt" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <LinearLayout style="@style/settingsParent">
+                    <LinearLayout style="@style/settingsTextGroup">
+                        <TextView android:text="@string/disable_on_calls_label" style="@style/settingsText" />
+                        <TextView android:textColor="@color/warning" android:text="@string/phone_state_access_label" style="@style/settingsSubText" />
+                    </LinearLayout>
+                    <ImageView style="@style/settingsForwardIcon" />
+                </LinearLayout>
+                <View style="@style/settingsSeparator" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+    <View android:id="@id/disable_overlay" android:background="@color/blackA70" android:focusable="true" android:visibility="gone" android:clickable="true" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <RelativeLayout android:id="@id/action_bar" android:background="@color/drkGray" android:padding="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <LinearLayout android:layout_centerVertical="true" style="@style/backIconWrapper">
+            <ImageView style="@style/backIcon" />
+        </LinearLayout>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/aod_title" android:layout_centerInParent="true" style="@style/activityTitle" />
+        <androidx.appcompat.widget.SwitchCompat android:id="@id/aod_switch" android:padding="10.0dip" android:layout_centerVertical="true" android:layout_alignParentEnd="true" style="@style/settingsAction" />
+    </RelativeLayout>
+    <View android:background="@color/liteBluishGray" android:layout_width="fill_parent" android:layout_height="1.0px" android:layout_below="@id/action_bar" />
+</RelativeLayout>

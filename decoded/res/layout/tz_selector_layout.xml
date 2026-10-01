@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='utf-8'?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="center_vertical" android:layout_gravity="center" android:orientation="horizontal" android:id="@id/select_lt" android:background="@drawable/rounded_box" android:paddingTop="8.0dip" android:paddingBottom="8.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingStart="14.0dip" android:paddingEnd="12.0dip" android:backgroundTint="@color/liteBluishGray">
+    <TextView android:textSize="14.0sp" android:textColor="@color/whitish_gray" android:ellipsize="end" android:id="@id/select_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/adaptive_text_22" android:maxLines="1" />
+    <androidx.appcompat.widget.AppCompatImageView android:layout_width="10.0dip" android:layout_height="10.0dip" android:layout_marginTop="1.0dip" android:src="@drawable/next_icon_thin" android:tint="@color/whitish_gray" android:rotation="90.0" android:layout_marginStart="12.0dip" />
+</LinearLayout>

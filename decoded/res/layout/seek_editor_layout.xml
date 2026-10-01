@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <TextView android:textSize="18.0sp" android:textColor="@color/white" android:layout_gravity="center" android:id="@id/prop_val" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    <com.google.android.material.slider.Slider android:value="50" android:id="@id/prop_seek" android:layout_width="fill_parent" android:layout_height="wrap_content" android:stepSize="10.0" android:valueFrom="30" android:valueTo="100" app:labelBehavior="gone" app:thumbColor="@color/whitish_gray" app:thumbRadius="10.0dip" app:tickColor="@color/gray" app:trackColorActive="@color/positive_green" app:trackColorInactive="@color/liteBluishGrayA50" app:trackHeight="5.0dip" />
+</LinearLayout>

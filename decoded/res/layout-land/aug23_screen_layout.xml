@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="horizontal" android:id="@id/parent" android:layout_width="fill_parent" android:layout_height="fill_parent" android:weightSum="1.0"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:orientation="vertical" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="0.45">
+        <View android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.15" />
+        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.85" android:layout_marginStart="50.0dip" android:layout_marginEnd="30.0dip">
+            <com.sparkine.muvizedge.view.Aug23Clock android:id="@id/clock" android:layout_width="70.0dip" android:layout_height="35.0dip" android:layout_marginBottom="30.0dip" />
+            <LinearLayout android:orientation="horizontal" android:id="@id/date_lt" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="10.0dip">
+                    <androidx.cardview.widget.CardView android:id="@id/date_dot" android:layout_width="6.0dip" android:layout_height="6.0dip" android:layout_marginTop="4.0dip" android:layout_marginBottom="5.0dip" app:cardBackgroundColor="@color/whitish_gray" app:cardCornerRadius="5.0dip" />
+                    <View android:id="@id/date_line" android:background="@color/whitish_gray" android:layout_width="1.0dip" android:layout_height="45.0dip" />
+                </LinearLayout>
+                <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                    <com.sparkine.muvizedge.view.NoPadTextView android:textSize="18.0sp" android:textColor="@color/white" android:id="@id/date_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8.0dip" android:textAllCaps="true" android:fontFamily="@font/anton_regular" android:letterSpacing="0.03" />
+                    <TextView android:textSize="13.0sp" android:textColor="@color/white" android:id="@id/day_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:alpha="0.7" android:textAllCaps="true" android:fontFamily="@font/rubik_regular" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout android:orientation="horizontal" android:id="@id/battery_lt" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.0dip">
+                <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="10.0dip">
+                    <androidx.cardview.widget.CardView android:id="@id/battery_dot" android:layout_width="6.0dip" android:layout_height="6.0dip" android:layout_marginTop="4.0dip" android:layout_marginBottom="5.0dip" app:cardBackgroundColor="@color/whitish_gray" app:cardCornerRadius="5.0dip" />
+                    <View android:id="@id/battery_line" android:background="@color/whitish_gray" android:layout_width="1.0dip" android:layout_height="45.0dip" />
+                </LinearLayout>
+                <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                    <com.sparkine.muvizedge.view.NoPadTextView android:textSize="18.0sp" android:textColor="@color/white" android:id="@id/battery_status" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8.0dip" android:textAllCaps="true" android:fontFamily="@font/anton_regular" android:letterSpacing="0.03" />
+                    <TextView android:textSize="13.0sp" android:textColor="@color/white" android:id="@id/charging_status" android:layout_width="wrap_content" android:layout_height="wrap_content" android:alpha="0.7" android:textAllCaps="true" android:fontFamily="@font/rubik_regular" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout android:orientation="horizontal" android:id="@id/details_lt" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.0dip">
+                <androidx.cardview.widget.CardView android:id="@id/notify_dot" android:layout_width="6.0dip" android:layout_height="6.0dip" android:layout_marginTop="4.0dip" android:layout_marginBottom="5.0dip" android:layout_marginEnd="10.0dip" app:cardBackgroundColor="@color/whitish_gray" app:cardCornerRadius="5.0dip" />
+                <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                    <LinearLayout android:orientation="horizontal" android:id="@id/icons_lt" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                        <LinearLayout android:gravity="start" android:orientation="horizontal" android:id="@id/notify_icons_container" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="22.0dip" android:layout_marginStart="-10.0dip" />
+                    </LinearLayout>
+                    <LinearLayout android:orientation="vertical" android:id="@id/notify_lt" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                        <LinearLayout android:gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8.0dip">
+                            <ImageView android:id="@id/notify_icon" android:layout_width="18.0dip" android:layout_height="18.0dip" android:src="@drawable/aod_icon" android:layout_marginEnd="8.0dip" />
+                            <com.sparkine.muvizedge.view.NoPadTextView android:textSize="18.0sp" android:textColor="@color/white" android:ellipsize="end" android:id="@id/notify_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:textAllCaps="true" android:fontFamily="@font/anton_regular" android:letterSpacing="0.03" />
+                        </LinearLayout>
+                        <TextView android:textSize="13.0sp" android:textColor="@color/white" android:ellipsize="end" android:id="@id/notify_desc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxLines="2" android:alpha="0.7" android:textAllCaps="true" android:fontFamily="@font/rubik_regular" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:gravity="center|bottom" android:orientation="vertical" android:padding="40.0dip" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="0.55">
+        <LinearLayout android:orientation="vertical" android:id="@id/media_widget_lt" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="25.0dip">
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <ImageView android:id="@id/prev_btn" android:background="?android:selectableItemBackgroundBorderless" android:padding="10.0dip" android:layout_width="35.0dip" android:layout_height="35.0dip" android:src="@drawable/next_icon_thin" android:rotation="180.0" />
+                <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/music_details_lt" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0">
+                    <TextView android:textSize="18.0sp" android:textColor="@color/white" android:ellipsize="marquee" android:id="@id/title_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/music_title_placeholder" android:singleLine="true" android:marqueeRepeatLimit="2" android:textAllCaps="true" android:fontFamily="@font/anton_regular" android:letterSpacing="0.05" />
+                    <TextView android:textSize="13.0sp" android:textColor="#ff9e9e9e" android:ellipsize="marquee" android:id="@id/artist_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" android:text="@string/music_artist_placeholder" android:singleLine="true" android:marqueeRepeatLimit="1" android:alpha="0.7" android:textAllCaps="true" android:fontFamily="@font/rubik_regular" android:letterSpacing="0.02" />
+                </LinearLayout>
+                <ImageView android:id="@id/next_btn" android:background="?android:selectableItemBackgroundBorderless" android:padding="10.0dip" android:layout_width="35.0dip" android:layout_height="35.0dip" android:src="@drawable/next_icon_thin" />
+            </LinearLayout>
+            <com.sparkine.muvizedge.view.TimeProgressBar android:id="@id/music_progress" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="15.0dip" android:maxHeight="1.5dip" android:progress="20" android:minHeight="1.5dip" android:progressTint="@color/white" android:progressBackgroundTint="@color/white" style="?android:progressBarStyleHorizontal" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

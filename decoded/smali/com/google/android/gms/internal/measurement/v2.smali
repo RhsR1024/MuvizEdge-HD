@@ -1,0 +1,2759 @@
+.class public abstract Lcom/google/android/gms/internal/measurement/v2;
+.super Ljava/lang/Object;
+.source "r8-map-id-48840d0daa578282636f48d35a490993b642e673bb6490a132309a37d09141d1"
+
+
+# static fields
+.field public static final a:Lsun/misc/Unsafe;
+
+.field public static final b:Ljava/lang/Class;
+
+.field public static final c:Lcom/google/android/gms/internal/measurement/u2;
+
+.field public static final d:Z
+
+.field public static final e:J
+
+.field public static final f:Z
+
+
+# direct methods
+.method static constructor <clinit>()V
+    .locals 15
+
+    .line 1
+    const-class v0, Ljava/lang/Class;
+
+    const-string v14, "Smob - Mod obfuscation tool v4.6 by Kirlif\'"
+
+    .line 3
+    invoke-static {}, Lcom/google/android/gms/internal/measurement/v2;->l()Lsun/misc/Unsafe;
+
+    .line 6
+    move-result-object v14
+
+    move-object v1, v14
+
+    .line 7
+    sput-object v1, Lcom/google/android/gms/internal/measurement/v2;->a:Lsun/misc/Unsafe;
+
+    const/4 v14, 0x2
+
+    .line 9
+    sget v2, Lcom/google/android/gms/internal/measurement/n0;->a:I
+
+    const/4 v14, 0x4
+
+    .line 11
+    const-class v2, Llibcore/io/Memory;
+
+    const/4 v14, 0x4
+
+    .line 13
+    sput-object v2, Lcom/google/android/gms/internal/measurement/v2;->b:Ljava/lang/Class;
+
+    const/4 v14, 0x1
+
+    .line 15
+    sget-object v2, Ljava/lang/Long;->TYPE:Ljava/lang/Class;
+
+    const/4 v14, 0x1
+
+    .line 17
+    invoke-static {v2}, Lcom/google/android/gms/internal/measurement/v2;->m(Ljava/lang/Class;)Z
+
+    .line 20
+    move-result v14
+
+    move v3, v14
+
+    .line 21
+    sget-object v4, Ljava/lang/Integer;->TYPE:Ljava/lang/Class;
+
+    const/4 v14, 0x7
+
+    .line 23
+    invoke-static {v4}, Lcom/google/android/gms/internal/measurement/v2;->m(Ljava/lang/Class;)Z
+
+    .line 26
+    move-result v14
+
+    move v5, v14
+
+    .line 27
+    const/4 v14, 0x0
+
+    move v6, v14
+
+    .line 28
+    if-nez v1, :cond_0
+
+    const/4 v14, 0x3
+
+    .line 30
+    goto :goto_0
+
+    .line 31
+    :cond_0
+    const/4 v14, 0x5
+
+    if-eqz v3, :cond_1
+
+    const/4 v14, 0x5
+
+    .line 33
+    new-instance v6, Lcom/google/android/gms/internal/measurement/t2;
+
+    const/4 v14, 0x6
+
+    .line 35
+    invoke-direct {v6, v1}, Lcom/google/android/gms/internal/measurement/u2;-><init>(Ljava/lang/Object;)V
+
+    const/4 v14, 0x3
+
+    .line 38
+    goto :goto_0
+
+    .line 39
+    :cond_1
+    const/4 v14, 0x5
+
+    if-eqz v5, :cond_2
+
+    const/4 v14, 0x6
+
+    .line 41
+    new-instance v6, Lcom/google/android/gms/internal/measurement/s2;
+
+    const/4 v14, 0x2
+
+    .line 43
+    invoke-direct {v6, v1}, Lcom/google/android/gms/internal/measurement/u2;-><init>(Ljava/lang/Object;)V
+
+    const/4 v14, 0x7
+
+    .line 46
+    :cond_2
+    const/4 v14, 0x7
+
+    :goto_0
+    sput-object v6, Lcom/google/android/gms/internal/measurement/v2;->c:Lcom/google/android/gms/internal/measurement/u2;
+
+    const/4 v14, 0x2
+
+    .line 48
+    const-string v14, "logMissingMethod"
+
+    move-object v1, v14
+
+    .line 50
+    const-string v14, "com.google.protobuf.UnsafeUtil"
+
+    move-object v3, v14
+
+    .line 52
+    const-string v14, "platform method missing - proto runtime falling back to safer methods: "
+
+    move-object v5, v14
+
+    .line 54
+    const-class v7, Lcom/google/android/gms/internal/measurement/v2;
+
+    const/4 v14, 0x2
+
+    .line 56
+    const-string v14, "getLong"
+
+    move-object v8, v14
+
+    .line 58
+    const-class v9, Ljava/lang/reflect/Field;
+
+    const/4 v14, 0x1
+
+    .line 60
+    const-string v14, "objectFieldOffset"
+
+    move-object v10, v14
+
+    .line 62
+    const-class v11, Ljava/lang/Object;
+
+    const/4 v14, 0x3
+
+    .line 64
+    if-eqz v6, :cond_3
+
+    const/4 v14, 0x5
+
+    .line 66
+    iget-object v6, v6, Lcom/google/android/gms/internal/measurement/u2;->a:Ljava/lang/Object;
+
+    const/4 v14, 0x7
+
+    .line 68
+    check-cast v6, Lsun/misc/Unsafe;
+
+    const/4 v14, 0x5
+
+    .line 70
+    :try_start_0
+    const/4 v14, 0x4
+
+    invoke-virtual {v6}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
+
+    .line 73
+    move-result-object v14
+
+    move-object v6, v14
+
+    .line 74
+    filled-new-array {v9}, [Ljava/lang/Class;
+
+    .line 77
+    move-result-object v14
+
+    move-object v12, v14
+
+    .line 78
+    invoke-virtual {v6, v10, v12}, Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+
+    .line 81
+    filled-new-array {v11, v2}, [Ljava/lang/Class;
+
+    .line 84
+    move-result-object v14
+
+    move-object v12, v14
+
+    .line 85
+    invoke-virtual {v6, v8, v12}, Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+
+    .line 88
+    invoke-static {}, Lcom/google/android/gms/internal/measurement/v2;->a()Ljava/lang/reflect/Field;
+    :try_end_0
+    .catchall {:try_start_0 .. :try_end_0} :catchall_0
+
+    .line 91
+    goto :goto_1
+
+    .line 92
+    :catchall_0
+    move-exception v6
+
+    .line 93
+    invoke-virtual {v7}, Ljava/lang/Class;->getName()Ljava/lang/String;
+
+    .line 96
+    move-result-object v14
+
+    move-object v12, v14
+
+    .line 97
+    invoke-static {v12}, Ljava/util/logging/Logger;->getLogger(Ljava/lang/String;)Ljava/util/logging/Logger;
+
+    .line 100
+    move-result-object v14
+
+    move-object v12, v14
+
+    .line 101
+    sget-object v13, Ljava/util/logging/Level;->WARNING:Ljava/util/logging/Level;
+
+    const/4 v14, 0x6
+
+    .line 103
+    invoke-virtual {v6}, Ljava/lang/Object;->toString()Ljava/lang/String;
+
+    .line 106
+    move-result-object v14
+
+    move-object v6, v14
+
+    .line 107
+    invoke-virtual {v5, v6}, Ljava/lang/String;->concat(Ljava/lang/String;)Ljava/lang/String;
+
+    .line 110
+    move-result-object v14
+
+    move-object v6, v14
+
+    .line 111
+    invoke-virtual {v12, v13, v3, v1, v6}, Ljava/util/logging/Logger;->logp(Ljava/util/logging/Level;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+
+    const/4 v14, 0x7
+
+    .line 114
+    :cond_3
+    const/4 v14, 0x1
+
+    :goto_1
+    sget-object v6, Lcom/google/android/gms/internal/measurement/v2;->c:Lcom/google/android/gms/internal/measurement/u2;
+
+    const/4 v14, 0x6
+
+    .line 116
+    const/4 v14, 0x1
+
+    move v12, v14
+
+    .line 117
+    const/4 v14, 0x0
+
+    move v13, v14
+
+    .line 118
+    if-nez v6, :cond_4
+
+    const/4 v14, 0x3
+
+    .line 120
+    :goto_2
+    move v0, v13
+
+    .line 121
+    goto/16 :goto_3
+
+    .line 122
+    :cond_4
+    const/4 v14, 0x3
+
+    iget-object v6, v6, Lcom/google/android/gms/internal/measurement/u2;->a:Ljava/lang/Object;
+
+    const/4 v14, 0x3
+
+    .line 124
+    check-cast v6, Lsun/misc/Unsafe;
+
+    const/4 v14, 0x6
+
+    .line 126
+    :try_start_1
+    const/4 v14, 0x3
+
+    invoke-virtual {v6}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
+
+    .line 129
+    move-result-object v14
+
+    move-object v6, v14
+
+    .line 130
+    filled-new-array {v9}, [Ljava/lang/Class;
+
+    .line 133
+    move-result-object v14
+
+    move-object v9, v14
+
+    .line 134
+    invoke-virtual {v6, v10, v9}, Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+
+    .line 137
+    const-string v14, "arrayBaseOffset"
+
+    move-object v9, v14
+
+    .line 139
+    filled-new-array {v0}, [Ljava/lang/Class;
+
+    .line 142
+    move-result-object v14
+
+    move-object v10, v14
+
+    .line 143
+    invoke-virtual {v6, v9, v10}, Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+
+    .line 146
+    const-string v14, "arrayIndexScale"
+
+    move-object v9, v14
+
+    .line 148
+    filled-new-array {v0}, [Ljava/lang/Class;
+
+    .line 151
+    move-result-object v14
+
+    move-object v0, v14
+
+    .line 152
+    invoke-virtual {v6, v9, v0}, Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+
+    .line 155
+    const-string v14, "getInt"
+
+    move-object v0, v14
+
+    .line 157
+    filled-new-array {v11, v2}, [Ljava/lang/Class;
+
+    .line 160
+    move-result-object v14
+
+    move-object v9, v14
+
+    .line 161
+    invoke-virtual {v6, v0, v9}, Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+
+    .line 164
+    const-string v14, "putInt"
+
+    move-object v0, v14
+
+    .line 166
+    filled-new-array {v11, v2, v4}, [Ljava/lang/Class;
+
+    .line 169
+    move-result-object v14
+
+    move-object v4, v14
+
+    .line 170
+    invoke-virtual {v6, v0, v4}, Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+
+    .line 173
+    filled-new-array {v11, v2}, [Ljava/lang/Class;
+
+    .line 176
+    move-result-object v14
+
+    move-object v0, v14
+
+    .line 177
+    invoke-virtual {v6, v8, v0}, Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+
+    .line 180
+    const-string v14, "putLong"
+
+    move-object v0, v14
+
+    .line 182
+    filled-new-array {v11, v2, v2}, [Ljava/lang/Class;
+
+    .line 185
+    move-result-object v14
+
+    move-object v4, v14
+
+    .line 186
+    invoke-virtual {v6, v0, v4}, Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+
+    .line 189
+    const-string v14, "getObject"
+
+    move-object v0, v14
+
+    .line 191
+    filled-new-array {v11, v2}, [Ljava/lang/Class;
+
+    .line 194
+    move-result-object v14
+
+    move-object v4, v14
+
+    .line 195
+    invoke-virtual {v6, v0, v4}, Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+
+    .line 198
+    const-string v14, "putObject"
+
+    move-object v0, v14
+
+    .line 200
+    filled-new-array {v11, v2, v11}, [Ljava/lang/Class;
+
+    .line 203
+    move-result-object v14
+
+    move-object v2, v14
+
+    .line 204
+    invoke-virtual {v6, v0, v2}, Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+    :try_end_1
+    .catchall {:try_start_1 .. :try_end_1} :catchall_1
+
+    .line 207
+    move v0, v12
+
+    .line 208
+    goto :goto_3
+
+    .line 209
+    :catchall_1
+    move-exception v0
+
+    .line 210
+    invoke-virtual {v7}, Ljava/lang/Class;->getName()Ljava/lang/String;
+
+    .line 213
+    move-result-object v14
+
+    move-object v2, v14
+
+    .line 214
+    invoke-static {v2}, Ljava/util/logging/Logger;->getLogger(Ljava/lang/String;)Ljava/util/logging/Logger;
+
+    .line 217
+    move-result-object v14
+
+    move-object v2, v14
+
+    .line 218
+    sget-object v4, Ljava/util/logging/Level;->WARNING:Ljava/util/logging/Level;
+
+    const/4 v14, 0x4
+
+    .line 220
+    invoke-virtual {v0}, Ljava/lang/Object;->toString()Ljava/lang/String;
+
+    .line 223
+    move-result-object v14
+
+    move-object v0, v14
+
+    .line 224
+    invoke-virtual {v5, v0}, Ljava/lang/String;->concat(Ljava/lang/String;)Ljava/lang/String;
+
+    .line 227
+    move-result-object v14
+
+    move-object v0, v14
+
+    .line 228
+    invoke-virtual {v2, v4, v3, v1, v0}, Ljava/util/logging/Logger;->logp(Ljava/util/logging/Level;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+
+    const/4 v14, 0x3
+
+    .line 231
+    goto/16 :goto_2
+
+    .line 232
+    :goto_3
+    sput-boolean v0, Lcom/google/android/gms/internal/measurement/v2;->d:Z
+
+    const/4 v14, 0x2
+
+    .line 234
+    const-class v0, [B
+
+    const/4 v14, 0x5
+
+    .line 236
+    invoke-static {v0}, Lcom/google/android/gms/internal/measurement/v2;->p(Ljava/lang/Class;)I
+
+    .line 239
+    move-result v14
+
+    move v0, v14
+
+    .line 240
+    int-to-long v0, v0
+
+    const/4 v14, 0x1
+
+    .line 241
+    sput-wide v0, Lcom/google/android/gms/internal/measurement/v2;->e:J
+
+    const/4 v14, 0x5
+
+    .line 243
+    const-class v0, [Z
+
+    const/4 v14, 0x5
+
+    .line 245
+    invoke-static {v0}, Lcom/google/android/gms/internal/measurement/v2;->p(Ljava/lang/Class;)I
+
+    .line 248
+    invoke-static {v0}, Lcom/google/android/gms/internal/measurement/v2;->q(Ljava/lang/Class;)V
+
+    const/4 v14, 0x2
+
+    .line 251
+    const-class v0, [I
+
+    const/4 v14, 0x4
+
+    .line 253
+    invoke-static {v0}, Lcom/google/android/gms/internal/measurement/v2;->p(Ljava/lang/Class;)I
+
+    .line 256
+    invoke-static {v0}, Lcom/google/android/gms/internal/measurement/v2;->q(Ljava/lang/Class;)V
+
+    const/4 v14, 0x1
+
+    .line 259
+    const-class v0, [J
+
+    const/4 v14, 0x3
+
+    .line 261
+    invoke-static {v0}, Lcom/google/android/gms/internal/measurement/v2;->p(Ljava/lang/Class;)I
+
+    .line 264
+    invoke-static {v0}, Lcom/google/android/gms/internal/measurement/v2;->q(Ljava/lang/Class;)V
+
+    const/4 v14, 0x4
+
+    .line 267
+    const-class v0, [F
+
+    const/4 v14, 0x2
+
+    .line 269
+    invoke-static {v0}, Lcom/google/android/gms/internal/measurement/v2;->p(Ljava/lang/Class;)I
+
+    .line 272
+    invoke-static {v0}, Lcom/google/android/gms/internal/measurement/v2;->q(Ljava/lang/Class;)V
+
+    const/4 v14, 0x7
+
+    .line 275
+    const-class v0, [D
+
+    const/4 v14, 0x2
+
+    .line 277
+    invoke-static {v0}, Lcom/google/android/gms/internal/measurement/v2;->p(Ljava/lang/Class;)I
+
+    .line 280
+    invoke-static {v0}, Lcom/google/android/gms/internal/measurement/v2;->q(Ljava/lang/Class;)V
+
+    const/4 v14, 0x3
+
+    .line 283
+    const-class v0, [Ljava/lang/Object;
+
+    const/4 v14, 0x6
+
+    .line 285
+    invoke-static {v0}, Lcom/google/android/gms/internal/measurement/v2;->p(Ljava/lang/Class;)I
+
+    .line 288
+    invoke-static {v0}, Lcom/google/android/gms/internal/measurement/v2;->q(Ljava/lang/Class;)V
+
+    const/4 v14, 0x1
+
+    .line 291
+    invoke-static {}, Lcom/google/android/gms/internal/measurement/v2;->a()Ljava/lang/reflect/Field;
+
+    .line 294
+    move-result-object v14
+
+    move-object v0, v14
+
+    .line 295
+    if-eqz v0, :cond_5
+
+    const/4 v14, 0x1
+
+    .line 297
+    sget-object v1, Lcom/google/android/gms/internal/measurement/v2;->c:Lcom/google/android/gms/internal/measurement/u2;
+
+    const/4 v14, 0x6
+
+    .line 299
+    if-eqz v1, :cond_5
+
+    const/4 v14, 0x2
+
+    .line 301
+    iget-object v1, v1, Lcom/google/android/gms/internal/measurement/u2;->a:Ljava/lang/Object;
+
+    const/4 v14, 0x6
+
+    .line 303
+    check-cast v1, Lsun/misc/Unsafe;
+
+    const/4 v14, 0x5
+
+    .line 305
+    invoke-virtual {v1, v0}, Lsun/misc/Unsafe;->objectFieldOffset(Ljava/lang/reflect/Field;)J
+
+    .line 308
+    :cond_5
+    const/4 v14, 0x5
+
+    invoke-static {}, Ljava/nio/ByteOrder;->nativeOrder()Ljava/nio/ByteOrder;
+
+    .line 311
+    move-result-object v14
+
+    move-object v0, v14
+
+    .line 312
+    sget-object v1, Ljava/nio/ByteOrder;->BIG_ENDIAN:Ljava/nio/ByteOrder;
+
+    const/4 v14, 0x6
+
+    .line 314
+    if-ne v0, v1, :cond_6
+
+    const/4 v14, 0x4
+
+    .line 316
+    goto :goto_4
+
+    .line 317
+    :cond_6
+    const/4 v14, 0x5
+
+    move v12, v13
+
+    .line 318
+    :goto_4
+    sput-boolean v12, Lcom/google/android/gms/internal/measurement/v2;->f:Z
+
+    const/4 v14, 0x2
+
+    .line 320
+    return-void
+
+    nop
+
+    .array-data 1
+        -0x14t
+        0x4t
+        -0x42t
+        0x3et
+        0x4at
+        -0x30t
+        0x55t
+        0x72t
+        0xft
+        -0x6ft
+        0x2at
+        0xft
+        0x6t
+        0x75t
+        0x13t
+        0x68t
+        0x4at
+        0x64t
+        0x3dt
+        0x13t
+        0x60t
+        0x34t
+        -0x56t
+        0x68t
+        0x69t
+        0x56t
+        0x7dt
+        -0x62t
+        0x4et
+        0x2at
+        -0x72t
+        0x69t
+        0x24t
+        0x5t
+        0x5at
+        0x76t
+        -0x69t
+        0x60t
+        0x19t
+        0x51t
+        0x28t
+        0x78t
+        0x6t
+        -0x67t
+        0x33t
+        0x4dt
+        0x19t
+        -0x29t
+        -0x4et
+        0x4et
+        0x2et
+        -0x29t
+        -0x12t
+        0x61t
+        0x6et
+        -0x72t
+        -0x61t
+        -0x65t
+        0x13t
+        -0x4t
+        0x50t
+        -0x18t
+        0x3et
+        0x72t
+        0x21t
+        0x2at
+        0x18t
+        -0x15t
+        -0x7bt
+        0x23t
+        -0x26t
+        0x5bt
+        0x49t
+        -0x73t
+        0x4et
+        0x73t
+        0x60t
+        0x1t
+        -0x62t
+        0x2at
+        -0x5at
+        -0x74t
+        0x52t
+        0x43t
+        0x39t
+    .end array-data
+.end method
+
+.method public static a()Ljava/lang/reflect/Field;
+    .locals 5
+
+    .line 1
+    sget v0, Lcom/google/android/gms/internal/measurement/n0;->a:I
+
+    const/4 v4, 0x6
+
+    .line 3
+    const-class v0, Ljava/nio/Buffer;
+
+    const/4 v4, 0x7
+
+    .line 5
+    const-string v4, "effectiveDirectAddress"
+
+    move-object v1, v4
+
+    .line 7
+    const/4 v4, 0x0
+
+    move v2, v4
+
+    .line 8
+    :try_start_0
+    const/4 v4, 0x7
+
+    invoke-virtual {v0, v1}, Ljava/lang/Class;->getDeclaredField(Ljava/lang/String;)Ljava/lang/reflect/Field;
+
+    .line 11
+    move-result-object v4
+
+    move-object v1, v4
+    :try_end_0
+    .catchall {:try_start_0 .. :try_end_0} :catchall_0
+
+    .line 12
+    goto :goto_0
+
+    .line 13
+    :catchall_0
+    move-object v1, v2
+
+    .line 14
+    :goto_0
+    if-nez v1, :cond_1
+
+    const/4 v4, 0x4
+
+    .line 16
+    const-string v4, "address"
+
+    move-object v1, v4
+
+    .line 18
+    :try_start_1
+    const/4 v4, 0x3
+
+    invoke-virtual {v0, v1}, Ljava/lang/Class;->getDeclaredField(Ljava/lang/String;)Ljava/lang/reflect/Field;
+
+    .line 21
+    move-result-object v4
+
+    move-object v0, v4
+    :try_end_1
+    .catchall {:try_start_1 .. :try_end_1} :catchall_1
+
+    .line 22
+    goto :goto_1
+
+    .line 23
+    :catchall_1
+    move-object v0, v2
+
+    .line 24
+    :goto_1
+    if-eqz v0, :cond_0
+
+    const/4 v4, 0x5
+
+    .line 26
+    invoke-virtual {v0}, Ljava/lang/reflect/Field;->getType()Ljava/lang/Class;
+
+    .line 29
+    move-result-object v4
+
+    move-object v1, v4
+
+    .line 30
+    sget-object v3, Ljava/lang/Long;->TYPE:Ljava/lang/Class;
+
+    const/4 v4, 0x4
+
+    .line 32
+    if-ne v1, v3, :cond_0
+
+    const/4 v4, 0x5
+
+    .line 34
+    return-object v0
+
+    .line 35
+    :cond_0
+    const/4 v4, 0x3
+
+    return-object v2
+
+    .line 36
+    :cond_1
+    const/4 v4, 0x7
+
+    return-object v1
+
+    .array-data 1
+        -0x6dt
+        -0x3dt
+        0x1bt
+        0x6ct
+        -0x63t
+        -0x4bt
+        0x27t
+        0x66t
+        -0x59t
+        0x68t
+        0x61t
+        0x45t
+        0x4at
+        -0x2at
+        0xet
+        -0x4bt
+        0x58t
+        0x4t
+        0x59t
+        -0x2bt
+        0x3ft
+        0x58t
+        -0x28t
+        -0x75t
+        -0x58t
+        0x67t
+        -0x52t
+    .end array-data
+.end method
+
+.method public static b(Ljava/lang/Object;JB)V
+    .locals 8
+
+    move-object v5, p0
+
+    .line 1
+    sget-object v0, Lcom/google/android/gms/internal/measurement/v2;->c:Lcom/google/android/gms/internal/measurement/u2;
+
+    const/4 v7, 0x6
+
+    .line 3
+    iget-object v0, v0, Lcom/google/android/gms/internal/measurement/u2;->a:Ljava/lang/Object;
+
+    const/4 v7, 0x1
+
+    .line 5
+    check-cast v0, Lsun/misc/Unsafe;
+
+    const/4 v7, 0x3
+
+    .line 7
+    const-wide/16 v1, -0x4
+
+    const/4 v7, 0x5
+
+    .line 9
+    and-long/2addr v1, p1
+
+    const/4 v7, 0x3
+
+    .line 10
+    invoke-virtual {v0, v5, v1, v2}, Lsun/misc/Unsafe;->getInt(Ljava/lang/Object;J)I
+
+    .line 13
+    move-result v7
+
+    move v3, v7
+
+    .line 14
+    long-to-int p1, p1
+
+    const/4 v7, 0x2
+
+    .line 15
+    not-int p1, p1
+
+    const/4 v7, 0x6
+
+    .line 16
+    and-int/lit8 p1, p1, 0x3
+
+    const/4 v7, 0x5
+
+    .line 18
+    shl-int/lit8 p1, p1, 0x3
+
+    const/4 v7, 0x5
+
+    .line 20
+    const/16 v7, 0xff
+
+    move p2, v7
+
+    .line 22
+    shl-int v4, p2, p1
+
+    const/4 v7, 0x1
+
+    .line 24
+    not-int v4, v4
+
+    const/4 v7, 0x4
+
+    .line 25
+    and-int/2addr v3, v4
+
+    const/4 v7, 0x7
+
+    .line 26
+    and-int/2addr p2, p3
+
+    const/4 v7, 0x7
+
+    .line 27
+    shl-int p1, p2, p1
+
+    const/4 v7, 0x6
+
+    .line 29
+    or-int/2addr p1, v3
+
+    const/4 v7, 0x7
+
+    .line 30
+    invoke-virtual {v0, v5, v1, v2, p1}, Lsun/misc/Unsafe;->putInt(Ljava/lang/Object;JI)V
+
+    const/4 v7, 0x1
+
+    .line 33
+    return-void
+
+    .array-data 1
+        -0x31t
+        0x7t
+        -0x5et
+        0x70t
+        0x19t
+        -0x18t
+        -0x4ft
+        0x53t
+        -0x3bt
+        0x69t
+        -0x5ft
+        0x42t
+        -0x27t
+        -0x6ft
+        0x60t
+        0x3et
+        0x5t
+        -0x4bt
+        -0x2bt
+        -0x69t
+        0x6at
+        0xct
+        0x3et
+        -0x13t
+        0x49t
+        -0x71t
+        0x15t
+        -0x6ct
+        0x6ct
+        -0x3et
+        0x76t
+        0x45t
+        -0x4ct
+        0x19t
+        0x62t
+        0x6t
+        0x38t
+        0x21t
+        -0x77t
+        0x3at
+        -0x75t
+        0x64t
+        0x49t
+        -0x3at
+        -0x18t
+        0x6dt
+        0x3et
+        0x5et
+        0x5t
+        0x38t
+        -0x54t
+        -0x6t
+        -0x8t
+        0x3dt
+        -0x6ft
+        0x1ft
+        0x23t
+        0x23t
+        -0x1et
+        0x20t
+        0x1ft
+        -0x18t
+        -0x64t
+        -0x44t
+        0x46t
+        0x54t
+        -0x3bt
+        -0x76t
+        0x35t
+        -0x27t
+        0x5et
+        -0x4bt
+        0x18t
+        -0x6ct
+        0x1ft
+        0x62t
+    .end array-data
+.end method
+
+.method public static c(Ljava/lang/Object;JB)V
+    .locals 9
+
+    move-object v5, p0
+
+    .line 1
+    sget-object v0, Lcom/google/android/gms/internal/measurement/v2;->c:Lcom/google/android/gms/internal/measurement/u2;
+
+    const/4 v7, 0x3
+
+    .line 3
+    iget-object v0, v0, Lcom/google/android/gms/internal/measurement/u2;->a:Ljava/lang/Object;
+
+    const/4 v8, 0x4
+
+    .line 5
+    check-cast v0, Lsun/misc/Unsafe;
+
+    const/4 v8, 0x1
+
+    .line 7
+    const-wide/16 v1, -0x4
+
+    const/4 v8, 0x4
+
+    .line 9
+    and-long/2addr v1, p1
+
+    const/4 v7, 0x3
+
+    .line 10
+    invoke-virtual {v0, v5, v1, v2}, Lsun/misc/Unsafe;->getInt(Ljava/lang/Object;J)I
+
+    .line 13
+    move-result v7
+
+    move v3, v7
+
+    .line 14
+    long-to-int p1, p1
+
+    const/4 v8, 0x5
+
+    .line 15
+    and-int/lit8 p1, p1, 0x3
+
+    const/4 v7, 0x5
+
+    .line 17
+    shl-int/lit8 p1, p1, 0x3
+
+    const/4 v7, 0x6
+
+    .line 19
+    const/16 v8, 0xff
+
+    move p2, v8
+
+    .line 21
+    shl-int v4, p2, p1
+
+    const/4 v7, 0x7
+
+    .line 23
+    not-int v4, v4
+
+    const/4 v8, 0x1
+
+    .line 24
+    and-int/2addr v3, v4
+
+    const/4 v8, 0x3
+
+    .line 25
+    and-int/2addr p2, p3
+
+    const/4 v8, 0x7
+
+    .line 26
+    shl-int p1, p2, p1
+
+    const/4 v7, 0x5
+
+    .line 28
+    or-int/2addr p1, v3
+
+    const/4 v8, 0x4
+
+    .line 29
+    invoke-virtual {v0, v5, v1, v2, p1}, Lsun/misc/Unsafe;->putInt(Ljava/lang/Object;JI)V
+
+    const/4 v7, 0x3
+
+    .line 32
+    return-void
+
+    .array-data 1
+        0x28t
+        -0x2t
+        -0x38t
+        0x70t
+        0x60t
+        0x27t
+        -0x2at
+        0x39t
+        0x7bt
+        0x11t
+        0x72t
+        0x72t
+        0x1ct
+        -0x9t
+        0x48t
+        -0x75t
+        0x52t
+        -0x2bt
+        -0x69t
+        -0x4bt
+        0x64t
+        0x45t
+        -0x5dt
+        -0xft
+        0x61t
+        0x62t
+    .end array-data
+.end method
+
+.method public static d(Ljava/lang/Class;)Ljava/lang/Object;
+    .locals 4
+
+    move-object v1, p0
+
+    .line 1
+    :try_start_0
+    const/4 v3, 0x6
+
+    sget-object v0, Lcom/google/android/gms/internal/measurement/v2;->a:Lsun/misc/Unsafe;
+
+    const/4 v3, 0x3
+
+    .line 3
+    invoke-virtual {v0, v1}, Lsun/misc/Unsafe;->allocateInstance(Ljava/lang/Class;)Ljava/lang/Object;
+
+    .line 6
+    move-result-object v3
+
+    move-object v1, v3
+    :try_end_0
+    .catch Ljava/lang/InstantiationException; {:try_start_0 .. :try_end_0} :catch_0
+
+    .line 7
+    return-object v1
+
+    .line 8
+    :catch_0
+    move-exception v1
+
+    .line 9
+    new-instance v0, Ljava/lang/IllegalStateException;
+
+    const/4 v3, 0x5
+
+    .line 11
+    invoke-direct {v0, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/Throwable;)V
+
+    const/4 v3, 0x2
+
+    .line 14
+    throw v0
+
+    const/4 v3, 0x1
+
+    nop
+
+    .array-data 1
+        -0x4ft
+        0x46t
+        0x5et
+        0x44t
+        0x19t
+        0xct
+        0x2et
+        0x2dt
+        0x1ft
+        0x73t
+        0x23t
+        -0x64t
+        0x2at
+        0x41t
+        0x18t
+        0x41t
+        0x31t
+        0x31t
+        0x55t
+        0x9t
+        0x78t
+        -0x55t
+        0x21t
+        -0x14t
+        0xft
+        0x49t
+        -0x54t
+        -0x62t
+        0x5at
+        0x79t
+        0x61t
+        0x49t
+        0x7et
+        -0x15t
+        -0x2et
+        0x11t
+        0x3dt
+        -0x38t
+        -0x5ct
+        -0x4at
+        0x30t
+        0x27t
+        -0x2ft
+        -0x29t
+    .end array-data
+.end method
+
+.method public static e(JLjava/lang/Object;)I
+    .locals 5
+
+    .line 1
+    sget-object v0, Lcom/google/android/gms/internal/measurement/v2;->c:Lcom/google/android/gms/internal/measurement/u2;
+
+    const/4 v4, 0x7
+
+    .line 3
+    iget-object v0, v0, Lcom/google/android/gms/internal/measurement/u2;->a:Ljava/lang/Object;
+
+    const/4 v2, 0x2
+
+    .line 5
+    check-cast v0, Lsun/misc/Unsafe;
+
+    const/4 v3, 0x1
+
+    .line 7
+    invoke-virtual {v0, p2, p0, p1}, Lsun/misc/Unsafe;->getInt(Ljava/lang/Object;J)I
+
+    .line 10
+    move-result v1
+
+    move p0, v1
+
+    .line 11
+    return p0
+
+    nop
+
+    .array-data 1
+        -0x3ft
+        0x21t
+        0x69t
+        0x4dt
+        0x4at
+        -0x30t
+        0x19t
+        0x17t
+        0x69t
+        0x4ft
+    .end array-data
+.end method
+
+.method public static f(JLjava/lang/Object;I)V
+    .locals 2
+
+    .line 1
+    sget-object v0, Lcom/google/android/gms/internal/measurement/v2;->c:Lcom/google/android/gms/internal/measurement/u2;
+
+    const/4 v1, 0x2
+
+    .line 3
+    iget-object v0, v0, Lcom/google/android/gms/internal/measurement/u2;->a:Ljava/lang/Object;
+
+    const/4 v1, 0x4
+
+    .line 5
+    check-cast v0, Lsun/misc/Unsafe;
+
+    const/4 v1, 0x7
+
+    .line 7
+    invoke-virtual {v0, p2, p0, p1, p3}, Lsun/misc/Unsafe;->putInt(Ljava/lang/Object;JI)V
+
+    const/4 v1, 0x6
+
+    .line 10
+    return-void
+
+    .array-data 1
+        -0x51t
+        -0x24t
+        0x3ct
+        0x66t
+        -0x4ft
+        0x79t
+        -0x3bt
+        0x40t
+        0x4bt
+        0x47t
+        -0x5t
+        0x57t
+        0x37t
+        -0x67t
+        0x77t
+        -0x13t
+        -0x12t
+        0x34t
+        0x44t
+        0x68t
+        -0x46t
+        0x21t
+        0x2t
+        0x18t
+        0x36t
+        0x5dt
+        0x7ft
+        -0x7bt
+        0x14t
+        0x4bt
+        -0x35t
+        -0x72t
+        -0x30t
+        0x22t
+        -0x7bt
+        -0x31t
+        0x0t
+        0x3dt
+        -0x40t
+        0x3ct
+        -0x3t
+        0x37t
+        0x8t
+        -0x45t
+        0x6bt
+        -0x73t
+        -0x5ft
+        0x17t
+        0x4t
+        -0x7t
+        -0x61t
+        -0x35t
+        0x48t
+        0xdt
+        -0x3at
+        -0x24t
+        0x45t
+        -0x6et
+        0x66t
+        -0x26t
+        0x4t
+        -0x63t
+        -0x80t
+        0x4t
+        0x54t
+        0x76t
+        0x40t
+        0x68t
+        -0x48t
+        0x4t
+        0x38t
+        0x2bt
+        -0x1dt
+        0xet
+        0xet
+    .end array-data
+.end method
+
+.method public static g(JLjava/lang/Object;)J
+    .locals 5
+
+    .line 1
+    sget-object v0, Lcom/google/android/gms/internal/measurement/v2;->c:Lcom/google/android/gms/internal/measurement/u2;
+
+    const/4 v2, 0x2
+
+    .line 3
+    iget-object v0, v0, Lcom/google/android/gms/internal/measurement/u2;->a:Ljava/lang/Object;
+
+    const/4 v3, 0x1
+
+    .line 5
+    check-cast v0, Lsun/misc/Unsafe;
+
+    const/4 v3, 0x4
+
+    .line 7
+    invoke-virtual {v0, p2, p0, p1}, Lsun/misc/Unsafe;->getLong(Ljava/lang/Object;J)J
+
+    .line 10
+    move-result-wide p0
+
+    .line 11
+    return-wide p0
+
+    .array-data 1
+        -0x60t
+        0x20t
+        -0x65t
+        0xet
+        0x58t
+        0x27t
+        0x12t
+        -0x58t
+        0x61t
+        0x6at
+        0x22t
+        -0x74t
+        0x70t
+        0x2et
+        -0x59t
+        -0x43t
+        0xat
+        0x1at
+        -0x3et
+        -0x1bt
+        -0x19t
+        -0x32t
+        -0x39t
+        -0x45t
+        0x1dt
+        0x3ct
+        0x3ft
+        0x56t
+        0x2at
+        -0x2at
+        0x37t
+        0x5at
+        0x52t
+        -0x1ct
+        0x5bt
+    .end array-data
+.end method
+
+.method public static h(Ljava/lang/Object;JJ)V
+    .locals 10
+
+    .line 1
+    sget-object v0, Lcom/google/android/gms/internal/measurement/v2;->c:Lcom/google/android/gms/internal/measurement/u2;
+
+    const/4 v9, 0x4
+
+    .line 3
+    iget-object v0, v0, Lcom/google/android/gms/internal/measurement/u2;->a:Ljava/lang/Object;
+
+    const/4 v9, 0x4
+
+    .line 5
+    move-object v1, v0
+
+    .line 6
+    check-cast v1, Lsun/misc/Unsafe;
+
+    const/4 v9, 0x5
+
+    .line 8
+    move-object v2, p0
+
+    .line 9
+    move-wide v3, p1
+
+    .line 10
+    move-wide v5, p3
+
+    .line 11
+    invoke-virtual/range {v1 .. v6}, Lsun/misc/Unsafe;->putLong(Ljava/lang/Object;JJ)V
+
+    const/4 v9, 0x3
+
+    .line 14
+    return-void
+
+    .array-data 1
+        0x1at
+        -0x7dt
+        -0x4t
+        0x11t
+        -0x50t
+        -0x50t
+        -0x1at
+        0x5et
+        -0x10t
+        -0x20t
+        -0x4bt
+        -0x74t
+        0x2bt
+        -0x45t
+        -0x15t
+        0x5et
+        0xet
+        0x2at
+        -0x22t
+        -0x31t
+        0x24t
+        0x69t
+        0x7ct
+        0x7dt
+        -0x1bt
+        0x65t
+        -0x7t
+        0x9t
+        0x31t
+        0x65t
+        0x59t
+        0x19t
+        -0x43t
+        -0x61t
+        0x79t
+        0x5dt
+        0x62t
+        -0x8t
+        -0x48t
+        0x38t
+        0x0t
+        -0x77t
+        -0x79t
+        0x9t
+        0x40t
+    .end array-data
+.end method
+
+.method public static i(JLjava/lang/Object;)Ljava/lang/Object;
+    .locals 4
+
+    .line 1
+    sget-object v0, Lcom/google/android/gms/internal/measurement/v2;->c:Lcom/google/android/gms/internal/measurement/u2;
+
+    const/4 v2, 0x4
+
+    .line 3
+    iget-object v0, v0, Lcom/google/android/gms/internal/measurement/u2;->a:Ljava/lang/Object;
+
+    const/4 v3, 0x2
+
+    .line 5
+    check-cast v0, Lsun/misc/Unsafe;
+
+    const/4 v2, 0x6
+
+    .line 7
+    invoke-virtual {v0, p2, p0, p1}, Lsun/misc/Unsafe;->getObject(Ljava/lang/Object;J)Ljava/lang/Object;
+
+    .line 10
+    move-result-object v1
+
+    move-object p0, v1
+
+    .line 11
+    return-object p0
+
+    nop
+
+    .array-data 1
+        -0x42t
+        0x70t
+        -0x6et
+        0x1dt
+        0x75t
+        -0x62t
+        0x10t
+        0x30t
+        0x63t
+        -0x4t
+        0x6at
+        0x5at
+        0x64t
+        -0x56t
+        0x49t
+        0x4ct
+        -0x5dt
+        0x2ct
+        0x6bt
+        -0x42t
+        0x58t
+        0x72t
+        0x2bt
+        -0x27t
+        0x6bt
+        -0x28t
+        -0x20t
+        0x3bt
+        0x7ft
+        -0x72t
+        -0x7et
+        0x27t
+        0xft
+        -0x6bt
+        -0x40t
+        0x71t
+        -0xft
+        0xdt
+        -0x7et
+        -0x4ct
+        -0x5ft
+        0x41t
+        -0x2bt
+        0x14t
+        -0xet
+        0x7ft
+        -0x5ct
+        -0x38t
+        -0x2at
+        0x8t
+        -0x7t
+        -0x57t
+        0x3dt
+        0x71t
+        0x6ft
+        0x4et
+        0xat
+        0x7dt
+        0x1at
+        -0x47t
+        -0x5ct
+        0xat
+        0x44t
+        -0x5at
+        0x4ct
+        0x72t
+        0x34t
+        0x35t
+        -0x76t
+        -0x57t
+        -0x22t
+        0x73t
+        -0xft
+        -0x4ft
+        0xft
+        0x3at
+        -0x55t
+        0x2ft
+        -0x22t
+        0x2bt
+        0x7t
+        0x41t
+        -0x2at
+        0x4ft
+        0x22t
+        0x9t
+        -0x58t
+        0x1ct
+        0x3bt
+        -0x17t
+        -0x65t
+        0x4bt
+        0x2et
+        -0xdt
+        0x19t
+        0x67t
+        0x60t
+        0x29t
+        -0x39t
+        0x7at
+        0x6at
+        -0x16t
+    .end array-data
+.end method
+
+.method public static j(JLjava/lang/Object;Ljava/lang/Object;)V
+    .locals 2
+
+    .line 1
+    sget-object v0, Lcom/google/android/gms/internal/measurement/v2;->c:Lcom/google/android/gms/internal/measurement/u2;
+
+    const/4 v1, 0x3
+
+    .line 3
+    iget-object v0, v0, Lcom/google/android/gms/internal/measurement/u2;->a:Ljava/lang/Object;
+
+    const/4 v1, 0x1
+
+    .line 5
+    check-cast v0, Lsun/misc/Unsafe;
+
+    const/4 v1, 0x4
+
+    .line 7
+    invoke-virtual {v0, p2, p0, p1, p3}, Lsun/misc/Unsafe;->putObject(Ljava/lang/Object;JLjava/lang/Object;)V
+
+    const/4 v1, 0x6
+
+    .line 10
+    return-void
+
+    .array-data 1
+        -0x40t
+        -0x77t
+        -0x4ft
+        0x10t
+        -0x2bt
+        0x3et
+        0x7ft
+        -0x2at
+        0x5dt
+        0x69t
+        -0x37t
+        -0x7at
+        -0x19t
+        0x42t
+        0x2bt
+        -0x7et
+        0x7t
+        -0x35t
+        0xbt
+        -0x18t
+    .end array-data
+.end method
+
+.method public static k([BJB)V
+    .locals 3
+
+    .line 1
+    sget-wide v0, Lcom/google/android/gms/internal/measurement/v2;->e:J
+
+    const/4 v2, 0x5
+
+    .line 3
+    add-long/2addr v0, p1
+
+    const/4 v2, 0x5
+
+    .line 4
+    sget-object p1, Lcom/google/android/gms/internal/measurement/v2;->c:Lcom/google/android/gms/internal/measurement/u2;
+
+    const/4 v2, 0x5
+
+    .line 6
+    invoke-virtual {p1, p0, v0, v1, p3}, Lcom/google/android/gms/internal/measurement/u2;->b(Ljava/lang/Object;JB)V
+
+    const/4 v2, 0x2
+
+    .line 9
+    return-void
+
+    nop
+
+    .array-data 1
+        0x7dt
+        -0x5ft
+        -0x11t
+        0x24t
+        -0x40t
+        -0x19t
+        0x22t
+        0x34t
+        0x75t
+        0x66t
+        0x69t
+        0x61t
+        0x60t
+        -0x2bt
+        -0x4bt
+        0x77t
+        -0x19t
+        -0x2dt
+        -0x2bt
+    .end array-data
+.end method
+
+.method public static l()Lsun/misc/Unsafe;
+    .locals 10
+
+    .line 1
+    const/4 v6, 0x0
+
+    move v0, v6
+
+    .line 2
+    :try_start_0
+    const/4 v7, 0x7
+
+    new-instance v1, Lcom/google/android/gms/internal/measurement/r2;
+
+    const/4 v7, 0x6
+
+    .line 4
+    invoke-direct {v1}, Ljava/lang/Object;-><init>()V
+
+    const/4 v8, 0x6
+
+    .line 7
+    invoke-static {v1}, Ljava/security/AccessController;->doPrivileged(Ljava/security/PrivilegedExceptionAction;)Ljava/lang/Object;
+
+    .line 10
+    move-result-object v6
+
+    move-object v1, v6
+
+    .line 11
+    check-cast v1, Lsun/misc/Unsafe;
+    :try_end_0
+    .catchall {:try_start_0 .. :try_end_0} :catchall_0
+
+    .line 13
+    goto :goto_0
+
+    .line 14
+    :catchall_0
+    move-object v1, v0
+
+    .line 15
+    :goto_0
+    if-nez v1, :cond_0
+
+    const/4 v8, 0x1
+
+    .line 17
+    return-object v0
+
+    .line 18
+    :cond_0
+    const/4 v9, 0x7
+
+    :try_start_1
+    const/4 v8, 0x6
+
+    const-class v2, [B
+
+    const/4 v8, 0x7
+
+    .line 20
+    invoke-virtual {v1, v2}, Lsun/misc/Unsafe;->arrayBaseOffset(Ljava/lang/Class;)I
+    :try_end_1
+    .catch Ljava/lang/Exception; {:try_start_1 .. :try_end_1} :catch_0
+
+    .line 23
+    return-object v1
+
+    .line 24
+    :catch_0
+    const-class v1, Lcom/google/android/gms/internal/measurement/v2;
+
+    const/4 v7, 0x2
+
+    .line 26
+    invoke-virtual {v1}, Ljava/lang/Class;->getName()Ljava/lang/String;
+
+    .line 29
+    move-result-object v6
+
+    move-object v1, v6
+
+    .line 30
+    invoke-static {v1}, Ljava/util/logging/Logger;->getLogger(Ljava/lang/String;)Ljava/util/logging/Logger;
+
+    .line 33
+    move-result-object v6
+
+    move-object v1, v6
+
+    .line 34
+    sget-object v2, Ljava/util/logging/Level;->WARNING:Ljava/util/logging/Level;
+
+    const/4 v7, 0x6
+
+    .line 36
+    const-string v6, "getUnsafe"
+
+    move-object v3, v6
+
+    .line 38
+    const-string v6, "As part of the planned removal, sun.misc.Unsafe is available in the current environment but configured to throw on use. Protobuf will continue without using it, but with slightly reduced performance. --sun-misc-unsafe-memory-access=allow is likely available to opt back in if desired. A later Protobuf version release will stop using sun.misc.Unsafe entirely."
+
+    move-object v4, v6
+
+    .line 40
+    const-string v6, "com.google.protobuf.UnsafeUtil"
+
+    move-object v5, v6
+
+    .line 42
+    invoke-virtual {v1, v2, v5, v3, v4}, Ljava/util/logging/Logger;->logp(Ljava/util/logging/Level;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+
+    const/4 v8, 0x6
+
+    .line 45
+    return-object v0
+
+    .array-data 1
+        0x7dt
+        0x1ft
+        0x0t
+        0x5ft
+        -0x20t
+        -0x46t
+        -0x44t
+        0x42t
+        -0x26t
+        -0x31t
+        -0x11t
+        0x71t
+        0x68t
+        0x35t
+        -0x7ft
+        0x79t
+        0x4at
+        -0x5ft
+        0x27t
+        0x75t
+        0x40t
+        -0x6t
+        0x11t
+        0x7et
+        -0x51t
+        0x5bt
+        0x59t
+        0x55t
+        -0x36t
+        0x24t
+        0xft
+        -0x25t
+        -0x7bt
+        0xft
+        0x41t
+        0x1bt
+        0x48t
+        0x29t
+        -0x6dt
+        -0x4ct
+        -0x62t
+        0x56t
+        0x51t
+        0x48t
+        0x1et
+    .end array-data
+.end method
+
+.method public static m(Ljava/lang/Class;)Z
+    .locals 10
+
+    move-object v6, p0
+
+    .line 1
+    const-class v0, [B
+
+    const/4 v8, 0x3
+
+    .line 3
+    sget v1, Lcom/google/android/gms/internal/measurement/n0;->a:I
+
+    const/4 v9, 0x6
+
+    .line 5
+    :try_start_0
+    const/4 v9, 0x4
+
+    sget-object v1, Lcom/google/android/gms/internal/measurement/v2;->b:Ljava/lang/Class;
+
+    const/4 v8, 0x7
+
+    .line 7
+    const-string v8, "peekLong"
+
+    move-object v2, v8
+
+    .line 9
+    sget-object v3, Ljava/lang/Boolean;->TYPE:Ljava/lang/Class;
+
+    const/4 v9, 0x6
+
+    .line 11
+    filled-new-array {v6, v3}, [Ljava/lang/Class;
+
+    .line 14
+    move-result-object v8
+
+    move-object v4, v8
+
+    .line 15
+    invoke-virtual {v1, v2, v4}, Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+
+    .line 18
+    const-string v9, "pokeLong"
+
+    move-object v2, v9
+
+    .line 20
+    sget-object v4, Ljava/lang/Long;->TYPE:Ljava/lang/Class;
+
+    const/4 v8, 0x3
+
+    .line 22
+    filled-new-array {v6, v4, v3}, [Ljava/lang/Class;
+
+    .line 25
+    move-result-object v9
+
+    move-object v4, v9
+
+    .line 26
+    invoke-virtual {v1, v2, v4}, Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+
+    .line 29
+    const-string v8, "pokeInt"
+
+    move-object v2, v8
+
+    .line 31
+    sget-object v4, Ljava/lang/Integer;->TYPE:Ljava/lang/Class;
+
+    const/4 v9, 0x7
+
+    .line 33
+    filled-new-array {v6, v4, v3}, [Ljava/lang/Class;
+
+    .line 36
+    move-result-object v9
+
+    move-object v5, v9
+
+    .line 37
+    invoke-virtual {v1, v2, v5}, Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+
+    .line 40
+    const-string v9, "peekInt"
+
+    move-object v2, v9
+
+    .line 42
+    filled-new-array {v6, v3}, [Ljava/lang/Class;
+
+    .line 45
+    move-result-object v9
+
+    move-object v3, v9
+
+    .line 46
+    invoke-virtual {v1, v2, v3}, Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+
+    .line 49
+    const-string v8, "pokeByte"
+
+    move-object v2, v8
+
+    .line 51
+    sget-object v3, Ljava/lang/Byte;->TYPE:Ljava/lang/Class;
+
+    const/4 v8, 0x7
+
+    .line 53
+    filled-new-array {v6, v3}, [Ljava/lang/Class;
+
+    .line 56
+    move-result-object v8
+
+    move-object v3, v8
+
+    .line 57
+    invoke-virtual {v1, v2, v3}, Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+
+    .line 60
+    const-string v9, "peekByte"
+
+    move-object v2, v9
+
+    .line 62
+    filled-new-array {v6}, [Ljava/lang/Class;
+
+    .line 65
+    move-result-object v9
+
+    move-object v3, v9
+
+    .line 66
+    invoke-virtual {v1, v2, v3}, Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+
+    .line 69
+    const-string v8, "pokeByteArray"
+
+    move-object v2, v8
+
+    .line 71
+    filled-new-array {v6, v0, v4, v4}, [Ljava/lang/Class;
+
+    .line 74
+    move-result-object v9
+
+    move-object v3, v9
+
+    .line 75
+    invoke-virtual {v1, v2, v3}, Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+
+    .line 78
+    const-string v9, "peekByteArray"
+
+    move-object v2, v9
+
+    .line 80
+    filled-new-array {v6, v0, v4, v4}, [Ljava/lang/Class;
+
+    .line 83
+    move-result-object v8
+
+    move-object v6, v8
+
+    .line 84
+    invoke-virtual {v1, v2, v6}, Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+    :try_end_0
+    .catchall {:try_start_0 .. :try_end_0} :catchall_0
+
+    .line 87
+    const/4 v9, 0x1
+
+    move v6, v9
+
+    .line 88
+    return v6
+
+    .line 89
+    :catchall_0
+    const/4 v8, 0x0
+
+    move v6, v8
+
+    .line 90
+    return v6
+
+    nop
+
+    .array-data 1
+        -0x71t
+        -0x33t
+        0x49t
+        0x5bt
+        0x6ft
+        0x31t
+        -0x46t
+        0x3ft
+        0x9t
+        0x4t
+        -0x60t
+        0x5ft
+        0x3ct
+        -0x55t
+        0x5ct
+        0x2t
+        0x7bt
+        0x9t
+        0x72t
+        -0x70t
+        -0xbt
+        -0x36t
+        0x19t
+        -0x20t
+        -0x63t
+        0x56t
+        0x1ft
+        -0x40t
+        -0x12t
+        0x5ct
+        0x6bt
+        0x35t
+        0x5t
+    .end array-data
+.end method
+
+.method public static synthetic n(JLjava/lang/Object;)Z
+    .locals 7
+
+    .line 1
+    sget-object v0, Lcom/google/android/gms/internal/measurement/v2;->c:Lcom/google/android/gms/internal/measurement/u2;
+
+    const/4 v6, 0x3
+
+    .line 3
+    iget-object v0, v0, Lcom/google/android/gms/internal/measurement/u2;->a:Ljava/lang/Object;
+
+    const/4 v6, 0x3
+
+    .line 5
+    check-cast v0, Lsun/misc/Unsafe;
+
+    const/4 v4, 0x4
+
+    .line 7
+    const-wide/16 v1, -0x4
+
+    const/4 v4, 0x7
+
+    .line 9
+    and-long/2addr v1, p0
+
+    const/4 v4, 0x2
+
+    .line 10
+    invoke-virtual {v0, p2, v1, v2}, Lsun/misc/Unsafe;->getInt(Ljava/lang/Object;J)I
+
+    .line 13
+    move-result v3
+
+    move p2, v3
+
+    .line 14
+    not-long p0, p0
+
+    const/4 v6, 0x1
+
+    .line 15
+    const-wide/16 v0, 0x3
+
+    const/4 v5, 0x5
+
+    .line 17
+    and-long/2addr p0, v0
+
+    const/4 v4, 0x2
+
+    .line 18
+    const/4 v3, 0x3
+
+    move v0, v3
+
+    .line 19
+    shl-long/2addr p0, v0
+
+    const/4 v6, 0x5
+
+    .line 20
+    long-to-int p0, p0
+
+    const/4 v5, 0x7
+
+    .line 21
+    ushr-int p0, p2, p0
+
+    const/4 v4, 0x1
+
+    .line 23
+    and-int/lit16 p0, p0, 0xff
+
+    const/4 v6, 0x6
+
+    .line 25
+    int-to-byte p0, p0
+
+    const/4 v5, 0x6
+
+    .line 26
+    if-eqz p0, :cond_0
+
+    const/4 v6, 0x5
+
+    .line 28
+    const/4 v3, 0x1
+
+    move p0, v3
+
+    .line 29
+    return p0
+
+    .line 30
+    :cond_0
+    const/4 v5, 0x4
+
+    const/4 v3, 0x0
+
+    move p0, v3
+
+    .line 31
+    return p0
+
+    .array-data 1
+        0x19t
+        0x5ct
+        -0x5ft
+        0xbt
+        -0x49t
+        0x16t
+        0x79t
+        0x1ct
+        0x76t
+        0x59t
+        -0x2ct
+        0x37t
+        0x5ft
+        0x6ct
+        0x4ft
+        -0x75t
+        -0x2dt
+        -0x1dt
+        0x27t
+        0x57t
+        0x61t
+        -0x3at
+        0xct
+        -0x30t
+        0x65t
+        0x4ft
+        0x6ft
+        0xct
+        -0x75t
+        0x7bt
+        -0x50t
+        0x1et
+        0x7bt
+        -0x4t
+        0x1et
+        0x27t
+        0x5ct
+        -0x78t
+        0x62t
+        -0x72t
+        0x48t
+        -0x16t
+        0x78t
+        0x5t
+    .end array-data
+.end method
+
+.method public static synthetic o(JLjava/lang/Object;)Z
+    .locals 7
+
+    .line 1
+    sget-object v0, Lcom/google/android/gms/internal/measurement/v2;->c:Lcom/google/android/gms/internal/measurement/u2;
+
+    const/4 v6, 0x4
+
+    .line 3
+    iget-object v0, v0, Lcom/google/android/gms/internal/measurement/u2;->a:Ljava/lang/Object;
+
+    const/4 v5, 0x3
+
+    .line 5
+    check-cast v0, Lsun/misc/Unsafe;
+
+    const/4 v4, 0x5
+
+    .line 7
+    const-wide/16 v1, -0x4
+
+    const/4 v4, 0x4
+
+    .line 9
+    and-long/2addr v1, p0
+
+    const/4 v5, 0x5
+
+    .line 10
+    invoke-virtual {v0, p2, v1, v2}, Lsun/misc/Unsafe;->getInt(Ljava/lang/Object;J)I
+
+    .line 13
+    move-result v3
+
+    move p2, v3
+
+    .line 14
+    const-wide/16 v0, 0x3
+
+    const/4 v6, 0x4
+
+    .line 16
+    and-long/2addr p0, v0
+
+    const/4 v4, 0x6
+
+    .line 17
+    const/4 v3, 0x3
+
+    move v0, v3
+
+    .line 18
+    shl-long/2addr p0, v0
+
+    const/4 v6, 0x5
+
+    .line 19
+    long-to-int p0, p0
+
+    const/4 v6, 0x3
+
+    .line 20
+    ushr-int p0, p2, p0
+
+    const/4 v5, 0x6
+
+    .line 22
+    and-int/lit16 p0, p0, 0xff
+
+    const/4 v4, 0x7
+
+    .line 24
+    int-to-byte p0, p0
+
+    const/4 v6, 0x6
+
+    .line 25
+    if-eqz p0, :cond_0
+
+    const/4 v5, 0x3
+
+    .line 27
+    const/4 v3, 0x1
+
+    move p0, v3
+
+    .line 28
+    return p0
+
+    .line 29
+    :cond_0
+    const/4 v6, 0x5
+
+    const/4 v3, 0x0
+
+    move p0, v3
+
+    .line 30
+    return p0
+
+    .array-data 1
+        -0x59t
+        -0x4bt
+        -0x20t
+        0x6ft
+        -0x20t
+        0x38t
+        -0x5ft
+        0x55t
+        0x9t
+        0x39t
+        -0x74t
+        0x7t
+        0x16t
+        -0x34t
+        -0x1ct
+        0x48t
+        -0x43t
+        0x56t
+        -0x14t
+        0x49t
+        0x51t
+        -0x3bt
+        -0x61t
+        -0x33t
+        0x52t
+        0x76t
+        -0x6t
+        -0x2bt
+        0x28t
+        0x4dt
+        0x51t
+        0x71t
+        0x2ft
+        0x45t
+        -0x17t
+        0x22t
+        0x4ct
+        0x5et
+        -0x7dt
+        0x5ct
+        0x2ct
+        0x76t
+        -0x45t
+        0x7at
+        0xct
+        0x6ft
+        0x6at
+        0x4at
+        0x6ct
+        0x70t
+        -0x52t
+        -0xbt
+        0x3t
+        0xdt
+        0x34t
+        0x18t
+        0x13t
+        -0x4dt
+        -0x56t
+        -0x5et
+        -0x5et
+        0xbt
+        0x36t
+        -0x2ft
+        -0x7et
+        0x14t
+        0x3ct
+        -0x1et
+        0x1dt
+        -0x20t
+        0x7et
+        0x2ft
+        0x1ft
+        -0x5bt
+        -0x57t
+        0x66t
+        -0x36t
+        -0x2at
+        0x64t
+        0x5at
+        -0x62t
+        -0x1ct
+        0x6dt
+        0x38t
+        0x33t
+    .end array-data
+.end method
+
+.method public static p(Ljava/lang/Class;)I
+    .locals 4
+
+    move-object v1, p0
+
+    .line 1
+    sget-boolean v0, Lcom/google/android/gms/internal/measurement/v2;->d:Z
+
+    const/4 v3, 0x3
+
+    .line 3
+    if-eqz v0, :cond_0
+
+    const/4 v3, 0x1
+
+    .line 5
+    sget-object v0, Lcom/google/android/gms/internal/measurement/v2;->c:Lcom/google/android/gms/internal/measurement/u2;
+
+    const/4 v3, 0x5
+
+    .line 7
+    iget-object v0, v0, Lcom/google/android/gms/internal/measurement/u2;->a:Ljava/lang/Object;
+
+    const/4 v3, 0x1
+
+    .line 9
+    check-cast v0, Lsun/misc/Unsafe;
+
+    const/4 v3, 0x1
+
+    .line 11
+    invoke-virtual {v0, v1}, Lsun/misc/Unsafe;->arrayBaseOffset(Ljava/lang/Class;)I
+
+    .line 14
+    move-result v3
+
+    move v1, v3
+
+    .line 15
+    return v1
+
+    .line 16
+    :cond_0
+    const/4 v3, 0x4
+
+    const/4 v3, -0x1
+
+    move v1, v3
+
+    .line 17
+    return v1
+
+    .array-data 1
+        -0xet
+        0x77t
+        -0x58t
+        0xat
+        -0x51t
+        -0x59t
+        0x1ct
+    .end array-data
+.end method
+
+.method public static q(Ljava/lang/Class;)V
+    .locals 4
+
+    move-object v1, p0
+
+    .line 1
+    sget-boolean v0, Lcom/google/android/gms/internal/measurement/v2;->d:Z
+
+    const/4 v3, 0x7
+
+    .line 3
+    if-eqz v0, :cond_0
+
+    const/4 v3, 0x7
+
+    .line 5
+    sget-object v0, Lcom/google/android/gms/internal/measurement/v2;->c:Lcom/google/android/gms/internal/measurement/u2;
+
+    const/4 v3, 0x6
+
+    .line 7
+    iget-object v0, v0, Lcom/google/android/gms/internal/measurement/u2;->a:Ljava/lang/Object;
+
+    const/4 v3, 0x2
+
+    .line 9
+    check-cast v0, Lsun/misc/Unsafe;
+
+    const/4 v3, 0x7
+
+    .line 11
+    invoke-virtual {v0, v1}, Lsun/misc/Unsafe;->arrayIndexScale(Ljava/lang/Class;)I
+
+    .line 14
+    :cond_0
+    const/4 v3, 0x7
+
+    return-void
+
+    nop
+
+    .array-data 1
+        -0x9t
+        0x4dt
+        -0x55t
+        0x18t
+        0x1bt
+        -0x12t
+        -0x5bt
+        0x39t
+        0x31t
+        0xet
+        -0x80t
+        -0x1bt
+        0x55t
+        0x4ft
+        0x49t
+        0x51t
+        -0x22t
+        -0x30t
+        0x5et
+        -0x51t
+        0x6at
+        -0x4t
+    .end array-data
+.end method

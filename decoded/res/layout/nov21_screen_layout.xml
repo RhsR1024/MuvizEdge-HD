@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="bottom" android:orientation="vertical" android:id="@id/parent" android:layout_width="fill_parent" android:layout_height="fill_parent" android:weightSum="1.0" android:animateLayoutChanges="true"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:gravity="start" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_marginTop="20.0dip" android:layout_marginBottom="20.0dip" android:layout_weight="0.77" android:animateLayoutChanges="true" android:layout_marginStart="40.0dip" android:layout_marginEnd="40.0dip">
+        <androidx.appcompat.widget.AppCompatTextView android:id="@id/clock_tv" android:layout_width="fill_parent" android:layout_height="60.0dip" android:maxLines="1" android:fontFamily="@font/pixeboy_regular" app:autoSizeTextType="uniform" />
+        <androidx.appcompat.widget.AppCompatTextView android:id="@id/date_tv" android:layout_width="fill_parent" android:layout_height="18.0dip" android:layout_marginTop="7.0dip" android:maxLines="1" android:fontFamily="@font/pixeboy_regular" app:autoSizeTextType="uniform" />
+        <LinearLayout android:orientation="vertical" android:id="@id/notification_container" android:paddingTop="30.0dip" android:paddingBottom="20.0dip" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <LinearLayout android:gravity="start" android:orientation="horizontal" android:id="@id/active_icons_lt" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="18.0dip" android:layout_marginStart="-10.0dip" />
+            <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/notification_lt" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <View android:background="@color/medGray" android:layout_marginBottom="18.0dip" style="@style/settingsSeparator" />
+                <LinearLayout android:gravity="top" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                    <LinearLayout android:id="@id/notification_icon_bg" android:background="@color/white" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.0dip">
+                        <ImageView android:id="@id/notification_icon" android:layout_width="18.0dip" android:layout_height="18.0dip" android:layout_margin="5.0dip" app:tint="@color/black" />
+                    </LinearLayout>
+                    <LinearLayout android:gravity="start" android:orientation="vertical" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0" android:layout_marginStart="14.0dip">
+                        <TextView android:textSize="18.0sp" android:textColor="@color/white" android:ellipsize="end" android:id="@id/notification_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxLines="1" android:fontFamily="@font/pixeboy_regular" />
+                        <TextView android:textSize="16.0sp" android:textColor="@color/liteGray" android:ellipsize="end" android:id="@id/notification_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="7.0dip" android:maxLines="2" android:lineSpacingExtra="5.0dip" android:fontFamily="@font/pixeboy_regular" />
+                    </LinearLayout>
+                </LinearLayout>
+                <View android:background="@color/medGray" android:layout_marginTop="18.0dip" style="@style/settingsSeparator" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:gravity="center|bottom" android:orientation="vertical" android:id="@id/media_widget_lt" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginStart="40.0dip" android:layout_marginEnd="40.0dip">
+        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <LinearLayout android:orientation="vertical" android:id="@id/player_details_layout" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0">
+                <TextView android:textSize="20.0sp" android:textColor="@color/white" android:ellipsize="marquee" android:id="@id/title_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/music_title_placeholder" android:singleLine="true" android:fontFamily="@font/pixeboy_regular" />
+                <TextView android:textSize="18.0sp" android:textColor="@color/gray" android:ellipsize="marquee" android:id="@id/artist_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:text="@string/music_artist_placeholder" android:singleLine="true" android:fontFamily="@font/pixeboy_regular" />
+            </LinearLayout>
+        </LinearLayout>
+        <com.sparkine.muvizedge.view.TimeProgressBar android:id="@id/music_progress" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="15.0dip" android:layout_marginBottom="10.0dip" android:maxHeight="3.0dip" android:minHeight="3.0dip" android:progressTint="@color/white" android:progressBackgroundTint="@color/white" style="?android:progressBarStyleHorizontal" />
+        <TextView android:textSize="16.0sp" android:textColor="@color/white" android:ellipsize="end" android:layout_gravity="end" android:id="@id/progress_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxLines="1" android:fontFamily="@font/pixeboy_regular" />
+        <LinearLayout android:gravity="start|center" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <LinearLayout android:id="@id/play_pause_btn" android:background="?android:selectableItemBackgroundBorderless" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="15.0dip">
+                <ImageView android:id="@id/play_pause_iv" android:layout_width="40.0dip" android:layout_height="40.0dip" android:src="@drawable/retro_pause_btn" />
+            </LinearLayout>
+            <LinearLayout android:id="@id/next_btn" android:background="?android:selectableItemBackgroundBorderless" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="10.0dip">
+                <ImageView android:id="@id/next_btn_iv" android:layout_width="40.0dip" android:layout_height="40.0dip" android:src="@drawable/retro_skip_btn" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <TextView android:textSize="16.0sp" android:textColor="@color/liteGray" android:id="@id/bottom_tv" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="30.0dip" android:fontFamily="@font/pixeboy_regular" android:textAlignment="center" />
+</LinearLayout>

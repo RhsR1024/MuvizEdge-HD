@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='utf-8'?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="center" android:orientation="vertical" android:id="@id/parent" android:background="@color/black" android:layout_width="fill_parent" android:layout_height="fill_parent">
+    <com.sparkine.muvizedge.view.StarField android:id="@id/star_field" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:weightSum="3.0">
+        <LinearLayout android:gravity="center|bottom" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.9">
+            <LinearLayout android:gravity="end" android:orientation="vertical" android:background="@drawable/black_gradient_bg" android:padding="15.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <TextView android:textSize="33.0sp" android:textColor="#ffffde59" android:id="@id/clock_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="7.0dip" android:text="06.38AM" android:maxLines="1" android:fontFamily="@font/nasalization" android:letterSpacing="0.45" />
+                <TextView android:textSize="15.0sp" android:textColor="#fffafafa" android:id="@id/date_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/adaptive_text_16" android:maxLines="1" android:fontFamily="@font/nasalization" android:letterSpacing="0.25" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:gravity="center" android:padding="30.0dip" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.55">
+            <com.sparkine.muvizedge.view.MoonSpace android:id="@id/moon_space" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout android:gravity="center|top" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="0.55">
+            <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/details_lt" android:background="@drawable/black_gradient_bg" android:padding="15.0dip" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/icons_lt" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                    <LinearLayout android:gravity="center" android:id="@id/battery_lt" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                        <ImageView android:id="@id/battery_icon" android:layout_width="15.0dip" android:layout_height="15.0dip" android:src="@drawable/battery_std_icon" android:layout_marginEnd="6.0dip" />
+                        <com.sparkine.muvizedge.view.NoPadTextView android:textSize="13.0sp" android:textColor="@color/white" android:id="@id/battery_status" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="90%" android:fontFamily="@font/nasalization" android:letterSpacing="0.1" />
+                    </LinearLayout>
+                    <com.sparkine.muvizedge.view.NoPadTextView android:textSize="12.0sp" android:textColor="@color/white" android:id="@id/separator_dot" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="•" android:fontFamily="@font/nasalization" android:layout_marginStart="12.0dip" android:layout_marginEnd="12.0dip" />
+                    <LinearLayout android:gravity="start" android:orientation="horizontal" android:id="@id/notify_icons_container" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="17.0dip" android:layout_marginStart="-10.0dip" />
+                </LinearLayout>
+                <LinearLayout android:gravity="center" android:id="@id/notify_lt" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="25.0dip" android:layout_marginEnd="25.0dip">
+                    <ImageView android:id="@id/notify_icon" android:layout_width="17.0dip" android:layout_height="17.0dip" android:layout_marginEnd="10.0dip" />
+                    <TextView android:textSize="13.0sp" android:textColor="@color/white" android:ellipsize="marquee" android:id="@id/notify_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="2.0dip" android:singleLine="true" android:marqueeRepeatLimit="1" android:textAllCaps="true" android:fontFamily="@font/nasalization" android:letterSpacing="0.15" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/media_widget_lt" android:background="@drawable/black_gradient_bg" android:padding="15.0dip" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <ImageView android:id="@id/prev_btn" android:background="?android:selectableItemBackgroundBorderless" android:padding="14.0dip" android:layout_width="42.0dip" android:layout_height="42.0dip" android:src="@drawable/next_icon_round_thin" android:rotation="-180.0" android:layout_marginStart="25.0dip" android:layout_marginEnd="15.0dip" />
+                <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/music_details_lt" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0">
+                    <TextView android:textSize="13.0sp" android:textColor="@color/white" android:ellipsize="marquee" android:id="@id/title_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8.0dip" android:text="@string/music_title_placeholder" android:singleLine="true" android:marqueeRepeatLimit="2" android:textAllCaps="true" android:fontFamily="@font/nasalization" android:textAlignment="center" android:letterSpacing="0.25" />
+                    <TextView android:textSize="11.0sp" android:textColor="#ff898989" android:ellipsize="marquee" android:id="@id/artist_tv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/music_artist_placeholder" android:singleLine="true" android:marqueeRepeatLimit="1" android:textAllCaps="true" android:fontFamily="@font/nasalization" android:textAlignment="center" android:letterSpacing="0.15" />
+                </LinearLayout>
+                <ImageView android:id="@id/next_btn" android:background="?android:selectableItemBackgroundBorderless" android:padding="14.0dip" android:layout_width="42.0dip" android:layout_height="42.0dip" android:src="@drawable/next_icon_round_thin" android:layout_marginStart="15.0dip" android:layout_marginEnd="25.0dip" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

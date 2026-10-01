@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.sparkine.muvizedge.view.edgeviz.VizView android:id="@id/viz_view" android:background="@color/drkGray" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <LinearLayout android:orientation="vertical" android:id="@id/parent_layout" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <RelativeLayout android:padding="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <FrameLayout style="@style/backIconWrapper">
+                <ImageView style="@style/backIcon" />
+            </FrameLayout>
+        </RelativeLayout>
+        <LinearLayout android:gravity="center" android:orientation="vertical" android:paddingBottom="20.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent" android:paddingStart="40.0dip" android:paddingEnd="40.0dip">
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="20.0dip">
+                <View android:id="@id/color_1" android:background="@drawable/round_bg_white" android:layout_width="50.0dip" android:layout_height="50.0dip" android:foreground="@drawable/round_bg_white_stroke" android:onClick="onColor1" android:layout_marginEnd="20.0dip" />
+                <View android:id="@id/color_2" android:background="@drawable/round_bg_white" android:layout_width="50.0dip" android:layout_height="50.0dip" android:onClick="onColor2" android:layout_marginEnd="20.0dip" />
+                <View android:id="@id/color_3" android:background="@drawable/round_bg_white" android:layout_width="50.0dip" android:layout_height="50.0dip" android:onClick="onColor3" />
+            </LinearLayout>
+            <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0">
+                <EditText android:id="@id/color_code_et" android:layout_width="100.0dip" android:layout_height="wrap_content" android:layout_marginBottom="10.0dip" android:inputType="textNoSuggestions" android:imeOptions="actionDone" android:textAlignment="center" />
+                <com.flask.colorpicker.ColorPickerView android:id="@id/color_picker" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0" app:alphaSlider="false" app:density="12" app:lightnessSlider="true" app:lightnessSliderView="@id/v_lightness_slider" app:wheelType="CIRCLE" />
+                <com.flask.colorpicker.slider.LightnessSlider android:id="@id/v_lightness_slider" android:layout_width="fill_parent" android:layout_height="48.0dip" />
+            </LinearLayout>
+            <com.google.android.material.button.MaterialButton android:layout_gravity="end" android:id="@id/add_btn" android:layout_width="wrap_content" android:layout_height="50.0dip" android:layout_marginTop="20.0dip" android:text="@string/add_color_label" android:backgroundTint="@color/liteBluishGray" app:cornerRadius="25.0dip" app:icon="@drawable/add_icon_btn" style="@style/Widget.MaterialComponents.Button" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

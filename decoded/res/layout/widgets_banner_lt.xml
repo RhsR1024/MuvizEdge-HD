@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:gravity="center" android:orientation="horizontal" android:background="@drawable/rounded_corners" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="20.0dip" android:backgroundTint="@color/liteBluishGray" android:paddingHorizontal="10.0dip" android:paddingVertical="10.0dip">
+    <LinearLayout android:padding="0.0dip" android:layout_weight="1.0" style="@style/settingsParent">
+        <ImageView android:layout_width="35.0dip" android:layout_height="35.0dip" android:src="@drawable/muviz_widgets_icon" android:alpha="0.9" android:layout_marginEnd="10.0dip" style="@style/settingsMenuIcon" />
+        <LinearLayout style="@style/settingsTextGroup">
+            <TextView android:textSize="15.0sp" android:textStyle="bold" android:textColor="@color/accent_blue" android:text="@string/adaptive_text_23" android:maxLines="1" style="@style/settingsText" />
+            <TextView android:textSize="12.0sp" android:textColor="@color/whitish_gray" android:text="@string/adaptive_text_24" android:maxLines="1" style="@style/settingsSubText" />
+        </LinearLayout>
+    </LinearLayout>
+    <com.google.android.material.button.MaterialButton android:textSize="15.0sp" android:textColor="@color/whitish_gray" android:id="@id/install_btn" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/adaptive_text_25" android:textAllCaps="false" android:fontFamily="@font/ios_default_med" android:backgroundTint="@color/medBluishGray" android:letterSpacing="0.0" app:cornerRadius="25.0dip" app:icon="@drawable/store_icon" app:iconSize="17.0dip" app:iconTint="@android:color/transparent" app:iconTintMode="add" style="@style/Widget.MaterialComponents.Button" />
+</LinearLayout>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/preview_img" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="10.0dip" android:scaleType="fitCenter" android:layout_centerInParent="true" />
+    <ImageView android:id="@id/pro_identifier" android:visibility="gone" android:layout_width="15.0dip" android:layout_height="15.0dip" android:layout_marginTop="7.5dip" android:src="@drawable/star_icon_btn" android:tint="@color/warning" android:layout_marginEnd="7.5dip" android:layout_alignParentEnd="true" />
+</RelativeLayout>

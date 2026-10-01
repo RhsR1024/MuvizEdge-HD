@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="vertical" android:background="@color/drkGray" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <View android:id="@id/parent_bg_back" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+        <View android:id="@id/parent_bg" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    </RelativeLayout>
+    <com.sparkine.muvizedge.view.edgeviz.VizView android:id="@id/viz_view" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <LinearLayout android:orientation="vertical" android:id="@id/parent_layout" android:background="@android:color/transparent" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <RelativeLayout android:padding="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <FrameLayout android:layout_centerVertical="true" android:layout_alignParentStart="true" style="@style/backIconWrapper">
+                <ImageView style="@style/backIcon" />
+            </FrameLayout>
+            <FrameLayout android:padding="12.0dip" android:layout_centerVertical="true" android:onClick="openAddColor" android:layout_alignParentEnd="true" style="@style/backIconWrapper">
+                <ImageView android:layout_width="20.0dip" android:layout_height="20.0dip" android:src="@drawable/round_add_icon" />
+            </FrameLayout>
+        </RelativeLayout>
+        <androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:paddingStart="20.0dip" android:paddingEnd="20.0dip" xmlns:app="http://schemas.android.com/apk/res-auto">
+            <com.google.android.material.appbar.AppBarLayout android:background="@null" android:layout_width="fill_parent" android:layout_height="wrap_content" app:elevation="0.0dip">
+                <com.google.android.material.appbar.CollapsingToolbarLayout android:layout_width="fill_parent" android:layout_height="wrap_content" app:layout_scrollFlags="scroll|snap">
+                    <LinearLayout android:orientation="vertical" android:id="@id/album_lt" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                        <LinearLayout android:gravity="center_horizontal" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="20.0dip" android:layout_marginBottom="30.0dip">
+                            <ImageView android:id="@id/album_art" android:layout_width="110.0dip" android:layout_height="110.0dip" android:scaleType="fitCenter" />
+                            <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="fill_parent" android:paddingStart="15.0dip" android:paddingEnd="15.0dip">
+                                <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="0.0dip" android:layout_marginTop="5.0dip" android:layout_weight="1.0">
+                                    <TextView android:textSize="12.0sp" android:textStyle="normal" android:textColor="@color/liteGray" android:ellipsize="end" android:id="@id/audio_state_label" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/audio_state_idle" android:maxLines="1" />
+                                    <TextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="@color/white" android:ellipsize="end" android:id="@id/media_app_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/no_audio_msg" android:maxLines="1" />
+                                </LinearLayout>
+                                <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:background="@drawable/palette_bg" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                                    <com.sparkine.muvizedge.view.PaletteView android:id="@id/album_palette" android:background="?android:selectableItemBackgroundBorderless" android:padding="12.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" app:maxColors="3" app:radius="13.0dip" />
+                                    <View android:layout_marginTop="10.0dip" android:layout_marginBottom="10.0dip" style="@style/settingsSeparatorHorizontal" />
+                                    <LinearLayout android:gravity="center" android:id="@id/add_color_lt" android:background="?android:selectableItemBackgroundBorderless" android:padding="13.0dip" android:layout_width="wrap_content" android:layout_height="fill_parent">
+                                        <ImageView android:id="@id/add_color_icon" android:layout_width="13.0dip" android:layout_height="13.0dip" android:src="@drawable/add_icon" />
+                                    </LinearLayout>
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+                        <View style="@style/settingsSeparator" />
+                    </LinearLayout>
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+                <LinearLayout android:id="@id/auto_album_color_lt" android:padding="20.0dip" style="@style/settingsParent">
+                    <LinearLayout android:orientation="horizontal" style="@style/settingsTextGroup">
+                        <TextView android:textSize="13.0sp" android:ellipsize="none" android:id="@id/star_icon" android:visibility="gone" android:layout_marginTop="-1.0dip" android:text="@string/star_icon" android:layout_marginEnd="10.0dip" style="@style/settingsText" />
+                        <TextView android:textSize="13.0sp" android:textStyle="bold" android:ellipsize="middle" android:text="@string/auto_album_color_label" android:singleLine="true" android:textAllCaps="true" style="@style/settingsText" />
+                    </LinearLayout>
+                    <androidx.appcompat.widget.SwitchCompat android:id="@id/auto_album_color_switch" style="@style/settingsAction" />
+                </LinearLayout>
+                <LinearLayout android:id="@id/fetch_color_lt" android:visibility="gone" style="@style/settingsParent">
+                    <LinearLayout style="@style/settingsTextGroup">
+                        <TextView android:text="@string/fetch_color_label" style="@style/settingsText" />
+                        <TextView android:textColor="@color/warning" android:id="@id/select_apps_subtext" android:text="@string/notification_access_label" style="@style/settingsSubText" />
+                    </LinearLayout>
+                    <ImageView style="@style/settingsForwardIcon" />
+                </LinearLayout>
+                <View style="@style/settingsSeparator" />
+                <com.google.android.material.tabs.TabLayout android:layout_gravity="center_horizontal" android:id="@id/color_tabs" android:layout_width="wrap_content" android:layout_height="40.0dip" style="@style/ColorsTabLayout" />
+            </com.google.android.material.appbar.AppBarLayout>
+            <androidx.viewpager.widget.ViewPager android:id="@id/color_pager" android:layout_width="fill_parent" android:layout_height="fill_parent" app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </LinearLayout>
+</RelativeLayout>
