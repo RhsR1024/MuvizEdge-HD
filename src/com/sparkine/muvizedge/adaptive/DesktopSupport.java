@@ -118,7 +118,9 @@ public final class DesktopSupport {
             String pkg=timeline.packageName();boolean isHome=homes.contains(pkg);
             querySummary("ok",authorized,start,wall,now,count,external,pkg,isHome);
             String reason=homes.isEmpty()?"系统未提供桌面应用列表":pkg.length()==0?"暂无明确的前台 Activity":isHome?"车机桌面或桌面内应用列表":"前台为其他应用";
+            Snapshot old=snapshot;
             snapshot=new Snapshot(pkg,timeline.activityName(),isHome,SystemClock.elapsedRealtime(),timeline.eventTime(),reason);
+            if(!pkg.equals(old.pkg) || !timeline.activityName().equals(old.activity) || isHome!=old.home)NavigationInsets.foregroundChanged();
             status=reason;
             String detail="package="+pkg+" activity="+timeline.activityName()+" home="+isHome+" eventWall="+timeline.eventTime()+" reason="+reason;
             DiagnosticLog.state("DESKTOP_FOREGROUND",detail);

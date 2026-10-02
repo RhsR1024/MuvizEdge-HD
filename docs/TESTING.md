@@ -2,7 +2,7 @@
 
 ## 自动检查
 
-完整入口 `build.ps1`，当前共 496 项：
+完整入口 `build.ps1`，当前共 535 项：
 
 | 测试入口 | 数量 | 重点 |
 | --- | ---: | --- |
@@ -12,10 +12,11 @@
 | AudioPolicyTest | 52 | 播放 / 音量兼容、FFT、边距上限 |
 | DisplayPolicyTest | 17 | 手机 / 车机识别和缩放 |
 | StartupPolicyTest | 37 | 启动节流、系统限制和休眠间隔 |
-| RollingLogTest | 112 | 轮转、UTF-8、并发、2 MiB 和导出 |
+| RollingLogTest | 118 | 轮转、UTF-8、并发、2 MiB 和导出 |
 | DesktopInsetPolicyTest | 43 | 桌面前台事件、状态过期与避让 |
 | CaptureServicePolicyTest | 36 | 系统版本、录音授权、服务类型升级与拒绝退避 |
 | UsageAccessPolicyTest | 40 | 默认权限、实际事件证据、撤销、长时间桌面重放 |
+| InsetRecheckPolicyTest | 33 | 前台切换、有限重测、可见脉冲与真实导航栏 |
 
 额外静态检查见 BUILD 文档。测试使用普通 JVM；不模拟 Android 系统的窗口、音频服务和后台权限。
 
@@ -46,4 +47,6 @@
 
 至少覆盖 Android 13 小米 10：首次启动无黑屏，授权跳转 / 返回正常；自动模式使用手机显示大小，中文 / 英文切换正常，手动大屏开关可返回；后台播放与导航栏切换不退化。所有“通过”必须来自实际设备观测，不能用静态结果填补。
 
-151 还需覆盖：系统权限页已授权但 check / note 不一致；MODE_DEFAULT + 系统权限授予；撤销后空结果立即清除桌面证据；停在桌面超过 5 分钟；API 30/33 录音授权前后 serviceType 2→130；Android 14+ 拒绝后台 microphone 类型时保留服务、真实界面打开后重试。两项新版设备修复均尚未实测。
+151 还需覆盖：系统权限页已授权但 check / note 不一致；MODE_DEFAULT + 系统权限授予；撤销后空结果立即清除桌面证据；停在桌面超过 5 分钟；API 30/33 录音授权前后 serviceType 2→130；Android 14+ 拒绝后台 microphone 类型时保留服务、真实界面打开后重试。151 已在一次实际重启中后台恢复，且已确认 MODE_DEFAULT + 系统授权可用；其余场景仍需按实际设备验证。
+
+152 新增的有限重测与短暂可见脉冲过滤尚未车机实测；需覆盖工具内部页面、系统权限页往返、持续显示导航栏和键盘。构建额外运行 8 项 Android API 继承解析检查。

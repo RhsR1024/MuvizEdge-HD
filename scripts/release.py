@@ -2,7 +2,7 @@ from pathlib import Path
 import hashlib,json,os,re,shutil,struct,subprocess,sys,zipfile,zlib
 
 from paths import ROOT, BUILD, TOOLS, JAVA, TEMP, ENV, CONFIG
-from platform_api import platform_method
+from platform_api import platform_method,verify_platform_resolver
 from signing import identity
 
 from loguru import logger
@@ -26,6 +26,7 @@ with zipfile.ZipFile(baseline) as old,zipfile.ZipFile(BUILD/'base-unsigned.apk')
     out.write(BUILD/'helper-dex/classes.dex','classes2.dex',compress_type=zipfile.ZIP_DEFLATED)
 print('Packaged; verifying resources, manifest and DEX...',flush=True)
 report={'baseline':CONFIG['baseline_apk'], 'tests':CONFIG['test_cases'], 'total_tests_passed':sum(CONFIG['test_cases'].values()), 'device_tested':False}
+report['platform_resolver_checks']=verify_platform_resolver()
 ns='{http://schemas.android.com/apk/res/android}'
 allowed={k:set(v) for k,v in json.loads((ROOT/'verification/expected-methods.json').read_text()).items()}
 changed={}

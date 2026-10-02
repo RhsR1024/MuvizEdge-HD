@@ -10,7 +10,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\build.ps1
 
 脚本先验证 `vendor/checksums.json`，按需解压运行环境。Python 使用 `-I -S`，不加载系统或用户 site-packages；Java 清除外部注入选项，临时文件放入 `build/temp`。源码先复制到 `build/decoded`，apktool 的缓存不写回版本控制目录。
 
-流程：编译接口桩 → 编译辅助代码 → 执行 496 项 JVM 检查 → D8 生成辅助 DEX → apktool 重编译 → 合并 / 静态校验 → zipalign / 签名 → 检查证书和 payload。
+流程：编译接口桩 → 编译辅助代码 → 执行 535 项 JVM 检查 → D8 生成辅助 DEX → apktool 重编译 → 合并 / 静态校验 → zipalign / 签名 → 检查证书和 payload。
 
 | 产物 | 用途 |
 | --- | --- |
@@ -64,6 +64,8 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\build.ps1 -UseDevelopm
 - 5599 个资源 / 原生 / 其他文件与基线一致，资源 ID 不变；Manifest 只允许版本变化及 151 的 FOREGROUND_SERVICE_MICROPHONE 正常权限 / AppService 采集类型；校验逐项验证并还原这两处后比较整个 Manifest。
 - 启动弹框移除状态、前台服务先后次序、空 Intent 恢复、149 采集诊断接入保持。
 - APK 容器有效，签名后各输入条目内容不变，签名证书正确。
+
+152 修正 API 解析器对接口继承的处理，例如 WindowManager 从 ViewManager 继承 updateViewLayout。额外 8 项检查覆盖接口继承、普通父类、构造器不能继承、缺失方法和高于 API 30 的方法；继续逐条解析实际 DEX 调用，没有豁免新窗口调用。
 
 apktool 重建可能改变 PNG 存储形式，因此合包脚本从 148 APK 取回同名 PNG 原字节。**后续如果有意修改 PNG，必须同时修改这一合包策略，否则新 PNG 会被旧图替换。**
 

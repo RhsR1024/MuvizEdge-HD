@@ -6,12 +6,15 @@ import android.graphics.Insets;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.SystemClock;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowInsets;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder;
+import android.view.WindowManager;
 import java.util.ArrayList;
 import java.lang.ref.WeakReference;
 import java.util.WeakHashMap;
@@ -19,6 +22,13 @@ import java.util.WeakHashMap;
 public final class NavigationInsets {
     private NavigationInsets() {}
     private static final WeakHashMap<View, Watcher> watchers = new WeakHashMap<View, Watcher>();
+    private static final Handler main=new Handler(Looper.getMainLooper());
+    public static void foregroundChanged(){main.removeCallbacks(foregroundRefresh);main.post(foregroundRefresh);}
+    private static final Runnable foregroundRefresh=new Runnable(){public void run(){
+        for(Watcher watcher:new ArrayList<Watcher>(watchers.values())){
+            View v=watcher.view.get();if(v!=null && v.isAttachedToWindow()){v.removeCallbacks(watcher);watcher.run();}
+        }
+    }};
     private static String lastSource = "等待悬浮窗口测量";
     private static long lastAt = -1;
     private static boolean lastEnabled;
@@ -107,6 +117,7 @@ public final class NavigationInsets {
         final WeakReference<View> view;
         final WeakReference<gb.f> controller;
         final AutoInsetPolicy policy = new AutoInsetPolicy();
+        final InsetRecheckPolicy recheck=new InsetRecheckPolicy();
         final DisplayMetrics metrics=new DisplayMetrics();
         final Rect visibleFrame=new Rect();
         final int[] location=new int[2];
@@ -114,6 +125,35 @@ public final class NavigationInsets {
         boolean auto;
         int screenHeight,screenWidth,rotation=-1,previousEffective=-2,learnedHeight=-1;
         String geometry="";
+        final Runnable recheckResult=new Runnable(){public void run(){
+            View v=view.get();if(v==null || !v.isAttachedToWindow())return;
+            try{
+                WindowInsets insets=v.getRootWindowInsets();
+                String raw=Build.VERSION.SDK_INT>=30 && insets!=null?Api30.read(insets).raw:"legacy="+insets;
+                DiagnosticLog.event("NAVIGATION_RECHECK_RESULT","component="+recheck.component()+" "+raw+" selected="+policy.height()+" overlap="+effectiveInset());
+            }catch(RuntimeException e){DiagnosticLog.error("NAVIGATION_RECHECK_RESULT_FAILED",e);}
+        }};
+        final Runnable relayout=new Runnable(){public void run(){
+            View v=view.get();
+            if(v==null || !v.isAttachedToWindow() || !enabled(v.getContext())){recheck.reset();return;}
+            long now=SystemClock.elapsedRealtime();
+            if(recheck.take(now))try{
+                // Ask WindowManager to recompute the existing window's insets. Keep its size,
+                // flags and Surface, and do not restart audio just to refresh navigation state.
+                android.view.ViewGroup.LayoutParams params=v.getLayoutParams();
+                if(params instanceof WindowManager.LayoutParams){
+                    WindowManager wm=(WindowManager)v.getContext().getSystemService(Context.WINDOW_SERVICE);
+                    if(wm!=null)wm.updateViewLayout(v,params);
+                }
+                v.requestLayout();v.requestApplyInsets();
+                DiagnosticLog.event("NAVIGATION_RELAYOUT","component="+recheck.component()+" selected="+policy.height()+" params="+(params==null?"null":params.getClass().getSimpleName()));
+                try{DiagnosticLog.state("SYSTEM_IMMERSIVE_POLICY","policy_control="+android.provider.Settings.Global.getString(v.getContext().getContentResolver(),"policy_control"));}
+                catch(RuntimeException e){DiagnosticLog.state("SYSTEM_IMMERSIVE_POLICY","unavailable="+e.getClass().getSimpleName());}
+                v.removeCallbacks(recheckResult);v.postDelayed(recheckResult,100);
+                v.removeCallbacks(Watcher.this);v.post(Watcher.this);
+            }catch(RuntimeException e){DiagnosticLog.error("NAVIGATION_RELAYOUT_FAILED",e);}
+            long delay=recheck.delay(SystemClock.elapsedRealtime());if(delay>=0)v.postDelayed(this,delay);
+        }};
         final Runnable refresh=new Runnable(){public void run(){
             View v=view.get();gb.f owner=controller.get();
             if(v!=null && v.isAttachedToWindow() && owner!=null)try{
@@ -127,7 +167,7 @@ public final class NavigationInsets {
         }};
         Watcher(View view,gb.f controller){this.view=new WeakReference<View>(view);this.controller=new WeakReference<gb.f>(controller);}
         @Override public void onViewAttachedToWindow(View v){enabledAt=-1;previousEffective=-2;v.removeCallbacks(this);v.requestApplyInsets();run();}
-        @Override public void onViewDetachedFromWindow(View v){v.removeCallbacks(this);v.removeCallbacks(refresh);policy.reset();geometry="";}
+        @Override public void onViewDetachedFromWindow(View v){v.removeCallbacks(this);v.removeCallbacks(refresh);v.removeCallbacks(relayout);v.removeCallbacks(recheckResult);recheck.reset();policy.reset();geometry="";}
         void queueRefresh(View v){v.removeCallbacks(refresh);v.post(refresh);}
         public void surfaceCreated(SurfaceHolder h){surface("created",h);}
         public void surfaceChanged(SurfaceHolder h,int format,int width,int height){surface("changed format="+format+" size="+width+"x"+height,h);}
@@ -139,7 +179,7 @@ public final class NavigationInsets {
         @Override public WindowInsets onApplyWindowInsets(View v,WindowInsets insets){sample(v,insets);return insets;}
         @Override public void run(){
             View v=view.get();if(v==null || !v.isAttachedToWindow())return;
-            sample(v,v.getRootWindowInsets());v.removeCallbacks(this);v.postDelayed(this,350);
+            sample(v,v.getRootWindowInsets());v.removeCallbacks(this);v.postDelayed(this,policy.nextSampleDelay(SystemClock.elapsedRealtime()));
         }
         int effectiveInset(){
             View v=view.get();if(v==null || !auto)return -1;
@@ -184,8 +224,17 @@ public final class NavigationInsets {
                 }
             } catch(RuntimeException e){DiagnosticLog.state("INSET_ERROR",e.toString());reading=new Reading();}
             if(!reading.keyboard && reading.signal==NavigationPolicy.VISIBLE && AutoInsetPolicy.plausibleHeight(reading.height,screenHeight))learnedHeight=reading.height;
+            boolean confirmedOther=false;
+            String foreground="unknown";
             if(auto)try{
                 DesktopSupport.Snapshot desktop=DesktopSupport.sample(v.getContext());
+                boolean fresh=ForegroundPolicy.fresh(true,desktop.checked,now);
+                confirmedOther=fresh && !desktop.home && desktop.pkg.length()>0;
+                foreground=desktop.pkg+"/"+desktop.activity+" fresh="+fresh+" home="+desktop.home;
+                if(fresh && desktop.pkg.length()>0 && recheck.change(desktop.pkg+"/"+desktop.activity,now)){
+                    v.removeCallbacks(relayout);v.removeCallbacks(recheckResult);v.post(relayout);
+                    DiagnosticLog.event("NAVIGATION_FOREGROUND","component="+foreground);
+                }
                 int bottom=DesktopInsetPolicy.height(true,desktop.freshHome(now),reading.keyboard,reading.side,
                     reading.signal,reading.height,reading.stableHeight,learnedHeight,systemHeight(screenWidth,screenHeight),screenHeight);
                 if(bottom>=0){
@@ -193,7 +242,7 @@ public final class NavigationInsets {
                     reading.source="桌面兼容自动避让；前台="+desktop.pkg;
                 }
             }catch(RuntimeException e){DiagnosticLog.state("DESKTOP_INSET_FAILED",e.toString());}
-            int selected=policy.update(auto,reading.signal,reading.height,now);
+            int selected=policy.update(auto,reading.signal,reading.height,now,confirmedOther && !reading.keyboard && !reading.side);
             int effective=effectiveInset();
             lastAt=now;lastSource=reading.source;lastEnabled=auto;lastSignal=reading.signal;lastMeasured=reading.height;lastHeight=selected;
             v.getLocationOnScreen(location);lastScreenHeight=screenHeight;lastViewBottom=location[1]+v.getHeight();
@@ -203,7 +252,7 @@ public final class NavigationInsets {
             String currentGeometry="display="+screenWidth+"x"+screenHeight+" rotation="+rotation+" view="+v.getWidth()+"x"+v.getHeight()+" xy="+location[0]+","+location[1]+" root="+root.getWidth()+"x"+root.getHeight();
             gb.f owner=controller.get();
             String params=owner==null||owner.q==null?"null":"size="+owner.q.width+"x"+owner.q.height+" xy="+owner.q.x+","+owner.q.y+" gravity="+owner.q.gravity+" flags="+owner.q.flags;
-            DiagnosticLog.state("NAVIGATION_WINDOW",currentGeometry+" frame="+visibleFrame+" globalVisible="+globallyVisible+":"+visible+" alpha="+v.getAlpha()+" viewVisibility="+v.getVisibility()+" windowVisibility="+v.getWindowVisibility()+" ui="+v.getWindowSystemUiVisibility()+" params="+params+" "+reading.raw+" signal="+reading.signal+" measured="+reading.height+" selected="+selected+" overlap="+effective+" auto="+auto+" source="+reading.source);
+            DiagnosticLog.state("NAVIGATION_WINDOW",currentGeometry+" frame="+visibleFrame+" globalVisible="+globallyVisible+":"+visible+" alpha="+v.getAlpha()+" viewVisibility="+v.getVisibility()+" windowVisibility="+v.getWindowVisibility()+" ui="+v.getWindowSystemUiVisibility()+" params="+params+" "+reading.raw+" signal="+reading.signal+" measured="+reading.height+" selected="+selected+" overlap="+effective+" auto="+auto+" foreground="+foreground+" visibleDebounce="+confirmedOther+" source="+reading.source);
             // Reload the outline on geometry changes even when the bottom inset stays equal.
             if(effective!=previousEffective||!geometry.equals(currentGeometry)){previousEffective=effective;geometry=currentGeometry;queueRefresh(v);}
         }

@@ -77,3 +77,11 @@ AppOps 常见模式：0 allowed、1 ignored、2 errored、3 default、4 foregrou
 - `DESKTOP_ACCESS_RESULT`：实际查询验证结果，区别系统授权、兼容读到其他应用事件、无数据 / 失败。自身事件和空结果不视为跨应用读取成功。
 - `DESKTOP_ACCESS_SETTINGS`：用户打开系统权限页的记录。判断是否同一应用 / 用户，并结合返回后的访问值；权限页显示已开启但接口不可用时，应继续调查，不能笼统要求重新授权。
 - `DESKTOP_RECHECK`：界面恢复 / 手动重新检查的触发来源；`DESKTOP_QUERY_SUMMARY`：查询区间、耗时、返回数量、有无其他应用的 Activity、权限或数据验证来源、前台包名和 HOME 判定。状态变化时立即记录，稳定时最多每 30 秒一条，并附在导出快照中。
+
+## 152 补充
+
+`NAVIGATION_FOREGROUND`、`NAVIGATION_RELAYOUT` / `FAILED` 记录前台改变后的主动窗口重测；`NAVIGATION_WINDOW` 同时保留前台组件、fresh/home 和可见防抖条件。若仍悬空，先看主动重测后是否还一直为 navVisible=true / bottom=160，再检查最终渲染边距。不要把“识别为非 HOME”直接当作全屏的充分证据。
+
+`NAVIGATION_RECHECK_RESULT` 记录每次请求后约 100 ms 看到的 Insets 和选定高度，便于判断结果仍未变化；`SYSTEM_IMMERSIVE_POLICY` 记录系统公开的 policy_control 设置，空值也有意义。此设置仅作诊断，不代表手势临时显示的导航栏必然隐藏。
+
+`LOG_GAP nullBytes=...` 表示导出时发现原始文件存在 NUL 空洞；保持周围有效记录顺序并标记缺失，原始文件未重写。它不表示丢失数据已恢复，也不能单独证明空洞由何种断电 / 存储问题造成。

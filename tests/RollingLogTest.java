@@ -27,6 +27,19 @@ public final class RollingLogTest {
         String chunk=large.toString();for(int i=0;i<450;i++)prod.append("event="+i+" "+chunk);
         prod.append("PRODUCTION_LAST");byte[] full=prod.snapshot("production header",RollingLog.LIMIT);
         check(size(real)<=RollingLog.LIMIT,"production 2MiB disk cap");check(full.length<=RollingLog.LIMIT,"production 2MiB export cap");check(decode(full).contains("PRODUCTION_LAST"),"production UTF-8 and newest event");
+        Path damaged=Files.createTempDirectory("muviz-gap-test");
+        ByteArrayOutputStream hole=new ByteArrayOutputStream();
+        hole.write("BEFORE\n".getBytes(StandardCharsets.UTF_8));hole.write(new byte[1470]);hole.write("PROCESS_START\nAFTER\n".getBytes(StandardCharsets.UTF_8));hole.write(new byte[4282]);
+        Files.write(damaged.resolve("events.txt"),hole.toByteArray());
+        RollingLog recovered=new RollingLog(damaged.toFile(),32768);recovered.append("LATEST");
+        String clean=decode(recovered.snapshot("header",32768));
+        check(clean.indexOf('\0')<0,"export remains searchable text after NUL gaps");
+        check(clean.contains("nullBytes=1470")&&clean.contains("nullBytes=4282"),"missing data sizes are explicit");
+        check(clean.indexOf("BEFORE")<clean.indexOf("PROCESS_START")&&clean.indexOf("AFTER")<clean.indexOf("LATEST"),"intact records retain order");
+        check(recovered.snapshot("header",512).length<=512,"gap markers respect export cap");
+        check(Files.readAllBytes(damaged.resolve("events.txt"))[7]==0,"export does not rewrite source history");
+        Files.write(damaged.resolve("events.txt"),new byte[]{(byte)0xe6,0,(byte)0xb1,'\n','O','K','\n'});
+        check(decode(recovered.snapshot("header",512)).contains("OK"),"split UTF8 at hole is repaired without losing intact suffix");
         System.out.println("PASS: "+checks+" persistent rotation, UTF-8, concurrency and export checks");
     }
 }

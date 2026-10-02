@@ -31,8 +31,24 @@ public final class RollingLog {
         }
         byte[] prefix=(header+"\n\n--- 持久运行日志（旧 → 新）---\n").getBytes(StandardCharsets.UTF_8);
         if(prefix.length>limit/4)prefix=tail(prefix,limit/4);
-        byte[] body=tail(buffer.toByteArray(),Math.max(0,limit-prefix.length));
+        byte[] body=tail(markGaps(buffer.toByteArray()),Math.max(0,limit-prefix.length));
         ByteArrayOutputStream result=new ByteArrayOutputStream(prefix.length+body.length);result.write(prefix);result.write(body);return result.toByteArray();
+    }
+    private static byte[] markGaps(byte[] bytes) throws IOException {
+        int first=0;while(first<bytes.length && bytes[first]!=0)first++;
+        if(first==bytes.length)return bytes;
+        ByteArrayOutputStream out=new ByteArrayOutputStream(bytes.length);
+        int from=0;
+        for(int i=first;i<bytes.length;){
+            if(bytes[i]!=0){i++;continue;}
+            out.write(bytes,from,i-from);
+            int end=i+1;while(end<bytes.length && bytes[end]==0)end++;
+            out.write(("\n[LOG_GAP nullBytes="+(end-i)+"; original data unavailable]\n").getBytes(StandardCharsets.UTF_8));
+            i=end;from=end;
+        }
+        out.write(bytes,from,bytes.length-from);
+        // A hole can split a UTF-8 sequence. Keep the damage marker and replace invalid fragments.
+        return new String(out.toByteArray(),StandardCharsets.UTF_8).getBytes(StandardCharsets.UTF_8);
     }
     static byte[] tail(byte[] bytes,int max){
         if(bytes.length<=max)return bytes;

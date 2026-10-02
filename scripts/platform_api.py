@@ -1,7 +1,7 @@
 import struct, zipfile
 from paths import TOOLS
 
-def platform_method(owner, signature, cache={}):
+def platform_method(owner, signature, cache={}, inherited_interface=False):
     """Read API 30 class declarations to resolve inherited helper calls."""
     if owner not in cache:
         with zipfile.ZipFile(TOOLS/'android30.jar') as jar:
@@ -25,18 +25,37 @@ def platform_method(owner, signature, cache={}):
             i += 1
         u2(); u2(); parent_index = u2()
         parent = 'L'+pool[pool[parent_index]]+';' if parent_index else None
-        for _ in range(u2()): u2()
+        interfaces = ['L'+pool[pool[u2()]]+';' for _ in range(u2())]
         def skip_attributes():
             nonlocal pos
             for _ in range(u2()):
                 u2(); size=struct.unpack_from('>I',data,pos)[0]; pos += 4+size
         for _ in range(u2()):
             u2(); u2(); u2(); skip_attributes()
-        methods = set()
+        methods = {}
         for _ in range(u2()):
             access=u2(); name=pool[u2()]; desc=pool[u2()]
-            if access & (1|4): methods.add(name+desc)
+            if access & (1|4): methods[name+desc] = access
             skip_attributes()
-        cache[owner] = (parent, methods)
-    parent, methods = cache[owner]
-    return signature in methods or (parent is not None and platform_method(parent,signature))
+        cache[owner] = (parent, interfaces, methods)
+    parent, interfaces, methods = cache[owner]
+    if signature in methods and not (inherited_interface and methods[signature] & 8): return True
+    # Constructors are declared on the exact owner; static interface methods are not inherited.
+    if signature.startswith(('<init>(', '<clinit>(')): return False
+    return ((parent is not None and platform_method(parent,signature,cache))
+            or any(platform_method(interface,signature,cache,True) for interface in interfaces))
+
+def verify_platform_resolver():
+    cases = [
+        ('Landroid/view/WindowManager;', 'updateViewLayout(Landroid/view/View;Landroid/view/ViewGroup$LayoutParams;)V', True),
+        ('Landroid/view/WindowManager;', 'removeView(Landroid/view/View;)V', True),
+        ('Landroid/view/WindowManager;', 'getDefaultDisplay()Landroid/view/Display;', True),
+        ('Landroid/widget/Button;', 'setVisibility(I)V', True),
+        ('Landroid/widget/Button;', '<init>(Landroid/content/Context;)V', True),
+        ('Landroid/view/WindowManager;', '<init>()V', False),
+        ('Landroid/view/WindowManager;', 'bogusMuviz()V', False),
+        ('Landroid/view/WindowManager;', 'addCrossWindowBlurEnabledListener(Ljava/util/function/Consumer;)V', False),
+    ]
+    for owner,signature,expected in cases:
+        assert bool(platform_method(owner,signature))==expected, (owner,signature,expected)
+    return len(cases)

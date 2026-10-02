@@ -8,12 +8,12 @@
 | `decoded/smali/` | 原始主 DEX 和已插入的辅助层调用 |
 | `src/com/sparkine/muvizedge/adaptive/` | 可阅读、维护的 Java 辅助层 |
 | `stubs/` | 编译期混淆类声明，不参与 APK 打包 |
-| `tests/` | 10 个独立 Java 测试入口 |
+| `tests/` | 11 个独立 Java 测试入口 |
 | `scripts/` | 编译、静态检查、签名、API 方法解析 |
 | `baseline/Recovery148.apk` | 内容和 ABI 对比基线，也用于保留原 PNG 字节 |
 | `verification/` | 148 smali 哈希、允许变化的方法和构建证明 |
 | `vendor/` | 工具、运行时压缩包和 SHA256 清单 |
-| `releases/` | 149–151 归档成品 |
+| `releases/` | 149–152 归档成品 |
 | `.runtime/`、`build/`、`output/`、`.local/` | 本地产物 / 签名，不进 Git |
 
 主 DEX 保留原始类；Java 辅助层单独生成 `classes2.dex`。将 `stubs` 合入 APK 会导致重复类或运行时行为被空实现替换。
@@ -97,3 +97,5 @@ flowchart TD
 `DesktopSupport` 在独立线程查询已授权的 UsageEvents，`ForegroundPolicy` 跟踪实际前台 Activity，`DesktopInsetPolicy` 仅在确认 HOME 桌面时补充隐藏 / 未知的导航栏高度。新设置 `adaptive_display_language.desktop_inset_compat` 在大屏默认开启；权限、回退和诊断详见 `DESKTOP_COMPAT.md`。
 
 151 的 `UsageAccessPolicy` 增加系统操作模式 / 默认权限回退及实际跨应用事件验证；`CaptureServicePolicy` 选择媒体或媒体 + microphone 服务类型，并限制失败重试。原始显示门控、FFT 采集方式、底边物理尺寸策略不变。详见 `ACCESS151.md`。
+
+152 通过 `InsetRecheckPolicy` 在前台组件变化时为现有窗口安排有限重测；`AutoInsetPolicy` 在已贴底的非 HOME 场景过滤短暂可见脉冲。`RollingLog.snapshot` 标记文件 NUL 空洞后再执行导出截断。详见 `INSETS152.md`。

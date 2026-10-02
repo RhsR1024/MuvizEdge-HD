@@ -1,8 +1,8 @@
 {
   "package": "com.sparkine.muvizedge",
-  "version_code": 151,
-  "version_name": "2.1.4.0-adaptive-zh9",
-  "apk_name": "MuvizEdge-Adaptive-Phone-Car-ZH-Access151.apk",
+  "version_code": 152,
+  "version_name": "2.1.4.0-adaptive-zh10",
+  "apk_name": "MuvizEdge-Adaptive-Phone-Car-ZH-Insets152.apk",
   "baseline_apk": "baseline/Recovery148.apk",
   "baseline_sha256": "2e0960f49b38956a90c1823d72d5053135dd4914fa6aa002dab69b3e0a87d946",
   "release_certificate_sha256": "1178a26590b6a1d23ec190bbe25ebe278687511387e603e027e2964d2da757c4",
@@ -13,9 +13,10 @@
     "AudioPolicyTest": 52,
     "DisplayPolicyTest": 17,
     "StartupPolicyTest": 37,
-    "RollingLogTest": 112,
+    "RollingLogTest": 118,
     "DesktopInsetPolicyTest": 43,
     "CaptureServicePolicyTest": 36,
-    "UsageAccessPolicyTest": 40
+    "UsageAccessPolicyTest": 40,
+    "InsetRecheckPolicyTest": 33
   }
 }
