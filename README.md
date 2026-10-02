@@ -1,6 +1,6 @@
 # MuvizEdge HD
 
-基于现有 Muviz Edge APK 维护的手机 / 车机自适应版本。当前版本为 **150 / 2.1.4.0-adaptive-zh8**，包名 `com.sparkine.muvizedge`。
+基于现有 Muviz Edge APK 维护的手机 / 车机自适应版本。当前版本为 **151 / 2.1.4.0-adaptive-zh9**，包名 `com.sparkine.muvizedge`。
 
 本仓库包含已修改的完整反编译目录、Java 辅助代码、编译用接口桩、测试、Windows x64 构建运行环境，以及 148 校验基线和归档成品。它不是原厂 Gradle / Android Studio 源码工程；构建过程为 Java → DEX、smali / 资源 → APK、合并、校验、签名。
 
@@ -11,9 +11,9 @@
 - 底部导航栏自动测量：显示时避让，沉浸式隐藏时贴底；保留手动备用边距。
 - 车机播放状态兼容、暂停 / 继续后的采集恢复、服务启动和休眠唤醒检查。
 - 持久诊断日志，内部循环记录和单次导出均限制为 2 MiB。
-- 149 版让后台采集恢复复用原始音频兼容初始化，并补充初始化失败诊断。
+- 151 补充后台音频采集服务类型、授权升级及车机使用情况访问的实际读取验证。
 
-已验证 420 项 JVM 检查、资源 / DEX / ABI 检查、APK 签名和对齐。**这些检查不能替代车机实测；冷启动和返回桌面后的表现仍需车机复测。** 详见 [当前交接状态](docs/HANDOFF.md)。
+已验证 496 项 JVM 检查、资源 / DEX / ABI 检查、APK 签名和对齐。**这些检查不能替代车机实测；冷启动和返回桌面后的表现仍需车机复测。** 详见 [当前交接状态](docs/HANDOFF.md)。
 
 ## 编译
 
@@ -27,7 +27,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\build.ps1
 
 成品在 `output/`，同时生成 SHA256 和 `release-verification.json`。初次构建会解压 `vendor/` 到 `.runtime/`；所有临时数据放在仓库自己的 `build/`。
 
-**签名私钥不在 Git 中。** 没有本地正式签名时，脚本自动生成并保留开发签名，文件名带 `-development.apk`。开发签名不能覆盖已安装的正式 149 版；继续为现有用户升级，需由维护者在本地恢复原签名。见 [构建和签名](docs/BUILD.md)。
+**签名私钥不在 Git 中。** 没有本地正式签名时，脚本自动生成并保留开发签名，文件名带 `-development.apk`。开发签名不能覆盖已安装的正式旧版；继续为现有用户升级，需由维护者在本地恢复原签名。见 [构建和签名](docs/BUILD.md)。
 
 归档成品位于 [releases](releases/)，它们使用维护者已有签名。归档成品不会被构建脚本覆盖。
 
@@ -39,6 +39,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\build.ps1
 4. [诊断日志说明](docs/DIAGNOSTICS.md)：导出、关键事件、启动 / 音频 / 边距定位顺序。
 5. [设备回归清单](docs/TESTING.md)：手机和车机必须覆盖的场景。
 6. [150 桌面控制栏兼容与授权步骤](docs/DESKTOP_COMPAT.md)。
-7. [修改记录](docs/CHANGELOG.md)及[第三方工具说明](docs/THIRD_PARTY.md)。
+7. [151 后台采集与权限验证](docs/ACCESS151.md)。
+8. [修改记录](docs/CHANGELOG.md)及[第三方工具说明](docs/THIRD_PARTY.md)。
 
 请先阅读根目录 [AGENTS.md](AGENTS.md)，再修改代码。原始 APK 及随附依赖的权利和许可仍属于各自权利人；仓库没有把原始 APK 重新许可为本项目自有代码。

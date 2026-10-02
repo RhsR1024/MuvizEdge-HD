@@ -67,3 +67,13 @@ AppOps 常见模式：0 allowed、1 ignored、2 errored、3 default、4 foregrou
 ## 150 补充
 
 系统 navVisible=false 不一定说明车机桌面控制栏隐藏。150 增加前台桌面证据与边距来源；查看 `DESKTOP_ACCESS`、`DESKTOP_PACKAGES`、`DESKTOP_FOREGROUND` 和 `NAVIGATION_WINDOW`，详见 `DESKTOP_COMPAT.md`。进入本应用后悬浮层会暂挂，最近应用的边距可保留历史值，不应仅凭快照值不一致认定刷新失败。
+
+## 151 补充
+
+- `SERVICE_FOREGROUND` 的 requestedType / actualType、服务快照的 serviceType：2 为 mediaPlayback，130 为 mediaPlayback | microphone。类型正确仍需看 AppOps 和真实 FFT。
+- `SERVICE_CAPTURE_TYPE_DENIED`：系统拒绝采集类型，服务尝试保留媒体前台状态；`CAPTURE_SERVICE_ACCESS` 在前台化一秒后观测权限。后台失败后进入 Activity 成功，不能反推开机采集已经成功。
+- 顶部保留“最近后台采集初始化”，前台预览不覆盖它；进程重启后的历史仍看持久日志。
+- `DESKTOP_ACCESS`：check / raw / note / permission / uid / package / declaredAccess。0=allowed，3=default 时还需看 permission=0；单独 check 结果不再作为唯一门槛。
+- `DESKTOP_ACCESS_RESULT`：实际查询验证结果，区别系统授权、兼容读到其他应用事件、无数据 / 失败。自身事件和空结果不视为跨应用读取成功。
+- `DESKTOP_ACCESS_SETTINGS`：用户打开系统权限页的记录。判断是否同一应用 / 用户，并结合返回后的访问值；权限页显示已开启但接口不可用时，应继续调查，不能笼统要求重新授权。
+- `DESKTOP_RECHECK`：界面恢复 / 手动重新检查的触发来源；`DESKTOP_QUERY_SUMMARY`：查询区间、耗时、返回数量、有无其他应用的 Activity、权限或数据验证来源、前台包名和 HOME 判定。状态变化时立即记录，稳定时最多每 30 秒一条，并附在导出快照中。

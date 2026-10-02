@@ -10,7 +10,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\build.ps1
 
 脚本先验证 `vendor/checksums.json`，按需解压运行环境。Python 使用 `-I -S`，不加载系统或用户 site-packages；Java 清除外部注入选项，临时文件放入 `build/temp`。源码先复制到 `build/decoded`，apktool 的缓存不写回版本控制目录。
 
-流程：编译接口桩 → 编译辅助代码 → 执行 420 项 JVM 检查 → D8 生成辅助 DEX → apktool 重编译 → 合并 / 静态校验 → zipalign / 签名 → 检查证书和 payload。
+流程：编译接口桩 → 编译辅助代码 → 执行 496 项 JVM 检查 → D8 生成辅助 DEX → apktool 重编译 → 合并 / 静态校验 → zipalign / 签名 → 检查证书和 payload。
 
 | 产物 | 用途 |
 | --- | --- |
@@ -61,7 +61,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\build.ps1 -UseDevelopm
 
 - 原始类集合、字段 / 方法结构保持，辅助类只出现在 adaptive 命名空间，接口桩不打包。
 - 主 DEX 与辅助 DEX 的调用可以解析；辅助代码调用的 Android 方法存在于 API 30 编译库。
-- 5599 个资源 / 原生 / 其他文件与基线一致，资源 ID 不变；Manifest 当前只允许版本变化。
+- 5599 个资源 / 原生 / 其他文件与基线一致，资源 ID 不变；Manifest 只允许版本变化及 151 的 FOREGROUND_SERVICE_MICROPHONE 正常权限 / AppService 采集类型；校验逐项验证并还原这两处后比较整个 Manifest。
 - 启动弹框移除状态、前台服务先后次序、空 Intent 恢复、149 采集诊断接入保持。
 - APK 容器有效，签名后各输入条目内容不变，签名证书正确。
 

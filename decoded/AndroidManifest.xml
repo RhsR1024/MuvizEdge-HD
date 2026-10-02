@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:compileSdkVersion="36" android:compileSdkVersionCodename="16" package="com.sparkine.muvizedge" platformBuildVersionCode="36" platformBuildVersionName="16" android:versionCode="150" android:versionName="2.1.4.0-adaptive-zh8">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:compileSdkVersion="36" android:compileSdkVersionCodename="16" package="com.sparkine.muvizedge" platformBuildVersionCode="36" platformBuildVersionName="16" android:versionCode="151" android:versionName="2.1.4.0-adaptive-zh9">
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
@@ -10,6 +10,7 @@
     <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:maxSdkVersion="32" android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -96,7 +97,7 @@
         <activity android:name="com.sparkine.muvizedge.activity.AddColorActivity" android:parentActivityName="com.sparkine.muvizedge.activity.ScrEditActivity" android:screenOrientation="unspecified" />
         <activity android:name="com.sparkine.muvizedge.activity.ScrPreviewActivity" android:parentActivityName="com.sparkine.muvizedge.activity.HomeActivity" android:screenOrientation="unspecified" />
         <activity android:exported="true" android:name="com.canhub.cropper.CropImageActivity" android:theme="@style/Base.Theme.AppCompat" />
-        <service android:foregroundServiceType="mediaPlayback" android:name="com.sparkine.muvizedge.service.AppService" />
+        <service android:foregroundServiceType="mediaPlayback|microphone" android:name="com.sparkine.muvizedge.service.AppService" />
         <service android:exported="true" android:name="com.sparkine.muvizedge.service.IpcService">
             <intent-filter>
                 <action android:name="com.sparkine.muvizedge.service.IpcService" />

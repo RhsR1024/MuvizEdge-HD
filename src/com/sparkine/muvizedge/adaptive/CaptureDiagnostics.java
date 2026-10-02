@@ -8,6 +8,7 @@ import android.os.Process;
 
 /** Observes the original constructor, including attempts made by the foreground preview. */
 public final class CaptureDiagnostics {
+    private static String lastBackground="尚无后台初始化记录";
     private CaptureDiagnostics(){}
     public static String permissionState(Context c){
         if(c==null)return "context=null";
@@ -28,7 +29,11 @@ public final class CaptureDiagnostics {
     public static String state(ib.e engine){
         return "hasVisualizer="+(engine.a!=null)+" tunnelWorkaroundPrepared="+(engine.c!=null)+" capturePending="+engine.k+" "+permissionState(engine.b)+" "+ServiceRecovery.report();
     }
-    public static void initializing(ib.e engine,boolean recreate){DiagnosticLog.event("CAPTURE_NATIVE_BEGIN","recreate="+recreate+" "+state(engine));}
-    public static void configured(ib.e engine){DiagnosticLog.event("CAPTURE_NATIVE_CONFIGURED",state(engine));}
-    public static void failed(ib.e engine,Throwable error){DiagnosticLog.event("CAPTURE_NATIVE_STATE",state(engine));DiagnosticLog.error("CAPTURE_NATIVE_FAILED",error);}
+    private static void remember(ib.e engine,String result){
+        if(ServiceRecovery.backgroundSettled())lastBackground=DiagnosticLog.time(System.currentTimeMillis())+" "+result+" "+state(engine);
+    }
+    public static String backgroundReport(){return "最近后台采集初始化（进入界面不覆盖此记录）：\n"+lastBackground;}
+    public static void initializing(ib.e engine,boolean recreate){remember(engine,"开始初始化");DiagnosticLog.event("CAPTURE_NATIVE_BEGIN","recreate="+recreate+" "+state(engine));}
+    public static void configured(ib.e engine){remember(engine,engine.a==null?"初始化返回但无采集对象":"已取得采集对象，真实回调另见频谱统计");DiagnosticLog.event("CAPTURE_NATIVE_CONFIGURED",state(engine));}
+    public static void failed(ib.e engine,Throwable error){remember(engine,"初始化失败："+error.getClass().getSimpleName());DiagnosticLog.event("CAPTURE_NATIVE_STATE",state(engine));DiagnosticLog.error("CAPTURE_NATIVE_FAILED",error);}
 }

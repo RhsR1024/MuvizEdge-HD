@@ -45,6 +45,7 @@ public final class AudioDiagnosticsActivity extends Activity {
         label("出现问题后返回此页导出日志，无需连接 USB。运行记录跨启动保留，最多约 2 MB，超出后自动淘汰旧记录。\n包含启动、休眠唤醒、播放状态、采集恢复和导航栏边距变化；不记录歌曲、通知正文或音频内容。", 15);
         button("刷新状态", new View.OnClickListener(){public void onClick(View v){refresh();}});
         button("管理使用情况访问权限（识别车机桌面）",new View.OnClickListener(){public void onClick(View v){DesktopSupport.openAccess(AudioDiagnosticsActivity.this);}});
+        button("重新验证桌面识别",new View.OnClickListener(){public void onClick(View v){DesktopSupport.recheck(AudioDiagnosticsActivity.this);status.postDelayed(new Runnable(){public void run(){if(!isDestroyed())refresh();}},1200);}});
         button("复制状态", new View.OnClickListener(){public void onClick(View v){
             ClipboardManager clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
             if(clipboard != null){clipboard.setPrimaryClip(ClipData.newPlainText("Muviz Edge 音频状态",status.getText())); Toast.makeText(AudioDiagnosticsActivity.this,"状态已复制",Toast.LENGTH_SHORT).show();}
@@ -61,7 +62,7 @@ public final class AudioDiagnosticsActivity extends Activity {
     @Override protected void onResume() { super.onResume(); AdaptiveUi.onResume(this); refresh(); }
     private void refresh() {
         AudioSupport.invalidate();
-        StringBuilder s = new StringBuilder("Muviz Edge 150 启动、音频与边距诊断\n");
+        StringBuilder s = new StringBuilder("Muviz Edge 151 启动、音频与边距诊断\n");
         s.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date()));
         s.append("\n设备：").append(Build.MANUFACTURER).append(' ').append(Build.MODEL).append("\nAndroid ").append(Build.VERSION.RELEASE).append(" / API ").append(Build.VERSION.SDK_INT);
         AdaptiveUi.Device d = AdaptiveUi.device(this);
@@ -75,10 +76,7 @@ public final class AudioDiagnosticsActivity extends Activity {
         boolean listener = false;
         if(enabled != null) for(String item : enabled.split(":")) if(AudioSupport.listener(this).equals(android.content.ComponentName.unflattenFromString(item))) listener=true;
         s.append("\n通知读取服务已启用：").append(listener);
-        try {
-            AppOpsManager ops = (AppOpsManager)getSystemService(APP_OPS_SERVICE);
-            s.append("\n使用情况访问权限：").append(ops != null && ops.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,android.os.Process.myUid(),getPackageName())==AppOpsManager.MODE_ALLOWED);
-        } catch(RuntimeException e) {s.append("\n使用情况访问权限：读取失败");}
+        s.append("\n使用情况访问：").append(DesktopSupport.accessLabel());
         s.append("\n系统报告正在播放：").append(AudioSupport.systemActive(this));
         s.append("\n系统媒体音量值：").append(AudioSupport.volume(this)).append("（-1 表示读取失败）");
         s.append("\n修正后的音频条件：").append(AudioSupport.mayAnimate(this));
@@ -98,6 +96,7 @@ public final class AudioDiagnosticsActivity extends Activity {
         s.append("\n\n").append(AudioSupport.captureReport());
         s.append("\n\n").append(NavigationInsets.report());
         s.append("\n\n").append(PlaybackRecovery.report());
+        s.append("\n\n").append(CaptureDiagnostics.backgroundReport());
         s.append("\n\n").append(ServiceRecovery.report()).append("\n").append(DiagnosticLog.metadata());
         s.append("\n注：帧数是本次进程内的累计值，界面预览也会产生回调；进入应用时可能暂挂悬浮层。\n\n悬浮设置（false=关闭；true=开启）：");
         String[] keys={"EDGE_SHOW_ON_OVERLAY","HIDE_ON_LANDSCAPE","HIDE_ON_FULLSCREEN","HIDE_ON_POWER_SAVE","IS_APPS_SELECTED","IS_ONLY_MEDIA_APPS","TURN_OFF_RANDOM"};

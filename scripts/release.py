@@ -65,13 +65,26 @@ with zipfile.ZipFile(baseline) as old,zipfile.ZipFile(unsigned) as out:
     assert m1.get(ns+'versionName')==CONFIG['version_name']
     assert m1.get('package')==CONFIG['package']
     m1.set(ns+'versionCode',m0.get(ns+'versionCode'));m1.set(ns+'versionName',m0.get(ns+'versionName'))
+    # 151: exactly one new normal permission and the existing AppService's capture type.
+    mic_permission='android.permission.FOREGROUND_SERVICE_MICROPHONE'
+    added=[p for p in m1.findall('uses-permission') if p.get(ns+'name')==mic_permission]
+    assert len(added)==1 and dict(added[0].attrib)=={ns+'name':mic_permission}
+    assert not any(p.get(ns+'name')==mic_permission for p in m0.findall('uses-permission'))
+    m1.remove(added[0])
+    app_service='com.sparkine.muvizedge.service.AppService'
+    before=[s for s in m0.find('application').findall('service') if s.get(ns+'name')==app_service]
+    after=[s for s in m1.find('application').findall('service') if s.get(ns+'name')==app_service]
+    assert len(before)==len(after)==1
+    assert before[0].get(ns+'foregroundServiceType') in ('mediaPlayback','0x00000002','2')
+    assert after[0].get(ns+'foregroundServiceType') in ('mediaPlayback|microphone','microphone|mediaPlayback','0x00000082','130')
+    after[0].set(ns+'foregroundServiceType',before[0].get(ns+'foregroundServiceType'))
     def same(a,b):
         assert a.tag==b.tag and dict(a.attrib)==dict(b.attrib) and len(a)==len(b),(a.tag,a.attrib,b.attrib)
         for x,y in zip(a,b):same(x,y)
     same(m0,m1)
     a0=ARSCParser(old.read('resources.arsc'));a1=ARSCParser(out.read('resources.arsc'))
     a0._analyse();a1._analyse();assert a0.resource_keys==a1.resource_keys
-    report['manifest_changes_only_version']=True
+    report['manifest_allowed_changes']=['versionCode','versionName',mic_permission,app_service+':mediaPlayback|microphone']
     report['all_resource_ids_preserved']=True
     dexes=[]
     for name in ['classes.dex','classes2.dex']:
