@@ -1,6 +1,6 @@
 # MuvizEdge HD
 
-基于现有 Muviz Edge APK 维护的手机 / 车机自适应版本。当前版本为 **152 / 2.1.4.0-adaptive-zh10**，包名 `com.sparkine.muvizedge`。
+基于现有 Muviz Edge APK 维护的手机 / 车机自适应版本。当前版本为 **153 / 2.1.4.0-adaptive-zh11**，包名 `com.sparkine.muvizedge`。
 
 本仓库包含已修改的完整反编译目录、Java 辅助代码、编译用接口桩、测试、Windows x64 构建运行环境，以及 148 校验基线和归档成品。它不是原厂 Gradle / Android Studio 源码工程；构建过程为 Java → DEX、smali / 资源 → APK、合并、校验、签名。
 
@@ -12,6 +12,7 @@
 - 车机播放状态兼容、暂停 / 继续后的采集恢复、服务启动和休眠唤醒检查。
 - 持久诊断日志，内部循环记录和单次导出均限制为 2 MiB。
 - 151 补充后台音频采集服务类型、授权升级及车机使用情况访问的实际读取验证。
+- 152 增加前台切换后的导航栏主动重测；153 撤销桌面“设置 / 息屏显示”快捷入口，保留主图标及应用内功能。
 
 已验证 535 项 JVM 检查、资源 / DEX / ABI 检查、APK 签名和对齐。**这些检查不能替代车机实测；冷启动和返回桌面后的表现仍需车机复测。** 详见 [当前交接状态](docs/HANDOFF.md)。
 
@@ -41,6 +42,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\build.ps1
 6. [150 桌面控制栏兼容与授权步骤](docs/DESKTOP_COMPAT.md)。
 7. [151 后台采集与权限验证](docs/ACCESS151.md)。
 8. [152 全屏导航栏主动重测](docs/INSETS152.md)。
-9. [修改记录](docs/CHANGELOG.md)及[第三方工具说明](docs/THIRD_PARTY.md)。
+9. [153 移除桌面快捷入口与 152 日志复核](docs/SHORTCUTS153.md)。
+10. [修改记录](docs/CHANGELOG.md)及[第三方工具说明](docs/THIRD_PARTY.md)。
 
 请先阅读根目录 [AGENTS.md](AGENTS.md)，再修改代码。原始 APK 及随附依赖的权利和许可仍属于各自权利人；仓库没有把原始 APK 重新许可为本项目自有代码。

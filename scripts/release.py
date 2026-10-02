@@ -79,13 +79,31 @@ with zipfile.ZipFile(baseline) as old,zipfile.ZipFile(unsigned) as out:
     assert before[0].get(ns+'foregroundServiceType') in ('mediaPlayback','0x00000002','2')
     assert after[0].get(ns+'foregroundServiceType') in ('mediaPlayback|microphone','microphone|mediaPlayback','0x00000082','130')
     after[0].set(ns+'foregroundServiceType',before[0].get(ns+'foregroundServiceType'))
+    # 153: stop publishing the two static launcher shortcuts. Keep the sole main
+    # launcher Activity and all in-app screens; only the HomeActivity metadata is removed.
+    home='com.sparkine.muvizedge.activity.HomeActivity'
+    home_before=[a for a in m0.find('application').findall('activity') if a.get(ns+'name')==home]
+    assert len(home_before)==1
+    shortcuts=[e for e in home_before[0].findall('meta-data') if e.get(ns+'name')=='android.app.shortcuts']
+    assert len(shortcuts)==1 and set(shortcuts[0].attrib)=={ns+'name',ns+'resource'}
+    assert not any(e.get(ns+'name')=='android.app.shortcuts' for e in m1.iter('meta-data'))
+    home_before[0].remove(shortcuts[0])
+    launchers=[]
+    for component in m1.find('application'):
+        for intent in component.findall('intent-filter'):
+            if any(e.get(ns+'name')=='android.intent.category.LAUNCHER' for e in intent.findall('category')):
+                assert any(e.get(ns+'name')=='android.intent.action.MAIN' for e in intent.findall('action'))
+                launchers.append(component.get(ns+'name'))
+    assert launchers==[home],launchers
     def same(a,b):
         assert a.tag==b.tag and dict(a.attrib)==dict(b.attrib) and len(a)==len(b),(a.tag,a.attrib,b.attrib)
         for x,y in zip(a,b):same(x,y)
     same(m0,m1)
     a0=ARSCParser(old.read('resources.arsc'));a1=ARSCParser(out.read('resources.arsc'))
     a0._analyse();a1._analyse();assert a0.resource_keys==a1.resource_keys
-    report['manifest_allowed_changes']=['versionCode','versionName',mic_permission,app_service+':mediaPlayback|microphone']
+    report['manifest_allowed_changes']=['versionCode','versionName',mic_permission,app_service+':mediaPlayback|microphone',home+':remove android.app.shortcuts metadata']
+    report['static_launcher_shortcuts_published']=False
+    report['launcher_activities']=launchers
     report['all_resource_ids_preserved']=True
     dexes=[]
     for name in ['classes.dex','classes2.dex']:

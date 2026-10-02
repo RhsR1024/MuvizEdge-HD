@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:compileSdkVersion="36" android:compileSdkVersionCodename="16" package="com.sparkine.muvizedge" platformBuildVersionCode="36" platformBuildVersionName="16" android:versionCode="152" android:versionName="2.1.4.0-adaptive-zh10">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:compileSdkVersion="36" android:compileSdkVersionCodename="16" package="com.sparkine.muvizedge" platformBuildVersionCode="36" platformBuildVersionName="16" android:versionCode="153" android:versionName="2.1.4.0-adaptive-zh11">
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
@@ -76,7 +76,6 @@
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
             </intent-filter>
-            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
         </activity>
         <activity android:clearTaskOnLaunch="true" android:excludeFromRecents="true" android:finishOnTaskLaunch="true" android:launchMode="singleInstance" android:name="com.sparkine.muvizedge.activity.ScrActivity" android:noHistory="true" android:theme="@style/noAnimTheme" android:turnScreenOn="true" android:screenOrientation="unspecified" />
         <activity android:name="com.sparkine.muvizedge.activity.DesignsActivity" android:parentActivityName="com.sparkine.muvizedge.activity.HomeActivity" android:theme="@style/TransparentAppDialog" android:screenOrientation="unspecified" />

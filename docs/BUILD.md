@@ -61,7 +61,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\build.ps1 -UseDevelopm
 
 - 原始类集合、字段 / 方法结构保持，辅助类只出现在 adaptive 命名空间，接口桩不打包。
 - 主 DEX 与辅助 DEX 的调用可以解析；辅助代码调用的 Android 方法存在于 API 30 编译库。
-- 5599 个资源 / 原生 / 其他文件与基线一致，资源 ID 不变；Manifest 只允许版本变化及 151 的 FOREGROUND_SERVICE_MICROPHONE 正常权限 / AppService 采集类型；校验逐项验证并还原这两处后比较整个 Manifest。
+- 5599 个资源 / 原生 / 其他文件与基线一致，资源 ID 不变；Manifest 只允许版本变化、151 的 FOREGROUND_SERVICE_MICROPHONE 正常权限 / AppService 采集类型，以及 153 撤销 HomeActivity 的 android.app.shortcuts 元数据。逐项验证并消除这些已授权差异后比较整个 Manifest；额外要求只有 HomeActivity 一个 MAIN + LAUNCHER 入口，不允许其他快捷方式元数据残留。
 - 启动弹框移除状态、前台服务先后次序、空 Intent 恢复、149 采集诊断接入保持。
 - APK 容器有效，签名后各输入条目内容不变，签名证书正确。
 

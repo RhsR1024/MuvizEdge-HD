@@ -13,7 +13,7 @@
 | `baseline/Recovery148.apk` | 内容和 ABI 对比基线，也用于保留原 PNG 字节 |
 | `verification/` | 148 smali 哈希、允许变化的方法和构建证明 |
 | `vendor/` | 工具、运行时压缩包和 SHA256 清单 |
-| `releases/` | 149–152 归档成品 |
+| `releases/` | 149–153 归档成品 |
 | `.runtime/`、`build/`、`output/`、`.local/` | 本地产物 / 签名，不进 Git |
 
 主 DEX 保留原始类；Java 辅助层单独生成 `classes2.dex`。将 `stubs` 合入 APK 会导致重复类或运行时行为被空实现替换。
@@ -99,3 +99,5 @@ flowchart TD
 151 的 `UsageAccessPolicy` 增加系统操作模式 / 默认权限回退及实际跨应用事件验证；`CaptureServicePolicy` 选择媒体或媒体 + microphone 服务类型，并限制失败重试。原始显示门控、FFT 采集方式、底边物理尺寸策略不变。详见 `ACCESS151.md`。
 
 152 通过 `InsetRecheckPolicy` 在前台组件变化时为现有窗口安排有限重测；`AutoInsetPolicy` 在已贴底的非 HOME 场景过滤短暂可见脉冲。`RollingLog.snapshot` 标记文件 NUL 空洞后再执行导出截断。详见 `INSETS152.md`。
+
+153 仅从 HomeActivity 撤销 `android.app.shortcuts` 元数据，停止发布 `res/xml/shortcuts.xml` 的两个静态桌面快捷入口；原资源保留但不再注册。主入口和应用内页面均保留，未增加运行时清理代码。详见 `SHORTCUTS153.md`。
