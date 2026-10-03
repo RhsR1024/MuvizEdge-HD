@@ -74,6 +74,7 @@ public final class PlaybackRecovery {
         final Handler handler=new Handler(Looper.getMainLooper());
         AudioManager audio;
         boolean registered,wasPlaying,wake=true,stopped;
+        int accessRevision;
         long lastRefresh=-1,lastWindow=-1,lastHeartbeat=-1;
         final AudioManager.AudioPlaybackCallback callback=new AudioManager.AudioPlaybackCallback(){
             @Override public void onPlaybackConfigChanged(List<AudioPlaybackConfiguration> configs){
@@ -134,6 +135,8 @@ public final class PlaybackRecovery {
                     engine.j();action="已恢复律动刷新任务";DiagnosticLog.event("REFRESH_RECOVERY",action);
                 }
                 boolean needsCapture=eligible && engine!=null && (owner.a || engine.k || (playing&&engine.a==null));
+                int revision=ServiceRecovery.checkCaptureAccess(needsCapture && playing);
+                if(revision!=accessRevision){accessRevision=revision;policy.accessRestored();}
                 if(policy.shouldRepair(needsCapture,playing,now,AudioSupport.lastFrame()) && engine!=null){
                     repair(owner.j);
                 }

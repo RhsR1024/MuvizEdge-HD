@@ -4,6 +4,7 @@ package com.sparkine.muvizedge.adaptive;
 public final class RecoveryPolicy {
     private long playingSince=-1, attemptedAt=-1;
     private int attempts;
+    public void accessRestored(){attemptedAt=-1;attempts=0;}
     public boolean shouldRepair(boolean eligible, boolean playing, long now, long frameAt) {
         if(!eligible || !playing){playingSince=attemptedAt=-1;attempts=0;return false;}
         if(playingSince<0) playingSince=now;

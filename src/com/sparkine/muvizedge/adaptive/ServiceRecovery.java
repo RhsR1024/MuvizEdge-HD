@@ -18,6 +18,9 @@ public final class ServiceRecovery {
     private static String lastReason="无";
     private static boolean listenerConnected;
     private static long promotionFailedAt=-1;
+    private static final CaptureAccessPolicy accessPolicy=new CaptureAccessPolicy();
+    private static int lastAccessMode=-1,recheckSequence,pendingRecheck,accessRevision;
+    private static String accessAction="尚未请求后台采集资格重评估";
     private static SharedPreferences.OnSharedPreferenceChangeListener preferenceListener;
     private ServiceRecovery(){}
     public static void init(Application application){
@@ -69,7 +72,8 @@ public final class ServiceRecovery {
         if(service!=null){
             // Starting the existing service from a real resumed activity lets Android reassess
             // while-in-use access. Merely keeping the old foreground notification is insufficient.
-            if(foreground)startIntent(app,new Intent().setClassName(app,"com.sparkine.muvizedge.service.AppService").putExtra("actionType",1).putExtra("adaptiveReason",reason));
+            if(foreground)startIntent(app,new Intent().setClassName(app,"com.sparkine.muvizedge.service.AppService").putExtra("actionType",1).putExtra("adaptiveReason",reason).putExtra("adaptiveCaptureRecheck",true));
+            else if(isAccessOpportunity(reason))requestCaptureRecheck(reason,true);
             promote(service,foreground);return;
         }
         // Android 15+ disallows mediaPlayback FGS from boot. A real activity may still start it.
@@ -78,6 +82,63 @@ public final class ServiceRecovery {
         if(!StartupPolicy.due(now,lastStart,attempts,foreground))return;
         startIntent(app,new Intent().setClassName(app,"com.sparkine.muvizedge.service.AppService").putExtra("actionType",1).putExtra("adaptiveReason",reason));
     }
+    private static boolean isAccessOpportunity(String reason){
+        return Intent.ACTION_BOOT_COMPLETED.equals(reason)||"android.intent.action.QUICKBOOT_POWERON".equals(reason)
+                ||Intent.ACTION_USER_UNLOCKED.equals(reason)||Intent.ACTION_USER_PRESENT.equals(reason)
+                ||Intent.ACTION_SCREEN_ON.equals(reason)||Intent.ACTION_MY_PACKAGE_REPLACED.equals(reason);
+    }
+    static int checkCaptureAccess(boolean needed){
+        if(app==null)return accessRevision;
+        int mode=CaptureDiagnostics.effectiveRecordOp(app);
+        boolean restored=lastAccessMode==1 && mode==0;
+        if(mode!=lastAccessMode){
+            DiagnosticLog.event("CAPTURE_ACCESS_CHANGED","previous="+lastAccessMode+" current="+mode+" "+CaptureDiagnostics.permissionState(app)+" "+report());
+            lastAccessMode=mode;
+        }
+        accessPolicy.observe(SystemClock.elapsedRealtime(),mode,AudioSupport.lastFrame());
+        if(restored){accessRevision++;DiagnosticLog.event("CAPTURE_ACCESS_RESTORED","revision="+accessRevision+"; reset audio retry delay; actual FFT still required");}
+        if(needed)requestCaptureRecheck("capture_failed",false);
+        return accessRevision;
+    }
+    private static void requestCaptureRecheck(final String reason,boolean lifecycle){
+        final Service target=service;
+        if(app==null||target==null||!ready||pendingRecheck!=0)return;
+        long now=SystemClock.elapsedRealtime(),frame=AudioSupport.lastFrame();
+        int mode=CaptureDiagnostics.effectiveRecordOp(app);
+        UserManager user=(UserManager)app.getSystemService(Context.USER_SERVICE);
+        boolean eligible=backgroundSettled() && AudioSupport.compat(app) && interactive()
+                && app.getSharedPreferences("MUVIZ_EDGE_PREF",0).getBoolean("EDGE_SHOW_ON_OVERLAY",false)
+                && app.checkSelfPermission(android.Manifest.permission.RECORD_AUDIO)==android.content.pm.PackageManager.PERMISSION_GRANTED
+                && Settings.canDrawOverlays(app) && (user==null||user.isUserUnlocked());
+        if(!accessPolicy.request(Build.VERSION.SDK_INT,eligible,mode,now,frame,CaptureDiagnostics.lastFailure(),lifecycle)){
+            if(lifecycle)DiagnosticLog.event("CAPTURE_ACCESS_OPPORTUNITY","reason="+reason+" eligible="+eligible+" mode="+mode+" recentFrame="+CaptureAccessPolicy.recent(now,frame)+" attempts="+accessPolicy.attempts());
+            return;
+        }
+        final int id=++recheckSequence;pendingRecheck=id;
+        accessAction="请求重评估 #"+id+"，原因="+reason;
+        DiagnosticLog.event("CAPTURE_ACCESS_RECHECK_BEGIN","id="+id+" reason="+reason+" attempt="+accessPolicy.attempts()+" frameAge="+(frame<0?-1:now-frame)+" "+CaptureDiagnostics.permissionState(app)+" "+report());
+        // Re-enter startServiceLocked while the receiver's real system opportunity is active,
+        // then promote in onStartCommand so Android recomputes the process's FGS capabilities.
+        ComponentName result=startIntent(app,new Intent().setClassName(app,"com.sparkine.muvizedge.service.AppService")
+                .putExtra("actionType",1).putExtra("adaptiveReason",reason)
+                .putExtra("adaptiveCaptureRecheck",true).putExtra("adaptiveCaptureRecheckId",id));
+        if(result==null){pendingRecheck=0;accessAction="重评估请求未启动 #"+id;DiagnosticLog.event("CAPTURE_ACCESS_RECHECK_FAILED","id="+id+" request returned null");return;}
+        main.postDelayed(new Runnable(){public void run(){
+            if(service==target && pendingRecheck==id){pendingRecheck=0;accessAction="重评估回执超时 #"+id;DiagnosticLog.event("CAPTURE_ACCESS_RECHECK_TIMEOUT","id="+id+" "+CaptureDiagnostics.permissionState(target));}
+        }},5000);
+    }
+    private static void recheckResult(final Service target,final int id,final long requestedAt){
+        main.postDelayed(new Runnable(){public void run(){
+            if(service!=target || pendingRecheck!=id)return;
+            pendingRecheck=0;
+            int mode=CaptureDiagnostics.effectiveRecordOp(target);
+            boolean frames=AudioSupport.lastFrame()>=requestedAt;
+            accessAction="重评估 #"+id+"：实际访问="+mode+"；请求后收到频谱="+frames;
+            DiagnosticLog.event("CAPTURE_ACCESS_RECHECK_RESULT","id="+id+" effective="+mode+" fftAfterCommand="+frames+" "+CaptureDiagnostics.permissionState(target)+" "+report());
+            PlaybackRecovery.kick(false);
+        }},1000);
+    }
+    public static String accessReport(){return "后台采集资格恢复："+accessAction+"；本轮自动尝试="+accessPolicy.attempts()+"/3；等待回执="+(pendingRecheck!=0);}
     public static void boot(Context c,Intent i){
         String action=i==null?"null":i.getAction();DiagnosticLog.event("BOOT_RECEIVER",action);
         if(Build.VERSION.SDK_INT>=35){DiagnosticLog.event("BOOT_START_SKIPPED","mediaPlayback FGS restriction API>=35");return;}
@@ -96,18 +157,22 @@ public final class ServiceRecovery {
         UserManager user=(UserManager)c.getSystemService(Context.USER_SERVICE);
         if(user!=null&&!user.isUserUnlocked()){DiagnosticLog.state("START_SKIPPED","user locked");return null;}
         lastStart=SystemClock.elapsedRealtime();attempts++;lastReason=intent.getStringExtra("adaptiveReason");
-        DiagnosticLog.event("SERVICE_REQUEST","action="+action+" state="+intent.getBooleanExtra("actionState",false)+" reason="+lastReason+" foregroundStart="+(service==null));
-        try{return service==null?c.startForegroundService(intent):c.startService(intent);}
+        boolean foregroundStart=service==null||intent.getBooleanExtra("adaptiveCaptureRecheck",false);
+        DiagnosticLog.event("SERVICE_REQUEST","action="+action+" state="+intent.getBooleanExtra("actionState",false)+" reason="+lastReason+" foregroundStart="+foregroundStart+" captureRecheck="+intent.getBooleanExtra("adaptiveCaptureRecheck",false));
+        try{return foregroundStart?c.startForegroundService(intent):c.startService(intent);}
         catch(RuntimeException e){DiagnosticLog.error("SERVICE_START_FAILED",e);return null;}
     }
     public static void created(Service s){service=s;ready=false;promoted=false;promotionFailedAt=-1;DiagnosticLog.event("SERVICE_CREATE","instance="+System.identityHashCode(s));promote(s);}
     private static int currentType(Service s){return s==null?0:Build.VERSION.SDK_INT>=29?s.getForegroundServiceType():promoted?CaptureServicePolicy.MEDIA:0;}
     private static void promote(Service s){promote(s,false);}
     private static void promote(Service s,boolean userVisit){
+        promote(s,userVisit,false);
+    }
+    private static void promote(Service s,boolean userVisit,boolean recheck){
         boolean record=s.checkSelfPermission(android.Manifest.permission.RECORD_AUDIO)==android.content.pm.PackageManager.PERMISSION_GRANTED;
         int desired=CaptureServicePolicy.type(Build.VERSION.SDK_INT,record,s.getSharedPreferences("MUVIZ_EDGE_PREF",0).getBoolean("EDGE_SHOW_ON_OVERLAY",false));
         long now=SystemClock.elapsedRealtime();
-        if(promoted && !CaptureServicePolicy.due(currentType(s),desired,now,promotionFailedAt,userVisit))return;
+        if(promoted && !recheck && !CaptureServicePolicy.due(currentType(s),desired,now,promotionFailedAt,userVisit))return;
         try{
             Notification notification=((g0.k)ib.s.b(s).z).a();
             try{
@@ -122,17 +187,26 @@ public final class ServiceRecovery {
             }
             promoted=true;attempts=0;DiagnosticLog.event("SERVICE_FOREGROUND","success id=45 requestedType="+desired+" actualType="+currentType(s)+" "+CaptureDiagnostics.permissionState(s));
             main.postDelayed(new Runnable(){public void run(){if(service!=null)DiagnosticLog.state("CAPTURE_SERVICE_ACCESS",report()+" "+CaptureDiagnostics.permissionState(service));PlaybackRecovery.kick(false);}},1000);
-        }catch(RuntimeException e){DiagnosticLog.error("SERVICE_FOREGROUND_FAILED",e);s.stopSelf();}
+        }catch(RuntimeException e){DiagnosticLog.error("SERVICE_FOREGROUND_FAILED",e);if(!recheck||!promoted)s.stopSelf();}
     }
     public static void ready(Service s){ready=promoted;DiagnosticLog.event("SERVICE_READY",report());PlaybackRecovery.kick(true);}
     public static Intent command(Service s,Intent intent,int flags,int startId){
         DiagnosticLog.event("SERVICE_COMMAND","null="+(intent==null)+" action="+(intent==null?1:intent.getIntExtra("actionType",-1))+" state="+(intent!=null&&intent.getBooleanExtra("actionState",false))+" flags="+flags+" id="+startId);
         if(intent==null)intent=new Intent().putExtra("actionType",1);
         if(!wanted(s)){DiagnosticLog.event("SERVICE_COMMAND_SKIPPED","disabled; stopping instead of sticky restart");return new Intent().putExtra("actionType",2);}
-        if(intent.getIntExtra("actionType",-1)!=2){promote(s);PlaybackRecovery.kick(false);}
+        if(intent.getIntExtra("actionType",-1)!=2){
+            int id=intent.getIntExtra("adaptiveCaptureRecheckId",0);
+            boolean recheck=intent.getBooleanExtra("adaptiveCaptureRecheck",false) && (id==0||id==pendingRecheck);
+            promote(s,false,recheck);
+            if(recheck){
+                DiagnosticLog.event("CAPTURE_ACCESS_RECHECK_COMMAND","id="+id+" reason="+intent.getStringExtra("adaptiveReason")+" "+CaptureDiagnostics.permissionState(s));
+                if(id>0)recheckResult(s,id,SystemClock.elapsedRealtime());
+            }
+            PlaybackRecovery.kick(false);
+        }
         return intent;
     }
-    public static void destroyed(Service s){DiagnosticLog.event("SERVICE_DESTROY","instance="+System.identityHashCode(s));PlaybackRecovery.stopAll();if(service==s){service=null;promoted=false;ready=false;}lastStart=SystemClock.elapsedRealtime();}
+    public static void destroyed(Service s){DiagnosticLog.event("SERVICE_DESTROY","instance="+System.identityHashCode(s));PlaybackRecovery.stopAll();if(service==s){service=null;promoted=false;ready=false;pendingRecheck=0;}lastStart=SystemClock.elapsedRealtime();}
     public static void notificationConnected(Context c){listenerConnected=true;DiagnosticLog.event("NOTIFICATION_LISTENER","connected");main.post(new Runnable(){public void run(){reconcile("notification_connected",false);PlaybackRecovery.kick(false);}});}
     public static void notificationDestroyed(){listenerConnected=false;DiagnosticLog.event("NOTIFICATION_LISTENER","destroyed");}
     public static String report(){return "service="+(service!=null)+" foreground="+promoted+" serviceType="+currentType(service)+" ready="+ready+" listener="+listenerConnected+" visibleActivities="+activities.size()+" startAttempts="+attempts+" lastReason="+lastReason;}
