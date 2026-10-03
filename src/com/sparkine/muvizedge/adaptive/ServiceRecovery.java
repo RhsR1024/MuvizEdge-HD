@@ -31,7 +31,7 @@ public final class ServiceRecovery {
         DiagnosticLog.event("DEVICE","rom="+Build.DISPLAY+" display="+AdaptiveUi.device(app).width+"x"+AdaptiveUi.device(app).height+" dpi="+AdaptiveUi.device(app).dpi);
         preferenceListener=new SharedPreferences.OnSharedPreferenceChangeListener(){public void onSharedPreferenceChanged(SharedPreferences p,String key){
             if(key==null)return;
-            if(key.equals("EDGE_SHOW_ON_OVERLAY")||key.equals("SHOW_AOD")||key.startsWith("HIDE_ON_")||key.equals("IS_ONLY_MEDIA_APPS")||key.equals("IS_APPS_SELECTED")||key.endsWith("_PKGS")||key.equals("auto_bottom_inset")||key.equals("desktop_inset_compat")||key.equals("car_audio_compat")){
+            if(key.equals("EDGE_SHOW_ON_OVERLAY")||key.equals("SHOW_AOD")||key.startsWith("HIDE_ON_")||key.equals("IS_ONLY_MEDIA_APPS")||key.equals("IS_APPS_SELECTED")||key.endsWith("_PKGS")||key.equals("auto_bottom_inset")||key.equals("desktop_inset_compat")||key.equals("car_audio_compat")||key.equals("enhanced_capture_recheck")){
                 DiagnosticLog.event("SETTING",key+"="+p.getAll().get(key));AudioSupport.invalidate();PlaybackRecovery.kick(false);
             }
         }};
@@ -57,7 +57,10 @@ public final class ServiceRecovery {
             PlaybackRecovery.kick(wake);NavigationInsets.wake();
         }},filter);}catch(RuntimeException e){DiagnosticLog.error("SYSTEM_RECEIVER_FAILED",e);}
         main.postDelayed(tick,5000);
+        DiagnosticLog.event("STARTUP_REGISTRATION_COMPLETE","activity callbacks registered; system receiver setup finished (see SYSTEM_RECEIVER_FAILED on error); watchdog scheduled; enhanced="+enhancedCapture(app));
+        ProcessExitDiagnostics.init(app);
     }
+    public static boolean enhancedCapture(Context c){return AdaptiveUi.prefs(c).getBoolean("enhanced_capture_recheck",false);}
     private static final Runnable tick=new Runnable(){public void run(){
         try{sampleClocks();reconcile("watchdog",false);DiagnosticLog.state("SERVICE_STATE",report());}
         catch(RuntimeException e){DiagnosticLog.error("SERVICE_WATCHDOG_FAILED",e);}
@@ -109,7 +112,7 @@ public final class ServiceRecovery {
         }
         long now=SystemClock.elapsedRealtime();
         boolean accepted=wakePolicy.wake(now,unlocked,sleep);
-        boolean eligible=Build.VERSION.SDK_INT>=30 && Build.VERSION.SDK_INT<34 && captureEligible();
+        boolean eligible=Build.VERSION.SDK_INT>=30 && Build.VERSION.SDK_INT<34 && enhancedCapture(app) && captureEligible();
         int mode=CaptureDiagnostics.effectiveRecordOp(app),previous=accessPolicy.attempts();
         boolean renewed=accepted && eligible && mode==1 && !CaptureAccessPolicy.recent(now,AudioSupport.lastFrame()) && accessPolicy.renewForWake();
         if(renewed && pendingRecheck!=0){
@@ -140,7 +143,7 @@ public final class ServiceRecovery {
         if(needed)requestCaptureRecheck("capture_failed",false);
         now=SystemClock.elapsedRealtime();
         long delay=accessPolicy.retryDelay(now);
-        String schedule=Build.VERSION.SDK_INT<30||Build.VERSION.SDK_INT>=34?"unsupported_api":pendingRecheck!=0?"pending":mode!=1?"not_ignored":CaptureAccessPolicy.recent(now,AudioSupport.lastFrame())?"fft_present"
+        String schedule=!enhancedCapture(app)?"conservative_no_service_recheck":Build.VERSION.SDK_INT<30||Build.VERSION.SDK_INT>=34?"unsupported_api":pendingRecheck!=0?"pending":mode!=1?"not_ignored":CaptureAccessPolicy.recent(now,AudioSupport.lastFrame())?"fft_present"
                 :!needed?"wait_playback":!captureEligible()?"ineligible":delay<0?"bounded_stop":delay>0?"cooldown":"due_wait_failure";
         // Stable labels only: a changing countdown here would fill the rolling log every poll.
         DiagnosticLog.state("CAPTURE_ACCESS_SCHEDULE",accessProgress(now)+" state="+schedule+" pendingId="+pendingRecheck);
@@ -149,6 +152,10 @@ public final class ServiceRecovery {
     private static void requestCaptureRecheck(final String reason,boolean lifecycle){
         final Service target=service;
         if(app==null||target==null||!ready||pendingRecheck!=0)return;
+        if(!enhancedCapture(app)){
+            if(lifecycle)DiagnosticLog.event("CAPTURE_ACCESS_OPPORTUNITY","reason="+reason+" skipped=conservative_mode");
+            return;
+        }
         long now=SystemClock.elapsedRealtime(),frame=AudioSupport.lastFrame();
         int mode=CaptureDiagnostics.effectiveRecordOp(app);
         boolean eligible=captureEligible();
@@ -184,7 +191,8 @@ public final class ServiceRecovery {
     private static String accessTime(long wall){return wall<0?"尚无记录":DiagnosticLog.time(wall);}
     public static String accessReport(){
         long now=SystemClock.elapsedRealtime(),frame=AudioSupport.lastFrame(),delay=accessPolicy.retryDelay(now);
-        return "后台采集当前：实际访问="+(app==null?-1:CaptureDiagnostics.effectiveRecordOp(app))+"（0允许 / 1忽略）"
+        return "后台恢复模式："+(app!=null&&enhancedCapture(app)?"增强（含服务资格重评估）":"保守（仅采集恢复；默认）")
+                +"\n后台采集当前：实际访问="+(app==null?-1:CaptureDiagnostics.effectiveRecordOp(app))+"（0允许 / 1忽略）"
                 +"；近2秒频谱="+CaptureAccessPolicy.recent(now,frame)+"；回调年龄="+(frame<0?-1:now-frame)+" ms"
                 +"\n恢复预算："+accessProgress(now)+"；下次最少等待="+delay+" ms（-1本轮结束；仍需满足播放等条件）；等待回执="+(pendingRecheck!=0)
                 +"\n历史请求："+accessTime(accessRequestedWall)+"；"+accessRequest
@@ -215,7 +223,7 @@ public final class ServiceRecovery {
         try{return foregroundStart?c.startForegroundService(intent):c.startService(intent);}
         catch(RuntimeException e){DiagnosticLog.error("SERVICE_START_FAILED",e);return null;}
     }
-    public static void created(Service s){service=s;ready=false;promoted=false;promotionFailedAt=-1;DiagnosticLog.event("SERVICE_CREATE","instance="+System.identityHashCode(s));promote(s);}
+    public static void created(Service s){service=s;ready=false;promoted=false;promotionFailedAt=-1;DiagnosticLog.event("SERVICE_CREATE","instance="+System.identityHashCode(s)+" beforePromotion "+CaptureDiagnostics.permissionState(s));promote(s);}
     private static int currentType(Service s){return s==null?0:Build.VERSION.SDK_INT>=29?s.getForegroundServiceType():promoted?CaptureServicePolicy.MEDIA:0;}
     private static void promote(Service s){promote(s,false);}
     private static void promote(Service s,boolean userVisit){
@@ -226,6 +234,7 @@ public final class ServiceRecovery {
         int desired=CaptureServicePolicy.type(Build.VERSION.SDK_INT,record,s.getSharedPreferences("MUVIZ_EDGE_PREF",0).getBoolean("EDGE_SHOW_ON_OVERLAY",false));
         long now=SystemClock.elapsedRealtime();
         if(promoted && !recheck && !CaptureServicePolicy.due(currentType(s),desired,now,promotionFailedAt,userVisit))return;
+        DiagnosticLog.event("SERVICE_FOREGROUND_BEFORE","instance="+System.identityHashCode(s)+" alreadyPromoted="+promoted+" currentType="+currentType(s)+" desiredType="+desired+" forcedRecheck="+recheck+" userVisit="+userVisit+" enhanced="+enhancedCapture(s)+" "+CaptureDiagnostics.permissionState(s));
         try{
             Notification notification=((g0.k)ib.s.b(s).z).a();
             try{
@@ -249,7 +258,14 @@ public final class ServiceRecovery {
         if(!wanted(s)){DiagnosticLog.event("SERVICE_COMMAND_SKIPPED","disabled; stopping instead of sticky restart");return new Intent().putExtra("actionType",2);}
         if(intent.getIntExtra("actionType",-1)!=2){
             int id=intent.getIntExtra("adaptiveCaptureRecheckId",0);
-            boolean recheck=intent.getBooleanExtra("adaptiveCaptureRecheck",false) && (id==0||id==pendingRecheck);
+            boolean requested=intent.getBooleanExtra("adaptiveCaptureRecheck",false);
+            int mode=CaptureDiagnostics.effectiveRecordOp(s);
+            boolean recent=CaptureAccessPolicy.recent(SystemClock.elapsedRealtime(),AudioSupport.lastFrame());
+            boolean recheck=CaptureCommandPolicy.force(requested,id,pendingRecheck,enhancedCapture(s),!activities.isEmpty(),mode,recent);
+            if(requested&&!recheck){
+                DiagnosticLog.event("CAPTURE_ACCESS_COMMAND_SKIPPED","id="+id+" pending="+pendingRecheck+" effective="+mode+" recentFrame="+recent+" visible="+activities.size()+" enhanced="+enhancedCapture(s));
+                if(id>0&&id==pendingRecheck){pendingRecheck=0;accessResult="跳过已无必要的重评估 #"+id;accessResultWall=System.currentTimeMillis();}
+            }
             promote(s,false,recheck);
             if(recheck){
                 DiagnosticLog.event("CAPTURE_ACCESS_RECHECK_COMMAND","id="+id+" reason="+intent.getStringExtra("adaptiveReason")+" "+CaptureDiagnostics.permissionState(s));

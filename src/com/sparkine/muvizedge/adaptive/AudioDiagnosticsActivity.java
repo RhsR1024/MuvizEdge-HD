@@ -62,7 +62,7 @@ public final class AudioDiagnosticsActivity extends Activity {
     @Override protected void onResume() { super.onResume(); AdaptiveUi.onResume(this); refresh(); }
     private void refresh() {
         AudioSupport.invalidate();
-        StringBuilder s = new StringBuilder("Muviz Edge 155 启动、音频与边距诊断\n");
+        StringBuilder s = new StringBuilder("Muviz Edge 156 启动、音频与边距诊断\n");
         s.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date()));
         s.append("\n设备：").append(Build.MANUFACTURER).append(' ').append(Build.MODEL).append("\nAndroid ").append(Build.VERSION.RELEASE).append(" / API ").append(Build.VERSION.SDK_INT);
         AdaptiveUi.Device d = AdaptiveUi.device(this);
@@ -97,6 +97,7 @@ public final class AudioDiagnosticsActivity extends Activity {
         s.append("\n\n").append(NavigationInsets.report());
         s.append("\n\n").append(PlaybackRecovery.report());
         s.append("\n\n").append(ServiceRecovery.accessReport());
+        s.append("\n\n").append(ProcessExitDiagnostics.report());
         s.append("\n\n").append(CaptureDiagnostics.backgroundReport());
         s.append("\n\n").append(ServiceRecovery.report()).append("\n").append(DiagnosticLog.metadata());
         s.append("\n注：帧数是本次进程内的累计值，界面预览也会产生回调；进入应用时可能暂挂悬浮层。\n\n悬浮设置（false=关闭；true=开启）：");

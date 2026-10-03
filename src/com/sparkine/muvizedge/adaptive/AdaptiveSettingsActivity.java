@@ -59,6 +59,12 @@ public final class AdaptiveSettingsActivity extends Activity {
         label(t("大屏默认开启：部分车机独立控制音量，系统媒体音量可能显示为 0。兼容模式会结合播放器状态判断；实际律动仍取决于系统能否提供音频频谱。", "Enabled by default on large displays. Some cars report media volume as zero. Compatibility mode also checks player state; spectrum capture still depends on the system."), 14);
         Button diagnostics = button(t("音频与悬浮状态", "Audio & overlay status"));
         diagnostics.setOnClickListener(new View.OnClickListener(){public void onClick(View v){startActivity(new android.content.Intent(AdaptiveSettingsActivity.this, AudioDiagnosticsActivity.class));}});
+        final Button recovery=button(recoveryLabel());
+        recovery.setOnClickListener(new View.OnClickListener(){public void onClick(View v){
+            p.edit().putBoolean("enhanced_capture_recheck",!ServiceRecovery.enhancedCapture(AdaptiveSettingsActivity.this)).apply();
+            recovery.setText(recoveryLabel());
+        }});
+        label(t("默认保守：保留采集恢复，减少重复服务操作。增强模式增加后台服务重评估，用于比较启动效果。更改后请重启车机并直接播放，再导出日志；两种模式都不保证系统放行。", "Conservative mode keeps capture recovery with fewer repeated service operations. Enhanced mode also reassesses the background service. Compare after a reboot and direct music playback, then export diagnostics. Neither mode guarantees system access."),14);
         final Button bottom = button(bottomLabel());
         bottom.setOnClickListener(new View.OnClickListener(){public void onClick(View v){
             p.edit().putBoolean("auto_bottom_inset", !NavigationInsets.enabled(AdaptiveSettingsActivity.this)).apply();
@@ -131,4 +137,5 @@ public final class AdaptiveSettingsActivity extends Activity {
     private String bottomLabel(){return t("底部自动测量：", "Measure bottom inset: ")+(NavigationInsets.enabled(this)?t("开启", "On"):t("关闭", "Off"));}
     private String desktopLabel(){return t("车机桌面兼容：", "Launcher compatibility: ")+(DesktopSupport.enabled(this)?t("开启", "On"):t("关闭", "Off"));}
     private String usageLabel(){return t(DesktopSupport.accessLabel()+" · 管理权限", "Manage and verify usage access");}
+    private String recoveryLabel(){return t("后台恢复模式：", "Background recovery: ")+(ServiceRecovery.enhancedCapture(this)?t("增强", "Enhanced"):t("保守（默认）", "Conservative (default)"));}
 }

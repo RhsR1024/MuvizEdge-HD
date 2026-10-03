@@ -95,3 +95,9 @@ AppOps 常见模式：0 allowed、1 ignored、2 errored、3 default、4 foregrou
 `CAPTURE_ACCESS_WAKE` 的 accepted 表示有真唤醒证据且通过去重，renewed 表示确实重置过已使用的预算，两者不同；重复亮屏通常都是 false。`RECOVERY_STATE` / `HEARTBEAT` 的 retryStage 是普通音频重建阶段，不是服务重评估次数。
 
 导出快照中“后台采集当前”使用即时实际访问和回调年龄；“历史请求 / 结果”保留发生时间，允许历史失败与当前成功同时存在。次数清零不清除进程累计数。规则、边界及车机验证方法见 `RECOVERY155.md`。
+
+## 156 补充
+
+PROCESS_EXIT_HISTORY 从系统读取历史退出时间、PID、原因及状态；权限变更可能为 reason=8，用户请求终止=10，Java / 原生崩溃=4/5，内存不足=3。以系统返回为准，可能包含旧版本，空结果不能排除进程被终止。PROCESS_EXIT_QUERY_FAILED 是查询失败，不是应用退出原因。
+
+STARTUP_REGISTRATION_COMPLETE、AUDIO_CALLBACK_REGISTERED、SERVICE_CREATE 的 beforePromotion 和 SERVICE_FOREGROUND_BEFORE 帮助对照注册 / 提升顺序与调用前后权限。CAPTURE_ACCESS_COMMAND_SKIPPED 记录请求到达后已无必要的重评估。恢复模式默认保守，state=conservative_no_service_recheck 是预期状态；详情见 `DIAGNOSTICS156.md`。

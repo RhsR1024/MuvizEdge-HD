@@ -85,7 +85,7 @@ public final class PlaybackRecovery {
         Monitor(View v,gb.f owner){view=new WeakReference<View>(v);controller=new WeakReference<gb.f>(owner);}
         void start(View v){
             audio=(AudioManager)v.getContext().getSystemService(Context.AUDIO_SERVICE);
-            if(audio!=null && !registered)try{audio.registerAudioPlaybackCallback(callback,handler);registered=true;}catch(RuntimeException e){DiagnosticLog.error("AUDIO_CALLBACK_REGISTER_FAILED",e);}
+            if(audio!=null && !registered)try{audio.registerAudioPlaybackCallback(callback,handler);registered=true;DiagnosticLog.event("AUDIO_CALLBACK_REGISTERED","monitor="+System.identityHashCode(this)+" view="+v.getClass().getName());}catch(RuntimeException e){DiagnosticLog.error("AUDIO_CALLBACK_REGISTER_FAILED",e);}
             handler.removeCallbacks(this);handler.post(this);
         }
         @Override public void onViewAttachedToWindow(View v){DiagnosticLog.event("OVERLAY_ATTACH",v.getClass().getName());handler.removeCallbacks(this);handler.post(this);}
