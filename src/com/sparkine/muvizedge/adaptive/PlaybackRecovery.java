@@ -142,7 +142,7 @@ public final class PlaybackRecovery {
                 }
                 // Recheck readiness after callbacks arrive; keep original hide/app-selection gates.
                 if(playing && !owner.a && now-lastRefresh>=1000){owner.c();lastRefresh=now;}
-                String state="enabled="+enabled+" eligible="+eligible+" playing="+playing+" initialized="+owner.b+" started="+owner.a+" suspended="+owner.e+" attached="+v.isAttachedToWindow()+" missingCapture="+(engine!=null&&engine.k)+" refresh="+(engine!=null&&engine.j)+" hasVisualizer="+(engine!=null&&engine.a!=null);
+                String state="enabled="+enabled+" eligible="+eligible+" playing="+playing+" initialized="+owner.b+" started="+owner.a+" suspended="+owner.e+" attached="+v.isAttachedToWindow()+" missingCapture="+(engine!=null&&engine.k)+" refresh="+(engine!=null&&engine.j)+" hasVisualizer="+(engine!=null&&engine.a!=null)+" retryStage="+policy.retryStage();
                 DiagnosticLog.state("RECOVERY_STATE",state);
                 if(lastHeartbeat<0||now-lastHeartbeat>=30000){lastHeartbeat=now;DiagnosticLog.event("HEARTBEAT",state+" frameAge="+(AudioSupport.lastFrame()<0?-1:now-AudioSupport.lastFrame())+" "+AudioSupport.captureReport()+" "+NavigationInsets.report());}
             } catch(RuntimeException e){action="恢复检查暂未完成："+e.getClass().getSimpleName();DiagnosticLog.state("RECOVERY_ERROR",e.toString());}

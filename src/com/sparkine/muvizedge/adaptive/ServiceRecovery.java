@@ -19,8 +19,10 @@ public final class ServiceRecovery {
     private static boolean listenerConnected;
     private static long promotionFailedAt=-1;
     private static final CaptureAccessPolicy accessPolicy=new CaptureAccessPolicy();
+    private static final CaptureWakePolicy wakePolicy=new CaptureWakePolicy();
     private static int lastAccessMode=-1,recheckSequence,pendingRecheck,accessRevision;
-    private static String accessAction="尚未请求后台采集资格重评估";
+    private static long pendingDeepSleep,accessRequestedWall=-1,accessResultWall=-1,accessAllowedWall=-1,accessHealthyWall=-1;
+    private static String accessRequest="尚未请求",accessResult="尚无结果";
     private static SharedPreferences.OnSharedPreferenceChangeListener preferenceListener;
     private ServiceRecovery(){}
     public static void init(Application application){
@@ -47,9 +49,12 @@ public final class ServiceRecovery {
         IntentFilter filter=new IntentFilter();
         for(String action:new String[]{Intent.ACTION_SCREEN_ON,Intent.ACTION_SCREEN_OFF,Intent.ACTION_USER_PRESENT,Intent.ACTION_USER_UNLOCKED,Intent.ACTION_SHUTDOWN,Intent.ACTION_TIME_CHANGED,PowerManager.ACTION_POWER_SAVE_MODE_CHANGED})filter.addAction(action);
         try{app.registerReceiver(new BroadcastReceiver(){public void onReceive(Context c,Intent i){
-            String action=i.getAction();DiagnosticLog.event("SYSTEM_EVENT",action);sampleClocks();AudioSupport.invalidate();
+            String action=i.getAction();DiagnosticLog.event("SYSTEM_EVENT",action);
+            if(Intent.ACTION_SCREEN_OFF.equals(action))wakePolicy.screenOff(SystemClock.elapsedRealtime());
+            sampleClocks();AudioSupport.invalidate();
             boolean wake=Intent.ACTION_SCREEN_ON.equals(action)||Intent.ACTION_USER_PRESENT.equals(action)||Intent.ACTION_USER_UNLOCKED.equals(action);
-            if(wake)reconcile(action,false);PlaybackRecovery.kick(wake);NavigationInsets.wake();
+            if(wake){captureWake(action,Intent.ACTION_USER_UNLOCKED.equals(action),0);reconcile(action,false);}
+            PlaybackRecovery.kick(wake);NavigationInsets.wake();
         }},filter);}catch(RuntimeException e){DiagnosticLog.error("SYSTEM_RECEIVER_FAILED",e);}
         main.postDelayed(tick,5000);
     }
@@ -60,8 +65,10 @@ public final class ServiceRecovery {
     }};
     private static void sampleClocks(){
         long e=SystemClock.elapsedRealtime(),u=SystemClock.uptimeMillis();
-        if(lastElapsed>=0){long sleep=StartupPolicy.deepSleep(e,u,lastElapsed,lastUptime);if(sleep>2000){DiagnosticLog.event("SLEEP_GAP","estimatedDeepSleepMs="+sleep+" elapsedGap="+(e-lastElapsed));PlaybackRecovery.kick(true);NavigationInsets.wake();}}
+        if(lastElapsed>=0){long sleep=StartupPolicy.deepSleep(e,u,lastElapsed,lastUptime);if(sleep>2000){pendingDeepSleep+=sleep;DiagnosticLog.event("SLEEP_GAP","estimatedDeepSleepMs="+sleep+" elapsedGap="+(e-lastElapsed));PlaybackRecovery.kick(true);NavigationInsets.wake();}}
         lastElapsed=e;lastUptime=u;
+        // A sleeping watchdog must not consume the evidence before the device becomes usable.
+        if(interactive()){long sleep=pendingDeepSleep;pendingDeepSleep=0;if(sleep>=10000)captureWake("deep_sleep",false,sleep);}
     }
     static boolean interactive(){PowerManager p=(PowerManager)app.getSystemService(Context.POWER_SERVICE);return p!=null&&p.isInteractive();}
     static boolean backgroundSettled(){return activities.isEmpty()&&SystemClock.elapsedRealtime()-backgroundAt>=1000;}
@@ -87,6 +94,35 @@ public final class ServiceRecovery {
                 ||Intent.ACTION_USER_UNLOCKED.equals(reason)||Intent.ACTION_USER_PRESENT.equals(reason)
                 ||Intent.ACTION_SCREEN_ON.equals(reason)||Intent.ACTION_MY_PACKAGE_REPLACED.equals(reason);
     }
+    private static boolean captureEligible(){
+        UserManager user=(UserManager)app.getSystemService(Context.USER_SERVICE);
+        return backgroundSettled() && AudioSupport.compat(app) && interactive()
+                && app.getSharedPreferences("MUVIZ_EDGE_PREF",0).getBoolean("EDGE_SHOW_ON_OVERLAY",false)
+                && app.checkSelfPermission(android.Manifest.permission.RECORD_AUDIO)==android.content.pm.PackageManager.PERMISSION_GRANTED
+                && Settings.canDrawOverlays(app) && (user==null||user.isUserUnlocked());
+    }
+    private static void captureWake(String reason,boolean unlocked,long sleep){
+        if(app==null||!interactive())return;
+        UserManager user=(UserManager)app.getSystemService(Context.USER_SERVICE);
+        if(user!=null&&!user.isUserUnlocked()){
+            DiagnosticLog.event("CAPTURE_ACCESS_WAKE","reason="+reason+" accepted=false wait_user_unlock=true");return;
+        }
+        long now=SystemClock.elapsedRealtime();
+        boolean accepted=wakePolicy.wake(now,unlocked,sleep);
+        boolean eligible=Build.VERSION.SDK_INT>=30 && Build.VERSION.SDK_INT<34 && captureEligible();
+        int mode=CaptureDiagnostics.effectiveRecordOp(app),previous=accessPolicy.attempts();
+        boolean renewed=accepted && eligible && mode==1 && !CaptureAccessPolicy.recent(now,AudioSupport.lastFrame()) && accessPolicy.renewForWake();
+        if(renewed && pendingRecheck!=0){
+            accessResult="新唤醒周期替代未完成请求 #"+pendingRecheck;accessResultWall=System.currentTimeMillis();
+            DiagnosticLog.event("CAPTURE_ACCESS_RECHECK_SUPERSEDED","id="+pendingRecheck+" reason="+reason);pendingRecheck=0;
+        }
+        DiagnosticLog.event("CAPTURE_ACCESS_WAKE","reason="+reason+" deepSleepMs="+sleep+" accepted="+accepted+" eligible="+eligible+" effective="+mode+" renewed="+renewed+" previousAttempts="+previous+" "+accessProgress(now));
+        if(accepted && eligible)requestCaptureRecheck(reason,true);
+    }
+    private static String accessProgress(long now){
+        return "cycle="+accessPolicy.cycle()+" attempts="+accessPolicy.attempts()+"/"+CaptureAccessPolicy.LIMIT
+                +" total="+accessPolicy.totalAttempts()+" phase="+accessPolicy.phase(now);
+    }
     static int checkCaptureAccess(boolean needed){
         if(app==null)return accessRevision;
         int mode=CaptureDiagnostics.effectiveRecordOp(app);
@@ -95,9 +131,19 @@ public final class ServiceRecovery {
             DiagnosticLog.event("CAPTURE_ACCESS_CHANGED","previous="+lastAccessMode+" current="+mode+" "+CaptureDiagnostics.permissionState(app)+" "+report());
             lastAccessMode=mode;
         }
-        accessPolicy.observe(SystemClock.elapsedRealtime(),mode,AudioSupport.lastFrame());
-        if(restored){accessRevision++;DiagnosticLog.event("CAPTURE_ACCESS_RESTORED","revision="+accessRevision+"; reset audio retry delay; actual FFT still required");}
+        long now=SystemClock.elapsedRealtime();
+        if(accessPolicy.observe(now,mode,AudioSupport.lastFrame())){
+            accessHealthyWall=System.currentTimeMillis();
+            DiagnosticLog.event("CAPTURE_ACCESS_HEALTHY","allowed and recent FFT observed for 5 seconds; budget reset; "+accessProgress(now));
+        }
+        if(restored){accessAllowedWall=System.currentTimeMillis();accessRevision++;DiagnosticLog.event("CAPTURE_ACCESS_RESTORED","revision="+accessRevision+"; reset audio retry delay; actual FFT still required");}
         if(needed)requestCaptureRecheck("capture_failed",false);
+        now=SystemClock.elapsedRealtime();
+        long delay=accessPolicy.retryDelay(now);
+        String schedule=Build.VERSION.SDK_INT<30||Build.VERSION.SDK_INT>=34?"unsupported_api":pendingRecheck!=0?"pending":mode!=1?"not_ignored":CaptureAccessPolicy.recent(now,AudioSupport.lastFrame())?"fft_present"
+                :!needed?"wait_playback":!captureEligible()?"ineligible":delay<0?"bounded_stop":delay>0?"cooldown":"due_wait_failure";
+        // Stable labels only: a changing countdown here would fill the rolling log every poll.
+        DiagnosticLog.state("CAPTURE_ACCESS_SCHEDULE",accessProgress(now)+" state="+schedule+" pendingId="+pendingRecheck);
         return accessRevision;
     }
     private static void requestCaptureRecheck(final String reason,boolean lifecycle){
@@ -105,26 +151,22 @@ public final class ServiceRecovery {
         if(app==null||target==null||!ready||pendingRecheck!=0)return;
         long now=SystemClock.elapsedRealtime(),frame=AudioSupport.lastFrame();
         int mode=CaptureDiagnostics.effectiveRecordOp(app);
-        UserManager user=(UserManager)app.getSystemService(Context.USER_SERVICE);
-        boolean eligible=backgroundSettled() && AudioSupport.compat(app) && interactive()
-                && app.getSharedPreferences("MUVIZ_EDGE_PREF",0).getBoolean("EDGE_SHOW_ON_OVERLAY",false)
-                && app.checkSelfPermission(android.Manifest.permission.RECORD_AUDIO)==android.content.pm.PackageManager.PERMISSION_GRANTED
-                && Settings.canDrawOverlays(app) && (user==null||user.isUserUnlocked());
+        boolean eligible=captureEligible();
         if(!accessPolicy.request(Build.VERSION.SDK_INT,eligible,mode,now,frame,CaptureDiagnostics.lastFailure(),lifecycle)){
-            if(lifecycle)DiagnosticLog.event("CAPTURE_ACCESS_OPPORTUNITY","reason="+reason+" eligible="+eligible+" mode="+mode+" recentFrame="+CaptureAccessPolicy.recent(now,frame)+" attempts="+accessPolicy.attempts());
+            if(lifecycle)DiagnosticLog.event("CAPTURE_ACCESS_OPPORTUNITY","reason="+reason+" eligible="+eligible+" mode="+mode+" recentFrame="+CaptureAccessPolicy.recent(now,frame)+" "+accessProgress(now)+" retryDelayMs="+accessPolicy.retryDelay(now));
             return;
         }
         final int id=++recheckSequence;pendingRecheck=id;
-        accessAction="请求重评估 #"+id+"，原因="+reason;
-        DiagnosticLog.event("CAPTURE_ACCESS_RECHECK_BEGIN","id="+id+" reason="+reason+" attempt="+accessPolicy.attempts()+" frameAge="+(frame<0?-1:now-frame)+" "+CaptureDiagnostics.permissionState(app)+" "+report());
+        accessRequest="#"+id+"，原因="+reason;accessRequestedWall=System.currentTimeMillis();
+        DiagnosticLog.event("CAPTURE_ACCESS_RECHECK_BEGIN","id="+id+" reason="+reason+" "+accessProgress(now)+" retryDelayMs="+accessPolicy.retryDelay(now)+" frameAge="+(frame<0?-1:now-frame)+" "+CaptureDiagnostics.permissionState(app)+" "+report());
         // Re-enter startServiceLocked while the receiver's real system opportunity is active,
         // then promote in onStartCommand so Android recomputes the process's FGS capabilities.
         ComponentName result=startIntent(app,new Intent().setClassName(app,"com.sparkine.muvizedge.service.AppService")
                 .putExtra("actionType",1).putExtra("adaptiveReason",reason)
                 .putExtra("adaptiveCaptureRecheck",true).putExtra("adaptiveCaptureRecheckId",id));
-        if(result==null){pendingRecheck=0;accessAction="重评估请求未启动 #"+id;DiagnosticLog.event("CAPTURE_ACCESS_RECHECK_FAILED","id="+id+" request returned null");return;}
+        if(result==null){pendingRecheck=0;accessResult="重评估请求未启动 #"+id;accessResultWall=System.currentTimeMillis();DiagnosticLog.event("CAPTURE_ACCESS_RECHECK_FAILED","id="+id+" request returned null");return;}
         main.postDelayed(new Runnable(){public void run(){
-            if(service==target && pendingRecheck==id){pendingRecheck=0;accessAction="重评估回执超时 #"+id;DiagnosticLog.event("CAPTURE_ACCESS_RECHECK_TIMEOUT","id="+id+" "+CaptureDiagnostics.permissionState(target));}
+            if(service==target && pendingRecheck==id){pendingRecheck=0;accessResult="重评估回执超时 #"+id;accessResultWall=System.currentTimeMillis();DiagnosticLog.event("CAPTURE_ACCESS_RECHECK_TIMEOUT","id="+id+" "+CaptureDiagnostics.permissionState(target));}
         }},5000);
     }
     private static void recheckResult(final Service target,final int id,final long requestedAt){
@@ -132,17 +174,28 @@ public final class ServiceRecovery {
             if(service!=target || pendingRecheck!=id)return;
             pendingRecheck=0;
             int mode=CaptureDiagnostics.effectiveRecordOp(target);
-            boolean frames=AudioSupport.lastFrame()>=requestedAt;
-            accessAction="重评估 #"+id+"：实际访问="+mode+"；请求后收到频谱="+frames;
-            DiagnosticLog.event("CAPTURE_ACCESS_RECHECK_RESULT","id="+id+" effective="+mode+" fftAfterCommand="+frames+" "+CaptureDiagnostics.permissionState(target)+" "+report());
+            long now=SystemClock.elapsedRealtime(),frame=AudioSupport.lastFrame();
+            boolean frames=frame>=requestedAt && frame<=now;
+            accessResult="重评估 #"+id+"：实际访问="+mode+"；命令后收到频谱="+frames;accessResultWall=System.currentTimeMillis();
+            DiagnosticLog.event("CAPTURE_ACCESS_RECHECK_RESULT","id="+id+" effective="+mode+" fftAfterCommand="+frames+" "+accessProgress(now)+" "+CaptureDiagnostics.permissionState(target)+" "+report());
             PlaybackRecovery.kick(false);
         }},1000);
     }
-    public static String accessReport(){return "后台采集资格恢复："+accessAction+"；本轮自动尝试="+accessPolicy.attempts()+"/3；等待回执="+(pendingRecheck!=0);}
+    private static String accessTime(long wall){return wall<0?"尚无记录":DiagnosticLog.time(wall);}
+    public static String accessReport(){
+        long now=SystemClock.elapsedRealtime(),frame=AudioSupport.lastFrame(),delay=accessPolicy.retryDelay(now);
+        return "后台采集当前：实际访问="+(app==null?-1:CaptureDiagnostics.effectiveRecordOp(app))+"（0允许 / 1忽略）"
+                +"；近2秒频谱="+CaptureAccessPolicy.recent(now,frame)+"；回调年龄="+(frame<0?-1:now-frame)+" ms"
+                +"\n恢复预算："+accessProgress(now)+"；下次最少等待="+delay+" ms（-1本轮结束；仍需满足播放等条件）；等待回执="+(pendingRecheck!=0)
+                +"\n历史请求："+accessTime(accessRequestedWall)+"；"+accessRequest
+                +"\n历史结果："+accessTime(accessResultWall)+"；"+accessResult
+                +"\n最近访问由忽略变为允许："+accessTime(accessAllowedWall)+"；最近自动恢复周期的连续频谱确认："+accessTime(accessHealthyWall);
+    }
     public static void boot(Context c,Intent i){
         String action=i==null?"null":i.getAction();DiagnosticLog.event("BOOT_RECEIVER",action);
         if(Build.VERSION.SDK_INT>=35){DiagnosticLog.event("BOOT_START_SKIPPED","mediaPlayback FGS restriction API>=35");return;}
         if(Intent.ACTION_BOOT_COMPLETED.equals(action)||"android.intent.action.QUICKBOOT_POWERON".equals(action)||Intent.ACTION_USER_UNLOCKED.equals(action)||Intent.ACTION_MY_PACKAGE_REPLACED.equals(action)){
+            if(Intent.ACTION_USER_UNLOCKED.equals(action))captureWake(action,true,0);
             reconcile(action,false);PlaybackRecovery.kick(true);
         }
     }

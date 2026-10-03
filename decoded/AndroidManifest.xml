@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:compileSdkVersion="36" android:compileSdkVersionCodename="16" package="com.sparkine.muvizedge" platformBuildVersionCode="36" platformBuildVersionName="16" android:versionCode="154" android:versionName="2.1.4.0-adaptive-zh12">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:compileSdkVersion="36" android:compileSdkVersionCodename="16" package="com.sparkine.muvizedge" platformBuildVersionCode="36" platformBuildVersionName="16" android:versionCode="155" android:versionName="2.1.4.0-adaptive-zh13">
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />

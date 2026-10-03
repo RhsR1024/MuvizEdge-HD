@@ -1,6 +1,6 @@
 # MuvizEdge HD
 
-基于现有 Muviz Edge APK 维护的手机 / 车机自适应版本。当前版本为 **154 / 2.1.4.0-adaptive-zh12**，包名 `com.sparkine.muvizedge`。
+基于现有 Muviz Edge APK 维护的手机 / 车机自适应版本。当前版本为 **155 / 2.1.4.0-adaptive-zh13**，包名 `com.sparkine.muvizedge`。
 
 本仓库包含已修改的完整反编译目录、Java 辅助代码、编译用接口桩、测试、Windows x64 构建运行环境，以及 148 校验基线和归档成品。它不是原厂 Gradle / Android Studio 源码工程；构建过程为 Java → DEX、smali / 资源 → APK、合并、校验、签名。
 
@@ -14,9 +14,9 @@
 - 151 补充后台音频采集服务类型、授权升级及车机使用情况访问的实际读取验证。
 - 152 增加前台切换后的导航栏主动重测；153 撤销桌面“设置 / 息屏显示”快捷入口，保留主图标及应用内功能。
 
-已验证 582 项 JVM 检查、资源 / DEX / ABI 检查、APK 签名和对齐。**这些检查不能替代车机实测；冷启动和返回桌面后的表现仍需车机复测。** 详见 [当前交接状态](docs/HANDOFF.md)。
+已验证 675 项 JVM 检查、资源 / DEX / ABI 检查、APK 签名和对齐。**这些检查不能替代车机实测；冷启动和返回桌面后的表现仍需车机复测。** 详见 [当前交接状态](docs/HANDOFF.md)。
 
-154 针对服务已存在但后台音频访问仍受限的情况，补充有限的服务资格重评估和诊断；系统持续拒绝时仍需设备日志定位，未宣称已经完成车机冷启动实测。
+155 保留 154 已在车机日志中有效的恢复路径，增加两次低频重评估、真实唤醒后的恢复预算，并修正播放状态抖动导致的频繁重建。155 尚待车机实测；系统持续限制后台录音时，公开接口重试不能保证放行。
 
 ## 编译
 
@@ -46,6 +46,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\build.ps1
 8. [152 全屏导航栏主动重测](docs/INSETS152.md)。
 9. [153 移除桌面快捷入口与 152 日志复核](docs/SHORTCUTS153.md)。
 10. [154 后台采集资格重评估](docs/CAPTURE154.md)。
-11. [修改记录](docs/CHANGELOG.md)及[第三方工具说明](docs/THIRD_PARTY.md)。
+11. [155 分阶段恢复、唤醒与重试退避](docs/RECOVERY155.md)。
+12. [修改记录](docs/CHANGELOG.md)及[第三方工具说明](docs/THIRD_PARTY.md)。
 
 请先阅读根目录 [AGENTS.md](AGENTS.md)，再修改代码。原始 APK 及随附依赖的权利和许可仍属于各自权利人；仓库没有把原始 APK 重新许可为本项目自有代码。

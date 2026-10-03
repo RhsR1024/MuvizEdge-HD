@@ -85,3 +85,13 @@ AppOps 常见模式：0 allowed、1 ignored、2 errored、3 default、4 foregrou
 `NAVIGATION_RECHECK_RESULT` 记录每次请求后约 100 ms 看到的 Insets 和选定高度，便于判断结果仍未变化；`SYSTEM_IMMERSIVE_POLICY` 记录系统公开的 policy_control 设置，空值也有意义。此设置仅作诊断，不代表手势临时显示的导航栏必然隐藏。
 
 `LOG_GAP nullBytes=...` 表示导出时发现原始文件存在 NUL 空洞；保持周围有效记录顺序并标记缺失，原始文件未重写。它不表示丢失数据已恢复，也不能单独证明空洞由何种断电 / 存储问题造成。
+
+## 154 / 155 采集恢复补充
+
+`CAPTURE_ACCESS_RECHECK_BEGIN → COMMAND → RESULT` 表示请求、收到命令和约一秒后的结果。只有实际允许且获得 FFT 才能说明音频恢复；`FAILED` / `TIMEOUT` 分别记录启动失败 / 回执超时，`SUPERSEDED` 表示新唤醒周期使旧请求失效。`CAPTURE_ACCESS_RESTORED` 只说明实际访问 1→0 并解除旧音频退避，连续 FFT 确认另看 `CAPTURE_ACCESS_HEALTHY`。
+
+155 的 `CAPTURE_ACCESS_SCHEDULE` 分列周期 cycle、本轮 attempts/5、进程累计 total、阶段 phase 和等待原因 state；`slow` 是 3 次快速请求之后的 2 次低频机会，`exhausted` 为次数用完，`expired` 为慢窗口已结束。`idle` 可能表示尚未使用或已恢复 / 真唤醒后更新预算，结合之前 HEALTHY / WAKE 判断。状态稳定不重复写入倒计时。
+
+`CAPTURE_ACCESS_WAKE` 的 accepted 表示有真唤醒证据且通过去重，renewed 表示确实重置过已使用的预算，两者不同；重复亮屏通常都是 false。`RECOVERY_STATE` / `HEARTBEAT` 的 retryStage 是普通音频重建阶段，不是服务重评估次数。
+
+导出快照中“后台采集当前”使用即时实际访问和回调年龄；“历史请求 / 结果”保留发生时间，允许历史失败与当前成功同时存在。次数清零不清除进程累计数。规则、边界及车机验证方法见 `RECOVERY155.md`。

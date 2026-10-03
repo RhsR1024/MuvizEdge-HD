@@ -8,12 +8,12 @@
 | `decoded/smali/` | 原始主 DEX 和已插入的辅助层调用 |
 | `src/com/sparkine/muvizedge/adaptive/` | 可阅读、维护的 Java 辅助层 |
 | `stubs/` | 编译期混淆类声明，不参与 APK 打包 |
-| `tests/` | 12 个独立 Java 测试入口 |
+| `tests/` | 13 个独立 Java 测试入口 |
 | `scripts/` | 编译、静态检查、签名、API 方法解析 |
 | `baseline/Recovery148.apk` | 内容和 ABI 对比基线，也用于保留原 PNG 字节 |
 | `verification/` | 148 smali 哈希、允许变化的方法和构建证明 |
 | `vendor/` | 工具、运行时压缩包和 SHA256 清单 |
-| `releases/` | 149–154 归档成品 |
+| `releases/` | 149–155 归档成品 |
 | `.runtime/`、`build/`、`output/`、`.local/` | 本地产物 / 签名，不进 Git |
 
 主 DEX 保留原始类；Java 辅助层单独生成 `classes2.dex`。将 `stubs` 合入 APK 会导致重复类或运行时行为被空实现替换。
@@ -103,3 +103,5 @@ flowchart TD
 153 仅从 HomeActivity 撤销 `android.app.shortcuts` 元数据，停止发布 `res/xml/shortcuts.xml` 的两个静态桌面快捷入口；原资源保留但不再注册。主入口和应用内页面均保留，未增加运行时清理代码。详见 `SHORTCUTS153.md`。
 
 154 的 `CaptureAccessPolicy` 为已有服务的后台资格重评估提供 3 次共享预算；`ServiceRecovery` 重新发起前台服务请求并在命令阶段更新能力，`PlaybackRecovery` 按访问恢复代号解除旧音频退避。诊断通过原有滚动导出链路保存，详见 `CAPTURE154.md`。
+
+155 将该预算扩为 3 次快速 + 2 次低频，并通过 `CaptureWakePolicy` 区分真正熄屏 / 深睡 / 首次解锁与重复事件；`RecoveryPolicy` 保留短暂播放跳变之间的退避。`ServiceRecovery` 分离当前状态与历史重评估结果，详见 `RECOVERY155.md`。13 个测试入口共 675 项 JVM 检查。
