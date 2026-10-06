@@ -54,7 +54,7 @@ public final class CaptureDiagnostics {
         return out.toString();
     }
     public static String state(ib.e engine){
-        return "hasVisualizer="+(engine.a!=null)+" tunnelWorkaroundPrepared="+(engine.c!=null)+" capturePending="+engine.k+" "+permissionState(engine.b)+" "+ServiceRecovery.report();
+        return "hasVisualizer="+(engine.a!=null)+" tunnelWorkaroundPrepared="+(engine.c!=null)+" capturePending="+engine.k+" engineForceRandom="+engine.m+" "+permissionState(engine.b)+" "+ServiceRecovery.report();
     }
     private static void remember(ib.e engine,String result){
         if(ServiceRecovery.backgroundSettled())lastBackground=DiagnosticLog.time(System.currentTimeMillis())+" "+result+" "+state(engine);

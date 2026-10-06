@@ -4,6 +4,7 @@ public final class e {
     public android.content.Context b;
     public android.media.MediaPlayer c;
     public boolean k;
+    public boolean m;
     public boolean j;
     public java.util.HashSet e;
     public c s;

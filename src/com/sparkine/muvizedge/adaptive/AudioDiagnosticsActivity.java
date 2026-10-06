@@ -62,7 +62,7 @@ public final class AudioDiagnosticsActivity extends Activity {
     @Override protected void onResume() { super.onResume(); AdaptiveUi.onResume(this); refresh(); }
     private void refresh() {
         AudioSupport.invalidate();
-        StringBuilder s = new StringBuilder("Muviz Edge 158 启动、音频与边距诊断\n");
+        StringBuilder s = new StringBuilder("Muviz Edge 159 启动、音频与边距诊断\n");
         s.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date()));
         s.append("\n设备：").append(Build.MANUFACTURER).append(' ').append(Build.MODEL).append("\nAndroid ").append(Build.VERSION.RELEASE).append(" / API ").append(Build.VERSION.SDK_INT);
         AdaptiveUi.Device d = AdaptiveUi.device(this);
@@ -80,6 +80,7 @@ public final class AudioDiagnosticsActivity extends Activity {
         s.append("\n使用情况访问：").append(DesktopSupport.accessLabel());
         s.append("\n系统报告正在播放：").append(AudioSupport.systemActive(this));
         s.append("\n系统媒体音量值：").append(AudioSupport.volume(this)).append("（-1 表示读取失败）");
+        s.append("\n").append(RenderDiagnostics.report());
         s.append("\n修正后的音频条件：").append(AudioSupport.mayAnimate(this));
         try {
             PowerManager power = (PowerManager)getSystemService(POWER_SERVICE);

@@ -8,12 +8,12 @@
 | `decoded/smali/` | 原始主 DEX 和已插入的辅助层调用 |
 | `src/com/sparkine/muvizedge/adaptive/` | 可阅读、维护的 Java 辅助层 |
 | `stubs/` | 编译期混淆类声明，不参与 APK 打包 |
-| `tests/` | 14 个独立 Java 测试入口 |
+| `tests/` | 15 个独立 Java 测试入口 |
 | `scripts/` | 编译、静态检查、签名、API 方法解析 |
 | `baseline/Recovery148.apk` | 内容和 ABI 对比基线，也用于保留原 PNG 字节 |
 | `verification/` | 148 smali 哈希、允许变化的方法和构建证明 |
 | `vendor/` | 工具、运行时压缩包和 SHA256 清单 |
-| `releases/` | 149–156 归档成品 |
+| `releases/` | 149–159 归档成品 |
 | `.runtime/`、`build/`、`output/`、`.local/` | 本地产物 / 签名，不进 Git |
 
 主 DEX 保留原始类；Java 辅助层单独生成 `classes2.dex`。将 `stubs` 合入 APK 会导致重复类或运行时行为被空实现替换。
@@ -113,3 +113,7 @@ flowchart TD
 StartupRecovery协调主线程上的服务代次、AppOp回调和一次停止/重建事务，StartupCapturePolicy独立决定持续失败窗口、预算与休眠周期。CaptureTimeline从ib/c真实FFT回调接收原Visualizer身份，以服务代次和Activity可见状态区分共用引擎的后台/前台回调；不修改FFT幅值。ServiceRecovery销毁时注销PlaybackRecovery/NavigationInsets观察器，原始清理返回后才启动新服务。
 
 新增adaptive_display_language.startup_capture_recreate默认true，但仅API30+large+car_audio_compat生效；独立adaptive_startup_recovery保存boot、cycle_at、off_at、used_token、health_token。收到后台FFT（包含零值）后保护本周期，不再完整重建。详见STARTUP157.md。
+
+## 159 后台显示确认
+
+RenderDiagnostics不再只是观测：关闭随机时在绘制完成、提交之前清除尚无当前后台首帧证据的画面，保持采集循环。CaptureTimeline同时校验服务代次、唤醒周期和Visualizer对象；未绑定的预览不受影响。TURN_OFF_RANDOM为true代表关闭随机，引擎m代表实际强制随机，两者分别诊断。详见DISPLAY159.md。

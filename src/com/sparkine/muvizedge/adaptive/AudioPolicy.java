@@ -2,6 +2,9 @@ package com.sparkine.muvizedge.adaptive;
 
 /** Platform-independent decisions; a media session never substitutes for FFT data. */
 public final class AudioPolicy {
+    public static boolean waitForCapture(boolean overlay,boolean randomDisabled,boolean currentCaptureHasFrame){
+        return overlay && randomDisabled && !currentCaptureHasFrame;
+    }
     private AudioPolicy() {}
     public static boolean playing(boolean compat, boolean systemActive, boolean sessionPlaying) {
         return systemActive || (compat && sessionPlaying);

@@ -78,7 +78,7 @@ public final class DiagnosticLog {
         ByteArrayOutputStream out=new ByteArrayOutputStream(summary.length+body.length);out.write(summary);out.write(body);return out.toByteArray();
     }
     public static String metadata(){
-        return "版本=158；进程启动="+time(startedWall)+"；启动时系统运行="+startedElapsed+" ms"
+        return "版本=159；进程启动="+time(startedWall)+"；启动时系统运行="+startedElapsed+" ms"
             +"\n系统启动时间（依据当前时钟推算）="+time(System.currentTimeMillis()-SystemClock.elapsedRealtime())
             +"；系统启动计数="+bootCount+"；elapsed="+SystemClock.elapsedRealtime()+"；uptime="+SystemClock.uptimeMillis()
             +"\n日志上限=2 MiB（含256 KiB启动事件保留区）；未运行期间无法记录事件，系统启动时间不等于车辆点火时间。";

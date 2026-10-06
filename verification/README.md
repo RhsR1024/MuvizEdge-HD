@@ -24,3 +24,7 @@
 ## 158 恢复计时与结果诊断
 
 [release158.json](release158.json) 记录771项JVM、8项API解析、资源/DEX/ABI、原证书及对齐验证。158无新增原始smali修改范围，设备实测仍为false。详见 [158说明](../docs/STARTUP158.md)。
+
+## 159 后台显示确认
+
+[release159.json](release159.json)记录779项JVM、8项API及完整静态/签名/对齐检查。设备未测，不能用纯策略测试代替系统窗口及后台权限验证。

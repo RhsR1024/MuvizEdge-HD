@@ -1,6 +1,12 @@
 # 归档 APK
 
-当前版本：[158 APK](MuvizEdge-Adaptive-Phone-Car-ZH-Diagnostics158.apk)，版本158 / 2.1.4.0-adaptive-zh16。原证书签名，可覆盖157并保留配置；771项JVM与8项API、静态验证、签名及对齐通过，尚待设备测试。见 [158说明](../docs/STARTUP158.md) 和 [发布验证](../verification/release158.json)。
+当前版本：[159 APK](MuvizEdge-Adaptive-Phone-Car-ZH-Diagnostics159.apk)，159 / 2.1.4.0-adaptive-zh17。原证书可覆盖158并保留配置。779项JVM与8项API、静态、签名和对齐检查通过，设备待测。见[159说明](../docs/DISPLAY159.md)。
+
+SHA256：`ce1b6d63c699474b5b2531b14aec26bbe617b073e778f675c9d36c5b2f399870`。
+
+## 158 历史版本
+
+历史版本：[158 APK](MuvizEdge-Adaptive-Phone-Car-ZH-Diagnostics158.apk)，版本158 / 2.1.4.0-adaptive-zh16。原证书签名，可覆盖157并保留配置；771项JVM与8项API、静态验证、签名及对齐通过，尚待设备测试。见 [158说明](../docs/STARTUP158.md) 和 [发布验证](../verification/release158.json)。
 
 SHA256：`ac07b935946340bf01a572b0839ca05b544c6ebce735f9d03619afa0c1b843b2`。
 

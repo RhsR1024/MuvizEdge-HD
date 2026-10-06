@@ -28,6 +28,10 @@ public final class AudioPolicyTest {
         byte[] fft=new byte[]{-128,0,127,-10,10};byte[] original=fft.clone();
         check(AudioPolicy.magnitude(fft)==275,"mixed magnitudes");
         check(java.util.Arrays.equals(fft,original),"real FFT bytes unchanged");
+        for(boolean overlay:new boolean[]{false,true})
+            for(boolean randomDisabled:new boolean[]{false,true})
+                for(boolean received:new boolean[]{false,true})
+                    check(AudioPolicy.waitForCapture(overlay,randomDisabled,received)==(overlay&&randomDisabled&&!received),"only music overlay waits for current capture; preview and random preserved");
         System.out.println("PASS: "+checks+" audio, FFT and edge policy checks");
     }
 }
