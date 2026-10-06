@@ -20,6 +20,11 @@ public final class ServiceRecovery {
     private static boolean listenerConnected;
     private static volatile boolean activityVisibleOrOpening;
     private static long promotionFailedAt=-1;
+    private static CaptureStartPolicy captureStart=new CaptureStartPolicy(false);
+    private static boolean bootComplete,stageRequestUsed,stageActivitySeen;
+    private static int stageSequence,stagePending;
+    private static long stageRequestedAt=-1;
+    private static String stageState="";
     private static final CaptureAccessPolicy accessPolicy=new CaptureAccessPolicy();
     private static final CaptureWakePolicy wakePolicy=new CaptureWakePolicy();
     private static int lastAccessMode=-1,recheckSequence,pendingRecheck,accessRevision;
@@ -34,16 +39,16 @@ public final class ServiceRecovery {
         DiagnosticLog.event("DEVICE","rom="+Build.DISPLAY+" display="+AdaptiveUi.device(app).width+"x"+AdaptiveUi.device(app).height+" dpi="+AdaptiveUi.device(app).dpi);
         preferenceListener=new SharedPreferences.OnSharedPreferenceChangeListener(){public void onSharedPreferenceChanged(SharedPreferences p,String key){
             if(key==null)return;
-            if(key.equals("EDGE_SHOW_ON_OVERLAY")||key.equals("SHOW_AOD")||key.startsWith("HIDE_ON_")||key.equals("IS_ONLY_MEDIA_APPS")||key.equals("IS_APPS_SELECTED")||key.endsWith("_PKGS")||key.equals("auto_bottom_inset")||key.equals("desktop_inset_compat")||key.equals("car_audio_compat")||key.equals("enhanced_capture_recheck")||key.equals("startup_capture_recreate")){
+            if(key.equals("EDGE_SHOW_ON_OVERLAY")||key.equals("SHOW_AOD")||key.startsWith("HIDE_ON_")||key.equals("IS_ONLY_MEDIA_APPS")||key.equals("IS_APPS_SELECTED")||key.endsWith("_PKGS")||key.equals("auto_bottom_inset")||key.equals("desktop_inset_compat")||key.equals("car_audio_compat")||key.equals("enhanced_capture_recheck")||key.equals("startup_capture_recreate")||key.equals("staged_capture_start")){
                 DiagnosticLog.event("SETTING",key+"="+p.getAll().get(key));AudioSupport.invalidate();PlaybackRecovery.kick(false);
             }
         }};
         app.getSharedPreferences("MUVIZ_EDGE_PREF",0).registerOnSharedPreferenceChangeListener(preferenceListener);
         AdaptiveUi.prefs(app).registerOnSharedPreferenceChangeListener(preferenceListener);
         application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks(){
-            public void onActivityCreated(Activity a,Bundle b){openingActivities.add(a);activityVisibleOrOpening=true;DiagnosticLog.event("ACTIVITY_CREATE",a.getClass().getName());}
-            public void onActivityStarted(Activity a){openingActivities.remove(a);activities.add(a);activityVisibleOrOpening=true;StartupRecovery.stage("activity_started:"+a.getClass().getName());DiagnosticLog.event("ACTIVITY_START",a.getClass().getName()+" visible="+activities.size());}
-            public void onActivityResumed(Activity a){DiagnosticLog.event("ACTIVITY_RESUME",a.getClass().getName());reconcile("activity",true);DesktopSupport.recheck(a);PlaybackRecovery.kick(false);}
+            public void onActivityCreated(Activity a,Bundle b){if(stageRequestedAt>=0)stageActivitySeen=true;openingActivities.add(a);activityVisibleOrOpening=true;DiagnosticLog.event("ACTIVITY_CREATE",a.getClass().getName());}
+            public void onActivityStarted(Activity a){if(stageRequestedAt>=0)stageActivitySeen=true;openingActivities.remove(a);activities.add(a);activityVisibleOrOpening=true;StartupRecovery.stage("activity_started:"+a.getClass().getName());DiagnosticLog.event("ACTIVITY_START",a.getClass().getName()+" visible="+activities.size());}
+            public void onActivityResumed(Activity a){if(stageRequestedAt>=0)stageActivitySeen=true;DiagnosticLog.event("ACTIVITY_RESUME",a.getClass().getName());reconcile("activity",true);DesktopSupport.recheck(a);PlaybackRecovery.kick(false);}
             public void onActivityPaused(Activity a){DiagnosticLog.event("ACTIVITY_PAUSE",a.getClass().getName());}
             public void onActivityStopped(Activity a){activities.remove(a);activityVisibleOrOpening=!activities.isEmpty()||!openingActivities.isEmpty();if(activities.isEmpty())backgroundAt=SystemClock.elapsedRealtime();DiagnosticLog.event("ACTIVITY_STOP",a.getClass().getName()+" visible="+activities.size());main.postDelayed(new Runnable(){public void run(){PlaybackRecovery.kick(true);}},1200);}
             public void onActivitySaveInstanceState(Activity a,Bundle b){}
@@ -63,6 +68,9 @@ public final class ServiceRecovery {
         DiagnosticLog.milestone("STARTUP_REGISTRATION_COMPLETE","activity callbacks registered; system receiver setup finished (see SYSTEM_RECEIVER_FAILED on error); watchdog scheduled; enhanced="+enhancedCapture(app));
         ProcessExitDiagnostics.init(app);
     }
+    public static boolean stagedCapture(Context c){return CaptureStartPolicy.supported(Build.VERSION.SDK_INT,AdaptiveUi.device(c).large,AudioSupport.compat(c),AdaptiveUi.prefs(c).getBoolean("staged_capture_start",true));}
+    static boolean captureStartupWaiting(){return captureStart.waiting()||stagePending!=0;}
+    static void observeCaptureStartup(){if(service!=null&&ready&&captureStart.enabled())promote(service);}
     public static boolean enhancedCapture(Context c){return AdaptiveUi.prefs(c).getBoolean("enhanced_capture_recheck",false);}
     private static final Runnable tick=new Runnable(){public void run(){
         try{sampleClocks();reconcile("watchdog",false);DiagnosticLog.state("SERVICE_STATE",report());}
@@ -147,7 +155,7 @@ public final class ServiceRecovery {
         if(needed)requestCaptureRecheck("capture_failed",false);
         now=SystemClock.elapsedRealtime();
         long delay=accessPolicy.retryDelay(now);
-        String schedule=!enhancedCapture(app)?"conservative_no_service_recheck":Build.VERSION.SDK_INT<30||Build.VERSION.SDK_INT>=34?"unsupported_api":pendingRecheck!=0?"pending":mode!=1?"not_ignored":CaptureAccessPolicy.recent(now,AudioSupport.lastFrame())?"fft_present"
+        String schedule=captureStartupWaiting()?"wait_staged_capture_start":!enhancedCapture(app)?"conservative_no_service_recheck":Build.VERSION.SDK_INT<30||Build.VERSION.SDK_INT>=34?"unsupported_api":pendingRecheck!=0?"pending":mode!=1?"not_ignored":CaptureAccessPolicy.recent(now,AudioSupport.lastFrame())?"fft_present"
                 :!needed?"wait_playback":!captureEligible()?"ineligible":delay<0?"bounded_stop":delay>0?"cooldown":"due_wait_failure";
         // Stable labels only: a changing countdown here would fill the rolling log every poll.
         DiagnosticLog.state("CAPTURE_ACCESS_SCHEDULE",accessProgress(now)+" state="+schedule+" pendingId="+pendingRecheck);
@@ -155,7 +163,7 @@ public final class ServiceRecovery {
     }
     private static void requestCaptureRecheck(final String reason,boolean lifecycle){
         final Service target=service;
-        if(app==null||target==null||!ready||pendingRecheck!=0)return;
+        if(app==null||target==null||!ready||pendingRecheck!=0||captureStartupWaiting())return;
         if(!enhancedCapture(app)){
             if(lifecycle)DiagnosticLog.event("CAPTURE_ACCESS_OPPORTUNITY","reason="+reason+" skipped=conservative_mode");
             return;
@@ -195,7 +203,7 @@ public final class ServiceRecovery {
     private static String accessTime(long wall){return wall<0?"尚无记录":DiagnosticLog.time(wall);}
     public static String accessReport(){
         long now=SystemClock.elapsedRealtime(),frame=AudioSupport.lastFrame(),delay=accessPolicy.retryDelay(now);
-        return StartupRecovery.report()+"\n后台恢复模式："+(app!=null&&enhancedCapture(app)?"增强（含服务资格重评估）":"保守（仅采集恢复；默认）")
+        return StartupRecovery.report()+"\n"+stagedReport()+"\n后台恢复模式："+(app!=null&&enhancedCapture(app)?"增强（含服务资格重评估）":"保守（仅采集恢复；默认）")
                 +"\n后台采集当前：实际访问="+(app==null?-1:CaptureDiagnostics.effectiveRecordOp(app))+"（0允许 / 1忽略）"
                 +"；近2秒频谱="+CaptureAccessPolicy.recent(now,frame)+"；回调年龄="+(frame<0?-1:now-frame)+" ms"
                 +"\n恢复预算："+accessProgress(now)+"；下次最少等待="+delay+" ms（-1本轮结束；仍需满足播放等条件）；等待回执="+(pendingRecheck!=0)
@@ -204,7 +212,9 @@ public final class ServiceRecovery {
                 +"\n最近访问由忽略变为允许："+accessTime(accessAllowedWall)+"；最近自动恢复周期的连续频谱确认："+accessTime(accessHealthyWall);
     }
     public static void boot(Context c,Intent i){
-        String action=i==null?"null":i.getAction();DiagnosticLog.milestone("BOOT_RECEIVER",action);StartupRecovery.stage("boot:"+action);
+        String action=i==null?"null":i.getAction();
+        if(Intent.ACTION_BOOT_COMPLETED.equals(action)||"android.intent.action.QUICKBOOT_POWERON".equals(action))bootComplete=true;
+        DiagnosticLog.milestone("BOOT_RECEIVER",action);StartupRecovery.stage("boot:"+action);
         if(Build.VERSION.SDK_INT>=35){DiagnosticLog.event("BOOT_START_SKIPPED","mediaPlayback FGS restriction API>=35");return;}
         if(Intent.ACTION_BOOT_COMPLETED.equals(action)||"android.intent.action.QUICKBOOT_POWERON".equals(action)||Intent.ACTION_USER_UNLOCKED.equals(action)||Intent.ACTION_MY_PACKAGE_REPLACED.equals(action)){
             if(Intent.ACTION_USER_UNLOCKED.equals(action))captureWake(action,true,0);
@@ -223,22 +233,64 @@ public final class ServiceRecovery {
         UserManager user=(UserManager)c.getSystemService(Context.USER_SERVICE);
         if(user!=null&&!user.isUserUnlocked()){DiagnosticLog.state("START_SKIPPED","user locked");return null;}
         lastStart=SystemClock.elapsedRealtime();attempts++;lastReason=intent.getStringExtra("adaptiveReason");
-        boolean foregroundStart=service==null||intent.getBooleanExtra("adaptiveCaptureRecheck",false);
+        boolean foregroundStart=service==null||intent.getBooleanExtra("adaptiveCaptureRecheck",false)||intent.getIntExtra("adaptiveStagePromotionId",0)>0;
         DiagnosticLog.event("SERVICE_REQUEST","action="+action+" state="+intent.getBooleanExtra("actionState",false)+" reason="+lastReason+" foregroundStart="+foregroundStart+" captureRecheck="+intent.getBooleanExtra("adaptiveCaptureRecheck",false));
         try{return foregroundStart?c.startForegroundService(intent):c.startService(intent);}
         catch(RuntimeException e){DiagnosticLog.error("SERVICE_START_FAILED",e);return null;}
     }
-    public static void created(Service s){service=s;ready=false;promoted=false;promotionFailedAt=-1;StartupRecovery.created(s);CaptureTimeline.serviceCreated();DiagnosticLog.milestone("SERVICE_CREATE","instance="+System.identityHashCode(s)+" beforePromotion "+CaptureDiagnostics.permissionState(s));promote(s);}
+    public static void created(Service s){service=s;ready=false;promoted=false;promotionFailedAt=-1;captureStart=new CaptureStartPolicy(stagedCapture(s));stagePending=0;stageRequestUsed=false;stageRequestedAt=-1;stageActivitySeen=false;stageState="";StartupRecovery.created(s);CaptureTimeline.serviceCreated();DiagnosticLog.milestone("SERVICE_CREATE","instance="+System.identityHashCode(s)+" beforePromotion "+CaptureDiagnostics.permissionState(s));promote(s);}
+    private static void requestStagedPromotion(final Service target){
+        final int id=++stageSequence;stagePending=id;stageRequestUsed=true;stageRequestedAt=SystemClock.elapsedRealtime();stageActivitySeen=false;
+        DiagnosticLog.milestone("STAGED_CAPTURE_REQUEST","id="+id+" generation="+StartupRecovery.generation()+" "+captureStart.timing()+" "+CaptureDiagnostics.permissionState(target));
+        ComponentName result=startIntent(target,new Intent().setClassName(target,"com.sparkine.muvizedge.service.AppService")
+                .putExtra("actionType",1).putExtra("adaptiveReason","staged_capture_ready").putExtra("adaptiveStagePromotionId",id));
+        if(result==null){
+            DiagnosticLog.milestone("STAGED_CAPTURE_REQUEST_FAILED","id="+id+"; apply type on existing service without another start request");
+            finishStagedPromotion(target,id);
+        }else main.postDelayed(new Runnable(){public void run(){
+            if(service==target&&stagePending==id){DiagnosticLog.milestone("STAGED_CAPTURE_COMMAND_TIMEOUT","id="+id+"; apply type on existing service");finishStagedPromotion(target,id);}
+        }},5000);
+        stagedOutcome(target,id,1000);stagedOutcome(target,id,30000);
+    }
+    private static void finishStagedPromotion(Service target,int id){
+        if(service!=target||stagePending!=id)return;stagePending=0;promote(target,false,false,true);
+    }
+    private static void stagedOutcome(final Service target,final int id,final long delay){
+        main.postDelayed(new Runnable(){public void run(){
+            if(service!=target||stageSequence!=id)return;
+            long now=SystemClock.elapsedRealtime(),frame=CaptureTimeline.lastBackgroundFrame();
+            DiagnosticLog.milestone("STAGED_CAPTURE_RESULT","id="+id+" scheduledAfterMs="+delay+" actualWaitMs="+(now-stageRequestedAt)+" generation="+StartupRecovery.generation()
+                    +" backgroundFrameAfterRequest="+(frame>=stageRequestedAt&&frame<=now)+" recentBackgroundFrame="+CaptureAccessPolicy.recent(now,frame)
+                    +" activitySeenSinceRequest="+stageActivitySeen+" phase="+captureStart.phase()+" "+report()+" "+CaptureDiagnostics.permissionState(target));
+        }},delay);
+    }
+    private static String stagedReport(){return "分阶段启动音频：设置="+(app!=null&&stagedCapture(app)?"开启（Android 11 大屏）":"关闭 / 不适用")
+            +"；本次服务="+(captureStart.enabled()?"开启":"关闭")+"；阶段="+captureStart.phase()+"；等待回执="+stagePending
+            +"；开机完成信号="+bootComplete+"；"+captureStart.timing()+"；修改开关在下次服务启动后生效。";}
     private static int currentType(Service s){return s==null?0:Build.VERSION.SDK_INT>=29?s.getForegroundServiceType():promoted?CaptureServicePolicy.MEDIA:0;}
     private static void promote(Service s){promote(s,false);}
     private static void promote(Service s,boolean userVisit){
         promote(s,userVisit,false);
     }
-    private static void promote(Service s,boolean userVisit,boolean recheck){
+    private static void promote(Service s,boolean userVisit,boolean recheck){promote(s,userVisit,recheck,false);}
+    private static void promote(Service s,boolean userVisit,boolean recheck,boolean stageDelivery){
         boolean record=s.checkSelfPermission(android.Manifest.permission.RECORD_AUDIO)==android.content.pm.PackageManager.PERMISSION_GRANTED;
         int desired=CaptureServicePolicy.type(Build.VERSION.SDK_INT,record,s.getSharedPreferences("MUVIZ_EDGE_PREF",0).getBoolean("EDGE_SHOW_ON_OVERLAY",false));
         long now=SystemClock.elapsedRealtime();
+        if(captureStart.enabled()){
+            UserManager user=(UserManager)s.getSystemService(Context.USER_SERVICE);
+            boolean usable=interactive()&&(user==null||user.isUserUnlocked())&&Settings.canDrawOverlays(s);
+            long frame=CaptureTimeline.lastBackgroundFrame();
+            boolean healthy=frame>=StartupRecovery.cycleAt()&&CaptureAccessPolicy.recent(now,frame)&&CaptureDiagnostics.effectiveRecordOp(s)==0;
+            desired=captureStart.choose(now,desired,currentType(s),userVisit||hasVisibleActivity(),ready,bootComplete,usable,AudioSupport.isPlaying(s),healthy);
+            String state=captureStart.phase()+" currentType="+currentType(s)+" desiredType="+desired+" pending="+stagePending+" bootSignal="+bootComplete;
+            if(!state.equals(stageState)){stageState=state;DiagnosticLog.milestone("STAGED_CAPTURE_STATE",state+" "+captureStart.timing()+" generation="+StartupRecovery.generation()+" backgroundFrame="+frame+" "+CaptureDiagnostics.permissionState(s));}
+        }
         if(promoted && !recheck && !CaptureServicePolicy.due(currentType(s),desired,now,promotionFailedAt,userVisit))return;
+        if(captureStart.enabled()&&promoted&&desired==(CaptureServicePolicy.MEDIA|CaptureServicePolicy.MICROPHONE)&&currentType(s)==CaptureServicePolicy.MEDIA&&!userVisit&&!hasVisibleActivity()&&!recheck&&!stageDelivery){
+            if(stagePending!=0)return;
+            if(!stageRequestUsed){requestStagedPromotion(s);return;}
+        }
         DiagnosticLog.milestone("SERVICE_FOREGROUND_BEFORE","instance="+System.identityHashCode(s)+" alreadyPromoted="+promoted+" currentType="+currentType(s)+" desiredType="+desired+" forcedRecheck="+recheck+" userVisit="+userVisit+" enhanced="+enhancedCapture(s)+" "+CaptureDiagnostics.permissionState(s));
         try{
             Notification notification=((g0.k)ib.s.b(s).z).a();
@@ -274,7 +326,11 @@ public final class ServiceRecovery {
                 DiagnosticLog.event("CAPTURE_ACCESS_COMMAND_SKIPPED","id="+id+" pending="+pendingRecheck+" effective="+mode+" recentFrame="+recent+" visible="+activities.size()+" enhanced="+enhancedCapture(s));
                 if(id>0&&id==pendingRecheck){pendingRecheck=0;accessResult="跳过已无必要的重评估 #"+id;accessResultWall=System.currentTimeMillis();}
             }
-            promote(s,false,recheck);
+            int stageId=intent.getIntExtra("adaptiveStagePromotionId",0);
+            boolean staged=stageId>0&&stageId==stagePending;
+            if(stageId>0)DiagnosticLog.milestone("STAGED_CAPTURE_COMMAND","id="+stageId+" accepted="+staged+" generation="+StartupRecovery.generation());
+            if(staged)stagePending=0;
+            promote(s,false,recheck,staged);
             if(recheck){
                 DiagnosticLog.event("CAPTURE_ACCESS_RECHECK_COMMAND","id="+id+" reason="+intent.getStringExtra("adaptiveReason")+" "+CaptureDiagnostics.permissionState(s));
                 if(id>0)recheckResult(s,id,SystemClock.elapsedRealtime());
@@ -283,7 +339,7 @@ public final class ServiceRecovery {
         }
         return intent;
     }
-    public static void destroyed(Service s){DiagnosticLog.event("SERVICE_DESTROY","instance="+System.identityHashCode(s));if(service==s){PlaybackRecovery.stopAll();NavigationInsets.stopAll();CaptureTimeline.clearViews();service=null;promoted=false;ready=false;pendingRecheck=0;}StartupRecovery.destroyed(s);lastStart=SystemClock.elapsedRealtime();}
+    public static void destroyed(Service s){DiagnosticLog.event("SERVICE_DESTROY","instance="+System.identityHashCode(s));if(service==s){PlaybackRecovery.stopAll();NavigationInsets.stopAll();CaptureTimeline.clearViews();service=null;promoted=false;ready=false;pendingRecheck=0;stagePending=0;captureStart=new CaptureStartPolicy(false);}StartupRecovery.destroyed(s);lastStart=SystemClock.elapsedRealtime();}
     public static void notificationConnected(Context c){listenerConnected=true;DiagnosticLog.milestone("NOTIFICATION_LISTENER","connected");StartupRecovery.stage("notification_connected");main.post(new Runnable(){public void run(){reconcile("notification_connected",false);PlaybackRecovery.kick(false);}});}
     public static void notificationDestroyed(){listenerConnected=false;DiagnosticLog.event("NOTIFICATION_LISTENER","destroyed");}
     public static String report(){return "service="+(service!=null)+" foreground="+promoted+" serviceType="+currentType(service)+" ready="+ready+" listener="+listenerConnected+" visibleActivities="+activities.size()+" startAttempts="+attempts+" lastReason="+lastReason;}

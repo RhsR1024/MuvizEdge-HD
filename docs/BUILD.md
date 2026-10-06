@@ -10,7 +10,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\build.ps1
 
 脚本先验证 `vendor/checksums.json`，按需解压运行环境。Python 使用 `-I -S`，不加载系统或用户 site-packages；Java 清除外部注入选项，临时文件放入 `build/temp`。源码先复制到 `build/decoded`，apktool 的缓存不写回版本控制目录。
 
-流程：编译接口桩 → 编译辅助代码 → 执行 771 项 JVM 检查（核对各入口真实PASS计数） → D8 生成辅助 DEX → apktool 重编译 → 合并 / 静态校验 → zipalign / 签名 → 检查证书和 payload。
+流程：编译接口桩 → 编译辅助代码 → 执行 835 项 JVM 检查（核对各入口真实PASS计数） → D8 生成辅助 DEX → apktool 重编译 → 合并 / 静态校验 → zipalign / 签名 → 检查证书和 payload。
 
 | 产物 | 用途 |
 | --- | --- |

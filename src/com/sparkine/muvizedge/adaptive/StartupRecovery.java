@@ -93,7 +93,7 @@ public final class StartupRecovery {
         if("due".equals(state))reserve();
     }
     private static boolean eligibleNow(){
-        if(app==null||boot<0||!enabled(app)||current==null||!ServiceRecovery.running()||!ServiceRecovery.backgroundSettled()||!needed)return false;
+        if(app==null||boot<0||!enabled(app)||current==null||!ServiceRecovery.running()||!ServiceRecovery.backgroundSettled()||!needed||ServiceRecovery.captureStartupWaiting())return false;
         UserManager u=(UserManager)app.getSystemService(Context.USER_SERVICE);
         return ServiceRecovery.interactive()&&(u==null||u.isUserUnlocked())&&Settings.canDrawOverlays(app)
             &&app.checkSelfPermission(android.Manifest.permission.RECORD_AUDIO)==0

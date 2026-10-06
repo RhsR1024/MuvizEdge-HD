@@ -101,3 +101,5 @@ AppOps 常见模式：0 allowed、1 ignored、2 errored、3 default、4 foregrou
 PROCESS_EXIT_HISTORY 从系统读取历史退出时间、PID、原因及状态；权限变更可能为 reason=8，用户请求终止=10，Java / 原生崩溃=4/5，内存不足=3。以系统返回为准，可能包含旧版本，空结果不能排除进程被终止。PROCESS_EXIT_QUERY_FAILED 是查询失败，不是应用退出原因。
 
 STARTUP_REGISTRATION_COMPLETE、AUDIO_CALLBACK_REGISTERED、SERVICE_CREATE 的 beforePromotion 和 SERVICE_FOREGROUND_BEFORE 帮助对照注册 / 提升顺序与调用前后权限。CAPTURE_ACCESS_COMMAND_SKIPPED 记录请求到达后已无必要的重评估。恢复模式默认保守，state=conservative_no_service_recheck 是预期状态；详情见 `DIAGNOSTICS156.md`。
+
+160增加STAGED_CAPTURE_STATE/REQUEST/COMMAND/RESULT和请求失败/超时事件；快照区分保存开关和本次服务实际阶段。结合原始AppOp、真实后台FFT、Activity介入及代次阅读，详见STARTUP160.md。启动区仍需与常规区去重，不按文件出现顺序推断因果。

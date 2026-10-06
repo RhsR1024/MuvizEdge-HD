@@ -139,6 +139,7 @@ public final class PlaybackRecovery {
                     engine.j();action="已恢复律动刷新任务";DiagnosticLog.event("REFRESH_RECOVERY",action);
                 }
                 boolean needsCapture=eligible && engine!=null && (owner.a || engine.k || (playing&&engine.a==null));
+                ServiceRecovery.observeCaptureStartup();
                 StartupRecovery.observe(needsCapture,playing,eligible&&engine!=null);
                 int revision=ServiceRecovery.checkCaptureAccess(needsCapture && playing);
                 if(revision!=accessRevision){accessRevision=revision;policy.accessRestored();}

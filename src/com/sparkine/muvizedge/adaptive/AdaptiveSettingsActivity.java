@@ -66,6 +66,11 @@ public final class AdaptiveSettingsActivity extends Activity {
         }});
         label(t("默认保守：保留采集恢复，减少重复服务操作。增强模式增加后台服务重评估，用于比较启动效果。更改后请重启车机并直接播放，再导出日志；两种模式都不保证系统放行。", "Conservative mode keeps capture recovery with fewer repeated service operations. Enhanced mode also reassesses the background service. Compare after a reboot and direct music playback, then export diagnostics. Neither mode guarantees system access."),14);
         if(android.os.Build.VERSION.SDK_INT==30&&AdaptiveUi.device(this).large){
+            final Button staged=button(stagedLabel());
+            staged.setOnClickListener(new View.OnClickListener(){public void onClick(View v){
+                p.edit().putBoolean("staged_capture_start",!p.getBoolean("staged_capture_start",true)).apply();staged.setText(stagedLabel());
+            }});
+            label(t("默认开启：开机先保持服务运行，等系统启动与音乐播放稳定后再启用音频采集服务。已经有后台频谱时保持现状。需要开启车机音频兼容；更改后重启车机生效，关闭可对比旧启动方式。此项仍在验证中。", "Enabled by default: keep the service running first, then enable its audio capture type when boot and playback settle. Preserve working background capture. Requires car audio compatibility; reboot after changing to compare with the previous startup sequence. This is an experiment."),14);
             final Button startup=button(startupLabel());
             startup.setOnClickListener(new View.OnClickListener(){public void onClick(View v){
                 p.edit().putBoolean("startup_capture_recreate",!p.getBoolean("startup_capture_recreate",true)).apply();startup.setText(startupLabel());
@@ -144,6 +149,7 @@ public final class AdaptiveSettingsActivity extends Activity {
     private String bottomLabel(){return t("底部自动测量：", "Measure bottom inset: ")+(NavigationInsets.enabled(this)?t("开启", "On"):t("关闭", "Off"));}
     private String desktopLabel(){return t("车机桌面兼容：", "Launcher compatibility: ")+(DesktopSupport.enabled(this)?t("开启", "On"):t("关闭", "Off"));}
     private String usageLabel(){return t(DesktopSupport.accessLabel()+" · 管理权限", "Manage and verify usage access");}
+    private String stagedLabel(){return t("分阶段启动音频（试验）：", "Staged audio startup (trial): ")+(AdaptiveUi.prefs(this).getBoolean("staged_capture_start",true)?t("开启", "On"):t("关闭", "Off"));}
     private String startupLabel(){return t("开机采集恢复（试验）：", "Startup capture recovery (trial): ")+(AdaptiveUi.prefs(this).getBoolean("startup_capture_recreate",true)?t("开启", "On"):t("关闭", "Off"));}
     private String recoveryLabel(){return t("后台恢复模式：", "Background recovery: ")+(ServiceRecovery.enhancedCapture(this)?t("增强", "Enhanced"):t("保守（默认）", "Conservative (default)"));}
 }
