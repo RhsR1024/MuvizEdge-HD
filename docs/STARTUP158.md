@@ -23,6 +23,6 @@ boot993短暂的播放状态跳变曾把接近30秒的持续失败计时清零�
 
 ## 验证和实测
 
-771项JVM检查（StartupCapturePolicyTest为72项），以及8项API解析检查；正式构建还验证资源、DEX、ABI、签名及对齐。新增检查覆盖短暂停边界、累计上限、排除暂停时长、长暂停清零和恢复结果分类。设备实测尚未完成。
+771项JVM检查（StartupCapturePolicyTest为72项），以及8项API解析检查；正式构建还验证资源、DEX、ABI、签名及对齐。新增检查覆盖短暂停边界、累计上限、排除暂停时长、长暂停清零和恢复结果分类。后续实测boot995/996后台成功、997失败；997短暂显示期间后台FFT仍为0，不能据此归因于重建破坏正常采集。详情见 [DISPLAY159.md](DISPLAY159.md) 和 [验证汇总](VALIDATION_HISTORY.md)。
 
 覆盖安装后先打开一次确认版本，随后真正重启或休眠唤醒，不进入Muviz直接播放。故障时记录时间后导出诊断；导出需进入界面，分析时应检查进入界面之前的历史。比较STARTUP_STAGE、STARTUP_RECREATE_OUTCOME、CAPTURE_NATIVE_*、首个非零后台FFT及AppOp变化。保留失败样本，不能以导出时已经正常推断启动成功。
