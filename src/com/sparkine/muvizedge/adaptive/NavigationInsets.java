@@ -47,6 +47,11 @@ public final class NavigationInsets {
         if(view instanceof SurfaceView)((SurfaceView)view).getHolder().addCallback(watcher);
         if (view.isAttachedToWindow()) watcher.onViewAttachedToWindow(view);
     }
+    static void stopAll(){
+        main.removeCallbacks(foregroundRefresh);
+        for(Watcher w:new ArrayList<Watcher>(watchers.values())){View v=w.view.get();if(v!=null){w.onViewDetachedFromWindow(v);v.removeOnAttachStateChangeListener(w);v.setOnApplyWindowInsetsListener(null);if(v instanceof SurfaceView)((SurfaceView)v).getHolder().removeCallback(w);}}
+        watchers.clear();DiagnosticLog.event("NAVIGATION_WATCHERS_STOPPED","service cleanup");
+    }
     public static void wake(){for(Watcher w:new ArrayList<Watcher>(watchers.values())){
         View v=w.view.get();if(v!=null&&v.isAttachedToWindow()){v.requestApplyInsets();v.removeCallbacks(w);v.post(w);w.queueRefresh(v);}
     }}

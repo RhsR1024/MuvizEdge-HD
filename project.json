@@ -1,8 +1,8 @@
 {
   "package": "com.sparkine.muvizedge",
-  "version_code": 156,
-  "version_name": "2.1.4.0-adaptive-zh14",
-  "apk_name": "MuvizEdge-Adaptive-Phone-Car-ZH-Diagnostics156.apk",
+  "version_code": 158,
+  "version_name": "2.1.4.0-adaptive-zh16",
+  "apk_name": "MuvizEdge-Adaptive-Phone-Car-ZH-Diagnostics158.apk",
   "baseline_apk": "baseline/Recovery148.apk",
   "baseline_sha256": "2e0960f49b38956a90c1823d72d5053135dd4914fa6aa002dab69b3e0a87d946",
   "release_certificate_sha256": "1178a26590b6a1d23ec190bbe25ebe278687511387e603e027e2964d2da757c4",
@@ -13,13 +13,14 @@
     "AudioPolicyTest": 52,
     "DisplayPolicyTest": 17,
     "StartupPolicyTest": 37,
-    "RollingLogTest": 118,
+    "RollingLogTest": 127,
     "DesktopInsetPolicyTest": 43,
     "CaptureServicePolicyTest": 36,
     "UsageAccessPolicyTest": 40,
     "InsetRecheckPolicyTest": 33,
     "CaptureAccessPolicyTest": 100,
     "CaptureWakePolicyTest": 20,
-    "CaptureCommandPolicyTest": 15
+    "CaptureCommandPolicyTest": 15,
+    "StartupCapturePolicyTest": 72
   }
 }

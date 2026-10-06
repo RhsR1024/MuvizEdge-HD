@@ -107,3 +107,9 @@ flowchart TD
 155 将该预算扩为 3 次快速 + 2 次低频，并通过 `CaptureWakePolicy` 区分真正熄屏 / 深睡 / 首次解锁与重复事件；`RecoveryPolicy` 保留短暂播放跳变之间的退避。`ServiceRecovery` 分离当前状态与历史重评估结果，详见 `RECOVERY155.md`。13 个测试入口共 675 项 JVM 检查。
 
 156 新增 CaptureCommandPolicy（送达时再次验证是否应强制前台化）及 ProcessExitDiagnostics（异步读取系统退出历史）。enhanced_capture_recheck 默认 false，只控制自动服务重评估，不关闭音频采集恢复。14 个测试入口共 690 项，详见 `DIAGNOSTICS156.md`。
+
+## 157 启动重建与首帧证据
+
+StartupRecovery协调主线程上的服务代次、AppOp回调和一次停止/重建事务，StartupCapturePolicy独立决定持续失败窗口、预算与休眠周期。CaptureTimeline从ib/c真实FFT回调接收原Visualizer身份，以服务代次和Activity可见状态区分共用引擎的后台/前台回调；不修改FFT幅值。ServiceRecovery销毁时注销PlaybackRecovery/NavigationInsets观察器，原始清理返回后才启动新服务。
+
+新增adaptive_display_language.startup_capture_recreate默认true，但仅API30+large+car_audio_compat生效；独立adaptive_startup_recovery保存boot、cycle_at、off_at、used_token、health_token。收到后台FFT（包含零值）后保护本周期，不再完整重建。详见STARTUP157.md。

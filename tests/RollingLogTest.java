@@ -40,6 +40,29 @@ public final class RollingLogTest {
         check(Files.readAllBytes(damaged.resolve("events.txt"))[7]==0,"export does not rewrite source history");
         Files.write(damaged.resolve("events.txt"),new byte[]{(byte)0xe6,0,(byte)0xb1,'\n','O','K','\n'});
         check(decode(recovered.snapshot("header",512)).contains("OK"),"split UTF8 at hole is repaired without losing intact suffix");
+        // Upgrade157 shrinks ordinary storage to reserve independent startup evidence.
+        Path shrink=Files.createTempDirectory("muviz-shrink");
+        Files.write(shrink.resolve("events.txt"),(large.toString()+"\nSHRINK_LATEST\n").getBytes(StandardCharsets.UTF_8));
+        Files.write(shrink.resolve("events.previous.txt"),(large.toString()+"\nPREVIOUS_END\n").getBytes(StandardCharsets.UTF_8));
+        RollingLog shrunk=new RollingLog(shrink.toFile(),2048);
+        String shrunkText=decode(shrunk.snapshot("head",2048));
+        check(size(shrink)<=2048,"upgrade shrink preserves capacity");
+        check(shrunkText.contains("SHRINK_LATEST"),"upgrade keeps newest evidence instead of wiping file");
+        check(shrunkText.contains("PREVIOUS_END"),"upgrade keeps previous segment suffix");
+        check(!shrunkText.contains("oversized segment reset"),"upgrade does not replace logs with reset marker");
+        Path split=Files.createTempDirectory("muviz-reserved-startup");
+        Path run=split.resolve("run"),boot=split.resolve("startup");
+        int reserve=256*1024;
+        RollingLog runtime=new RollingLog(run.toFile(),RollingLog.LIMIT-reserve),startup=new RollingLog(boot.toFile(),reserve);
+        runtime.append("EARLY_BOOT_SENTINEL");startup.append("EARLY_BOOT_SENTINEL");
+        for(int i=0;i<450;i++)runtime.append("event="+i+" "+chunk);
+        runtime.append("RUNTIME_NEWEST");
+        byte[] bootExport=startup.snapshot("startup/header",reserve),runExport=runtime.snapshot("runtime",RollingLog.LIMIT-reserve);
+        check(size(run)+size(boot)<=RollingLog.LIMIT,"combined disk usage stays under 2MiB");
+        check(bootExport.length+runExport.length<=RollingLog.LIMIT,"combined export includes headers under 2MiB");
+        check(decode(bootExport).contains("EARLY_BOOT_SENTINEL"),"startup evidence survives runtime noise");
+        check(!decode(runExport).contains("EARLY_BOOT_SENTINEL")&&decode(runExport).contains("RUNTIME_NEWEST"),"runtime still rolls independently");
+        check(decode(new RollingLog(boot.toFile(),reserve).snapshot("restart",reserve)).contains("EARLY_BOOT_SENTINEL"),"startup evidence survives process restart");
         System.out.println("PASS: "+checks+" persistent rotation, UTF-8, concurrency and export checks");
     }
 }

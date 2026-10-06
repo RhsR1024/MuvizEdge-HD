@@ -65,6 +65,13 @@ public final class AdaptiveSettingsActivity extends Activity {
             recovery.setText(recoveryLabel());
         }});
         label(t("默认保守：保留采集恢复，减少重复服务操作。增强模式增加后台服务重评估，用于比较启动效果。更改后请重启车机并直接播放，再导出日志；两种模式都不保证系统放行。", "Conservative mode keeps capture recovery with fewer repeated service operations. Enhanced mode also reassesses the background service. Compare after a reboot and direct music playback, then export diagnostics. Neither mode guarantees system access."),14);
+        if(android.os.Build.VERSION.SDK_INT==30&&AdaptiveUi.device(this).large){
+            final Button startup=button(startupLabel());
+            startup.setOnClickListener(new View.OnClickListener(){public void onClick(View v){
+                p.edit().putBoolean("startup_capture_recreate",!p.getBoolean("startup_capture_recreate",true)).apply();startup.setText(startupLabel());
+            }});
+            label(t("开机后一直播放却没有频谱时，在系统启动满60秒、持续失败30秒后尝试重新建立服务。每次开机或长时间休眠唤醒最多一次；本轮已经收到后台频谱就不触发。需要开启车机音频兼容，可关闭此项对照测试。", "If playback continues without spectrum, recreate the service once after 60 seconds of system uptime and 30 seconds of continuous failure. Limited to one attempt per boot or long sleep/wake cycle, and skipped once background FFT was received. Requires car audio compatibility. Turn off to compare."),14);
+        }
         final Button bottom = button(bottomLabel());
         bottom.setOnClickListener(new View.OnClickListener(){public void onClick(View v){
             p.edit().putBoolean("auto_bottom_inset", !NavigationInsets.enabled(AdaptiveSettingsActivity.this)).apply();
@@ -137,5 +144,6 @@ public final class AdaptiveSettingsActivity extends Activity {
     private String bottomLabel(){return t("底部自动测量：", "Measure bottom inset: ")+(NavigationInsets.enabled(this)?t("开启", "On"):t("关闭", "Off"));}
     private String desktopLabel(){return t("车机桌面兼容：", "Launcher compatibility: ")+(DesktopSupport.enabled(this)?t("开启", "On"):t("关闭", "Off"));}
     private String usageLabel(){return t(DesktopSupport.accessLabel()+" · 管理权限", "Manage and verify usage access");}
+    private String startupLabel(){return t("开机采集恢复（试验）：", "Startup capture recovery (trial): ")+(AdaptiveUi.prefs(this).getBoolean("startup_capture_recreate",true)?t("开启", "On"):t("关闭", "Off"));}
     private String recoveryLabel(){return t("后台恢复模式：", "Background recovery: ")+(ServiceRecovery.enhancedCapture(this)?t("增强", "Enhanced"):t("保守（默认）", "Conservative (default)"));}
 }

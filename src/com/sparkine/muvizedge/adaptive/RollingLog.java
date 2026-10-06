@@ -13,7 +13,11 @@ public final class RollingLog {
         segment=total/2;
         if(segment<128)throw new IllegalArgumentException("capacity");
         current=new File(directory,"events.txt");previous=new File(directory,"events.previous.txt");
-        for(File f:new File[]{previous,current})if(f.length()>segment)try(FileOutputStream out=new FileOutputStream(f)){out.write("[oversized segment reset]\n".getBytes(StandardCharsets.UTF_8));}
+        for(File f:new File[]{previous,current})if(f.length()>segment){
+            byte[] suffix;try(RandomAccessFile input=new RandomAccessFile(f,"r")){input.seek(Math.max(0,input.length()-segment));suffix=new byte[(int)(input.length()-input.getFilePointer())];input.readFully(suffix);}
+            int start=0;while(start<suffix.length&&(suffix[start]&0xc0)==0x80)start++;
+            try(FileOutputStream out=new FileOutputStream(f)){out.write(suffix,start,suffix.length-start);}
+        }
     }
     public synchronized void append(String line) throws IOException {
         byte[] data=(line+"\n").getBytes(StandardCharsets.UTF_8);

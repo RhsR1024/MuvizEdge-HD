@@ -23,6 +23,7 @@ public final class PlaybackRecovery {
     private static int repairs;
     private static final List<Monitor> monitors=new ArrayList<Monitor>();
     public static void bind(View v,gb.f owner) {
+        CaptureTimeline.bind(v,owner.j);
         Monitor monitor=new Monitor(v,owner);
         monitors.add(monitor);
         v.addOnAttachStateChangeListener(monitor);
@@ -44,7 +45,7 @@ public final class PlaybackRecovery {
             if(old!=null && !old.getEnabled() && old.setEnabled(true)==Visualizer.SUCCESS) {
                 action="重新启用现有采集，等待频谱回调";DiagnosticLog.event("CAPTURE_REPAIR",action+" attempts="+repairs);return;
             }
-        } catch(RuntimeException e) {DiagnosticLog.error("CAPTURE_REENABLE_FAILED",e);}
+        } catch(RuntimeException e) {DiagnosticLog.repeatedError("CAPTURE_REENABLE_FAILED",e);}
         engine.k=true;
         engine.a=null;
         if(old!=null)try{old.release();}catch(RuntimeException ignored){}
@@ -61,7 +62,7 @@ public final class PlaybackRecovery {
             if(fresh.setEnabled(true)!=Visualizer.SUCCESS)throw new IllegalStateException("enable capture");
             action="已通过原生兼容流程重建采集，等待频谱回调";
         } catch(RuntimeException e) {
-            DiagnosticLog.error("CAPTURE_REBUILD_FAILED",e);
+            DiagnosticLog.repeatedError("CAPTURE_REBUILD_FAILED",e);
             if(fresh!=null)try{fresh.release();}catch(RuntimeException ignored){}
             engine.a=null;engine.k=true;action="采集恢复失败："+e.getClass().getSimpleName();
         }
@@ -78,7 +79,9 @@ public final class PlaybackRecovery {
         long lastRefresh=-1,lastWindow=-1,lastHeartbeat=-1;
         final AudioManager.AudioPlaybackCallback callback=new AudioManager.AudioPlaybackCallback(){
             @Override public void onPlaybackConfigChanged(List<AudioPlaybackConfiguration> configs){
-                DiagnosticLog.event("AUDIO_PLAYBACK_CALLBACK","configurations="+configs.size());
+                StringBuilder detail=new StringBuilder("configurations="+configs.size());
+                for(AudioPlaybackConfiguration config:configs)detail.append(" usage=").append(config.getAudioAttributes().getUsage()).append(" content=").append(config.getAudioAttributes().getContentType());
+                DiagnosticLog.event("AUDIO_PLAYBACK_CALLBACK",detail.toString());
                 AudioSupport.invalidate();handler.removeCallbacks(Monitor.this);handler.post(Monitor.this);
             }
         };
@@ -99,6 +102,7 @@ public final class PlaybackRecovery {
             handler.removeCallbacks(this);
             if(registered && audio!=null)try{audio.unregisterAudioPlaybackCallback(callback);}catch(RuntimeException ignored){}
             View v=view.get();if(v!=null)v.removeOnAttachStateChangeListener(this);
+            DiagnosticLog.event("AUDIO_CALLBACK_UNREGISTERED","monitor="+System.identityHashCode(this)+" wasRegistered="+registered);
             registered=false;audio=null;
         }
         @Override public void run(){
@@ -129,12 +133,13 @@ public final class PlaybackRecovery {
                 }
                 boolean playing=eligible && AudioSupport.mayAnimate(c);
                 if(now-lastHeartbeat>=30000||lastHeartbeat<0)DiagnosticLog.event("AUDIO_STATE",AudioSupport.playbackReport(c));
-                if(playing!=wasPlaying){wasPlaying=playing;DiagnosticLog.event("PLAYING_EDGE","playing="+playing);owner.c();lastRefresh=now;}
+                if(playing!=wasPlaying){wasPlaying=playing;DiagnosticLog.milestone("PLAYING_EDGE","playing="+playing+" generation="+StartupRecovery.generation());StartupRecovery.stage("playback_edge:"+playing);owner.c();lastRefresh=now;}
                 ib.e engine=owner.j;
                 if(playing && owner.a && engine!=null && !engine.j && engine.e!=null && !engine.e.isEmpty()) {
                     engine.j();action="已恢复律动刷新任务";DiagnosticLog.event("REFRESH_RECOVERY",action);
                 }
                 boolean needsCapture=eligible && engine!=null && (owner.a || engine.k || (playing&&engine.a==null));
+                StartupRecovery.observe(needsCapture,playing,eligible&&engine!=null);
                 int revision=ServiceRecovery.checkCaptureAccess(needsCapture && playing);
                 if(revision!=accessRevision){accessRevision=revision;policy.accessRestored();}
                 if(policy.shouldRepair(needsCapture,playing,now,AudioSupport.lastFrame()) && engine!=null){

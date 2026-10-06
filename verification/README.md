@@ -16,3 +16,11 @@
 ## 150 桌面兼容构建
 
 [desktop150-build.json](desktop150-build.json) 记录 150 的 420 项检查及原证书签名校验。相对 149 归档，只变更 `classes2.dex` 和 `AndroidManifest.xml`，原始主 DEX、资源和 native 文件均未变化。新增桌面兼容行为的设备实测仍待完成。
+
+## 157 启动诊断与重建试验
+
+[release157.json](release157.json) 记录749项JVM检查、8项API解析检查、资源/DEX/ABI校验、原证书签名与对齐结果。新增允许变更的原始方法仅ib/c.onFftDataCapture，148原文与精确白名单已保存。实际设备验证为false；不能根据构建通过认定厂商后台录音问题已解决。构建入口现在核对每项测试实际PASS计数，报告不是只抄配置。
+
+## 158 恢复计时与结果诊断
+
+[release158.json](release158.json) 记录771项JVM、8项API解析、资源/DEX/ABI、原证书及对齐验证。158无新增原始smali修改范围，设备实测仍为false。详见 [158说明](../docs/STARTUP158.md)。

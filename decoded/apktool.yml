@@ -9,8 +9,8 @@ sdkInfo:
 packageInfo:
   forcedPackageId: 127
 versionInfo:
-  versionCode: 156
-  versionName: 2.1.4.0-adaptive-zh14
+  versionCode: 158
+  versionName: 2.1.4.0-adaptive-zh16
 doNotCompress:
 - arsc
 - mp3

@@ -10,7 +10,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\build.ps1
 
 脚本先验证 `vendor/checksums.json`，按需解压运行环境。Python 使用 `-I -S`，不加载系统或用户 site-packages；Java 清除外部注入选项，临时文件放入 `build/temp`。源码先复制到 `build/decoded`，apktool 的缓存不写回版本控制目录。
 
-流程：编译接口桩 → 编译辅助代码 → 执行 690 项 JVM 检查 → D8 生成辅助 DEX → apktool 重编译 → 合并 / 静态校验 → zipalign / 签名 → 检查证书和 payload。
+流程：编译接口桩 → 编译辅助代码 → 执行 771 项 JVM 检查（核对各入口真实PASS计数） → D8 生成辅助 DEX → apktool 重编译 → 合并 / 静态校验 → zipalign / 签名 → 检查证书和 payload。
 
 | 产物 | 用途 |
 | --- | --- |
@@ -55,7 +55,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\build.ps1 -UseDevelopm
 
 ## 148 基线检查
 
-`project.json` 固定基线 APK 摘要。`verification/baseline-smali-sha256.json` 保存 7847 个原始 smali 的 UTF-8 文本哈希（读取时统一换行）。149 只允许 `ib/e.smali` 中 `public final e(Z)V` 的方法内容变化，完整旧方法所在文件在 `verification/baseline-smali/ib-e.smali`。
+`project.json` 固定基线 APK 摘要。`verification/baseline-smali-sha256.json` 保存 7847 个原始 smali 的 UTF-8 文本哈希（读取时统一换行）。149 只允许 `ib/e.smali` 中 `public final e(Z)V` 的方法内容变化，完整旧方法所在文件在 `verification/baseline-smali/ib-e.smali`。157另精确允许 `ib/c.smali` 的 `public final onFftDataCapture(Landroid/media/audiofx/Visualizer;[BI)V` 以传递回调来源；148原文保存在 `verification/baseline-smali/ib-c.smali`，不豁免其他方法。
 
 静态检查还要求：
 

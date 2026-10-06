@@ -78,6 +78,7 @@ public final class AudioSupport {
         }
         return magnitude;
     }
+    public static synchronized int onFft(ib.e engine,android.media.audiofx.Visualizer visualizer,byte[] fft){int value=onFft(fft);if(fft!=null&&fft.length>=2)CaptureTimeline.frame(engine,visualizer,value);return value;}
     static synchronized long lastFrame() { return frameAt; }
     public static synchronized void overlayGate(boolean missing, boolean suspended, boolean fullscreen, boolean landscape, boolean allowed) {
         gateAt = SystemClock.elapsedRealtime();

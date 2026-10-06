@@ -1,0 +1,60 @@
+{
+  "baseline": "baseline/Recovery148.apk",
+  "tests": {
+    "AutoInsetPolicyTest": 47,
+    "NavigationPolicyTest": 49,
+    "RecoveryPolicyTest": 83,
+    "AudioPolicyTest": 52,
+    "DisplayPolicyTest": 17,
+    "StartupPolicyTest": 37,
+    "RollingLogTest": 127,
+    "DesktopInsetPolicyTest": 43,
+    "CaptureServicePolicyTest": 36,
+    "UsageAccessPolicyTest": 40,
+    "InsetRecheckPolicyTest": 33,
+    "CaptureAccessPolicyTest": 100,
+    "CaptureWakePolicyTest": 20,
+    "CaptureCommandPolicyTest": 15,
+    "StartupCapturePolicyTest": 72
+  },
+  "total_tests_passed": 771,
+  "device_tested": false,
+  "platform_resolver_checks": 8,
+  "changed_original_methods": {
+    "ib/c.smali": [
+      "public final onFftDataCapture(Landroid/media/audiofx/Visualizer;[BI)V"
+    ],
+    "ib/e.smali": [
+      "public final e(Z)V"
+    ]
+  },
+  "unchanged_resources_and_native_files": 5599,
+  "manifest_allowed_changes": [
+    "versionCode",
+    "versionName",
+    "android.permission.FOREGROUND_SERVICE_MICROPHONE",
+    "com.sparkine.muvizedge.service.AppService:mediaPlayback|microphone",
+    "com.sparkine.muvizedge.activity.HomeActivity:remove android.app.shortcuts metadata"
+  ],
+  "static_launcher_shortcuts_published": false,
+  "launcher_activities": [
+    "com.sparkine.muvizedge.activity.HomeActivity"
+  ],
+  "all_resource_ids_preserved": true,
+  "popup_removal_preserved": true,
+  "primary_classes": 7847,
+  "helper_classes": 98,
+  "helper_references_resolved": 2834,
+  "helper_android_api_30_methods_resolved": true,
+  "original_class_abi_references_resolved": 85,
+  "foreground_promotion_precedes_overlay_creation": true,
+  "null_intent_and_all_commands_use_recovery_hook": true,
+  "background_recovery_uses_original_tunnel_initialization": true,
+  "native_initialization_success_and_failure_instrumented": true,
+  "signed_apk": "output/MuvizEdge-Adaptive-Phone-Car-ZH-Diagnostics158.apk",
+  "sha256": "ac07b935946340bf01a572b0839ca05b544c6ebce735f9d03619afa0c1b843b2",
+  "signature_verified": true,
+  "zipalign_verified": true,
+  "certificate_sha256": "1178a26590b6a1d23ec190bbe25ebe278687511387e603e027e2964d2da757c4",
+  "release_signing_certificate": true
+}

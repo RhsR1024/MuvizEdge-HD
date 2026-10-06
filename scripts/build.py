@@ -1,6 +1,7 @@
 """Compile helpers, run JVM policy tests, dex helpers, rebuild primary APK."""
 import json
 import os
+import re
 import shutil
 import subprocess
 from paths import ROOT, BUILD, TOOLS, JAVA, TEMP, ENV, CONFIG
@@ -28,8 +29,16 @@ java('-jar', TOOLS/'ecj.jar', '-8', '-encoding', 'UTF-8', '-warn:none',
 java('-jar', TOOLS/'ecj.jar', '-8', '-encoding', 'UTF-8', '-warn:none',
      '-classpath', BUILD/'classes', '-d', BUILD/'test-classes',
      *sorted((ROOT/'tests').glob('*Test.java')))
-for test in CONFIG['test_cases']:
-    java('-cp', str(BUILD/'classes')+os.pathsep+str(BUILD/'test-classes'), test)
+for test, expected in CONFIG['test_cases'].items():
+    result = subprocess.run([str(JAVA), '-Djava.io.tmpdir=' + str(TEMP), '-cp',
+        str(BUILD/'classes')+os.pathsep+str(BUILD/'test-classes'), test],
+        env=ENV, check=True, capture_output=True, text=True)
+    print(result.stdout, end='')
+    if result.stderr:
+        print(result.stderr, end='')
+    passed = re.findall(r'^PASS: (\d+)\b', result.stdout, re.MULTILINE)
+    if passed != [str(expected)]:
+        raise RuntimeError(f'{test}: expected {expected} checks; actual PASS counts {passed}')
 (BUILD/'tests-passed.json').write_text(json.dumps(CONFIG['test_cases'], indent=2)+'\n', encoding='utf8')
 java('-cp', TOOLS/'r8.jar', 'com.android.tools.r8.D8', '--min-api', '28',
      '--lib', TOOLS/'android30.jar', '--classpath', BUILD/'stub-classes',

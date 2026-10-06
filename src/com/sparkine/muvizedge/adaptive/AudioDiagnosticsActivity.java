@@ -62,7 +62,7 @@ public final class AudioDiagnosticsActivity extends Activity {
     @Override protected void onResume() { super.onResume(); AdaptiveUi.onResume(this); refresh(); }
     private void refresh() {
         AudioSupport.invalidate();
-        StringBuilder s = new StringBuilder("Muviz Edge 156 启动、音频与边距诊断\n");
+        StringBuilder s = new StringBuilder("Muviz Edge 158 启动、音频与边距诊断\n");
         s.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date()));
         s.append("\n设备：").append(Build.MANUFACTURER).append(' ').append(Build.MODEL).append("\nAndroid ").append(Build.VERSION.RELEASE).append(" / API ").append(Build.VERSION.SDK_INT);
         AdaptiveUi.Device d = AdaptiveUi.device(this);
@@ -71,6 +71,7 @@ public final class AudioDiagnosticsActivity extends Activity {
         s.append("\n车机桌面兼容：").append(DesktopSupport.enabled(this));
         s.append("\n录音权限：").append(checkSelfPermission(Manifest.permission.RECORD_AUDIO)==PackageManager.PERMISSION_GRANTED);
         s.append("\n系统录音访问：").append(CaptureDiagnostics.permissionState(this));
+        s.append("\n音频访问环境：").append(CaptureDiagnostics.environment(this));
         s.append("\n悬浮窗权限：").append(Settings.canDrawOverlays(this));
         String enabled = Settings.Secure.getString(getContentResolver(),"enabled_notification_listeners");
         boolean listener = false;

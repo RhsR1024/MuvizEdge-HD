@@ -1,5 +1,8 @@
 {
   "ib/e.smali": [
     "public final e(Z)V"
+  ],
+  "ib/c.smali": [
+    "public final onFftDataCapture(Landroid/media/audiofx/Visualizer;[BI)V"
   ]
 }

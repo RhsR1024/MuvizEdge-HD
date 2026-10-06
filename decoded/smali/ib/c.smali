@@ -60,6 +60,8 @@
 .method public final onFftDataCapture(Landroid/media/audiofx/Visualizer;[BI)V
     .locals 9
 
+    move-object v0, p1
+
     move-object v6, p0
 
     .line 1
@@ -78,7 +80,7 @@
     const/4 v8, 0x2
 
     .line 6
-    invoke-static {p2}, Lcom/sparkine/muvizedge/adaptive/AudioSupport;->onFft([B)I
+    invoke-static {p1, v0, p2}, Lcom/sparkine/muvizedge/adaptive/AudioSupport;->onFft(Lib/e;Landroid/media/audiofx/Visualizer;[B)I
 
     move-result v2
 
